@@ -1,6 +1,6 @@
 //client/components/App.js
 import React from 'react';
-import RatingsAndReviews from './RatingsAndReviews.jsx'
+import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx'
 
 const App = () => {
   return(
