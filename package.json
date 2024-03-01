@@ -4,7 +4,7 @@
   "description": "My webpack project",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "jest ./jestTest/jestSpec.js",
+    "test": "jest",
     "build": "webpack --mode=production --node-env=production",
     "client-dev": "npx webpack --watch",
     "server-dev": "npx nodemon server/index.js",
