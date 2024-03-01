@@ -14,8 +14,19 @@ current project structure:
 │   │   └── styles.css
 │   └── src
 │       ├── components
-│       │   └── App.jsx
-│       └── index.js
+│       │   ├── App.jsx
+│       │   ├── ProductOverview
+│       │   │   └── ProductOverview.jsx
+│       │   ├── QuestionsAndAnswers
+│       │   │   └── questions.jsx
+│       │   ├── RatingsAndReviews
+│       │   │   ├── RatingsAndReviews.jsx
+│       │   │   └── reviews.jsx
+│       │   └── Related_Items
+│       │       └── Related.jsx
+│       ├── index.js
+│       └── tests
+│           └── test.js
 ├── index.html
 ├── package-lock.json
 ├── package.json
