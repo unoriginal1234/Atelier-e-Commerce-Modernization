@@ -1,3 +1,26 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Apply font to all elements */
 body {
-  background-color: red;
+  font-family: 'Roboto', sans-serif;
+  background:white;
+  color:black;
 }
+
+/* Style main container */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 1040px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Style individual module containers */
+.widget-container {
+  border: 1px solid #ccc; /* Add border to identify each module */
+  padding: 16px;
+  margin-bottom: 20px; /* Add margin between modules */
+}
+
