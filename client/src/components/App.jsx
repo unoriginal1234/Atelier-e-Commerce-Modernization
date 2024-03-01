@@ -1,12 +1,16 @@
 //client/components/App.js
 import React from 'react';
-import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx'
-import QuestionsAndAnswers from './QuestionsAndAnswers/questions.jsx';
+
+import ProductOverview from './ProductOverview/ProductOverview.jsx';
+
 const App = () => {
   return(
-    <div>
-      <h1>Yellow Word!</h1>
-      <RatingsAndReviews />
+    <div className="main-container">
+      <h2>Logo</h2>
+      <div className="widget-container"><ProductOverview /></div>
+      <div className="widget-container">your Related Items module here</div>
+      <div className="widget-container">your Rating and Reviews module here</div>
+      <div className="widget-container">your Questions and Answers module here</div>
     </div>
   );
 };
