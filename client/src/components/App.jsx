@@ -41,7 +41,6 @@ const App = () => {
     axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${productID}`, options)
       .then((response) => {
         setMetaData(response.data);
-        console.log('yes! hit useeffect');
       })
       .catch((err) => {
         console.log('Error retrieving meta data', err);
