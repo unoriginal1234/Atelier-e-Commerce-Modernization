@@ -11,8 +11,24 @@ import QuestionsAndAnswers from './QuestionsAndAnswers/questions.jsx';
 //https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=65631
 
 const App = () => {
+  //-------------------------------------------------------
+  //Shared App states
+  //-------------------------------------------------------
   const [productID, setProductID] = useState(0);
   const [metaData, setMetaData] = useState({});
+  const [useEffectID, setUseEffectID] = useState(0);
+
+  //-------------------------------------------------------
+  //Functions
+  //-------------------------------------------------------
+
+  const changeID = function (val) {
+    setProductID(val);
+  }
+
+  //-------------------------------------------------------
+  //Use Effect & relevant objects
+  //-------------------------------------------------------
 
   const options = {
     headers: {
@@ -20,38 +36,36 @@ const App = () => {
     }
   };
 
-  useEffect ((productID) => {
-    let currentID = 0;
-    if (productID === 0 || currentID !== productID) {
+    //Meta UseEffect
+  useEffect (() => {
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${productID}`, options)
+      .then((response) => {
+        setMetaData(response.data);
+        console.log('yes! hit useeffect');
+      })
+      .catch((err) => {
+        console.log('Error retrieving meta data', err);
+      })
+  }, [productID]);
+
+    //First Get request
+  useEffect (() => {
+    if (productID === 0) {
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products`, options)
-        .then((response) => {
-          console.log(response.data[0].id);
-          setProductID(response.data[0].id);
-          currentID = productID;
-          console.log(productID);
-        })
-        .catch(() => {
-          console.error('Couldnt grab ID');
-        })
-        // .then(() => {
-        //   axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${productID}`, options)
-        //     .then((data) => {
-        //       setMetaData(data);
-        //       console.log(metaData);
-        //     })
-        // })
-        // .catch(() => {
-        //   console.error('Hey this didnt work');
-        // })
+      .then((response) => {
+        setProductID(response.data[0].id);
+      })
+      .catch(() => {
+        console.error('Couldnt grab ID');
+      })
     }
   }, []);
-
 
   return (
     <div className="main-container">
       <h2>Logo</h2>
       <div className="widget-container"><ProductOverview id={productID}/></div>
-      <div className="widget-container"><Related id={productID}/></div>
+      <div className="widget-container"><Related id={productID} meta={metaData} setID={changeID}/></div>
       <div className="widget-container"><RatingsAndReviews id={productID}/></div>
       <div className="widget-container"><QuestionsAndAnswers id={productID}/></div>
     </div>
