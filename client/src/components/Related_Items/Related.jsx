@@ -1,5 +1,11 @@
 import React from 'react';
 
 const Related = function () {
-  return
-}
+  return (
+    <div>
+      <p>Related stuff</p>
+    </div>
+  )
+};
+
+export default Related;
