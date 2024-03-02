@@ -14,9 +14,8 @@ const App = () => {
   //-------------------------------------------------------
   //Shared App states
   //-------------------------------------------------------
-  const [productID, setProductID] = useState(0);
+  const [productID, setProductID] = useState(65631);
   const [metaData, setMetaData] = useState({});
-  const [useEffectID, setUseEffectID] = useState(0);
 
   //-------------------------------------------------------
   //Functions
@@ -46,19 +45,6 @@ const App = () => {
         console.log('Error retrieving meta data', err);
       })
   }, [productID]);
-
-    //First Get request
-  useEffect (() => {
-    if (productID === 0) {
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products`, options)
-      .then((response) => {
-        setProductID(response.data[0].id);
-      })
-      .catch(() => {
-        console.error('Couldnt grab ID');
-      })
-    }
-  }, []);
 
   return (
     <div className="main-container">
