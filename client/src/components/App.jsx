@@ -45,8 +45,7 @@ const App = () => {
       .catch((err) => {
         console.log('Error retrieving meta data', err);
       })
-  }, []);
-
+  }, [productID]);
 
   return (
     <div className="main-container">
