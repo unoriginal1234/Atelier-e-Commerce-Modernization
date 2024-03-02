@@ -107,65 +107,62 @@ return (
 );
 
 
-  // return (
-  //   <div className="product-overview">
-  //     {/* Image Gallery */}
-  //     <div className="image-gallery">
-  //       <img className="main-image" src={stylesData.results[0].photos[0].url} alt="Main Product" />
-  //       <div className="thumbnails">
-  //         <img src="https://via.placeholder.com/50" alt="Thumbnail 1" />
-  //         <img src="https://via.placeholder.com/50" alt="Thumbnail 2" />
-  //         <img src="https://via.placeholder.com/50" alt="Thumbnail 3" />
-  //       </div>
-  //     </div>
+  return (
+    <div className="product-overview">
+      {/* Image Gallery */}
+      <div className="image-gallery">
+        <img className="main-image" src="https://via.placeholder.com/300"  alt="Main Product" />
+        <div className="thumbnails">
+          <img src="https://via.placeholder.com/50" alt="Thumbnail 1" />
+          <img src="https://via.placeholder.com/50" alt="Thumbnail 2" />
+          <img src="https://via.placeholder.com/50" alt="Thumbnail 3" />
+        </div>
+      </div>
 
-  //     {/* Product Information */}
-  //     <div className="product-info">
-  //       <div className="rating">
-  //         {/* <img src={stylesData[]} alt="Star" /> */}
-  //         <img src="https://via.placeholder.com/20" alt="Star" />
-  //         <img src="https://via.placeholder.com/20" alt="Star" />
-  //         <img src="https://via.placeholder.com/20" alt="Star" />
-  //         <img src="https://via.placeholder.com/20" alt="Star" />
-  //         <a href="#">Read all reviews</a>
-  //       </div>
-  //       <div className="details">
-  //         <p>CATEGORY -> {data.category}</p>
-  //         {/* <h2>Product Title</h2> */}
-  //         <h2>{data.name}</h2>
-  //         {/* <p>PRICE: $99.99</p> */}
-  //         <p>{data.default_price}</p>
-  //         <p>Product Overview Text</p>
-  //       </div>
-  //       <div className="social-media">
-  //         <button>Share on Facebook</button>
-  //         <button>Share on Twitter</button>
-  //       </div>
-  //     </div>
+      {/* Product Information */}
+      <div className="product-info">
+        <div className="rating">
+          <img src="https://via.placeholder.com/20" alt="Star" />
+          <img src="https://via.placeholder.com/20" alt="Star" />
+          <img src="https://via.placeholder.com/20" alt="Star" />
+          <img src="https://via.placeholder.com/20" alt="Star" />
+          <a href="#">Read all reviews</a>
+        </div>
+        <div className="details">
+          <p>CATEGORY</p>
+          <h2>Product Title</h2>
+          <p>PRICE: $99.99</p>
+          <p>Product Overview Text</p>
+        </div>
+        <div className="social-media">
+          <button>Share on Facebook</button>
+          <button>Share on Twitter</button>
+        </div>
+      </div>
 
-  //     {/* Style Selector */}
-  //     <div className="style-selector">
-  //       <div className="style-thumbnails">
-  //         <img src="https://via.placeholder.com/50" alt="Style Thumbnail 1" />
-  //         <img src="https://via.placeholder.com/50" alt="Style Thumbnail 2" />
-  //         <img src="https://via.placeholder.com/50" alt="Style Thumbnail 3" />
-  //       </div>
-  //     </div>
+      {/* Style Selector */}
+      <div className="style-selector">
+        <div className="style-thumbnails">
+          <img src="https://via.placeholder.com/50" alt="Style Thumbnail 1" />
+          <img src="https://via.placeholder.com/50" alt="Style Thumbnail 2" />
+          <img src="https://via.placeholder.com/50" alt="Style Thumbnail 3" />
+        </div>
+      </div>
 
-  //     {/* Add to Cart Form */}
-  //     <div className="add-to-cart">
-  //       <label htmlFor="size">Size:</label>
-  //       <select name="size" id="size">
-  //         <option value="small">Small</option>
-  //         <option value="medium">Medium</option>
-  //         <option value="large">Large</option>
-  //       </select>
-  //       <label htmlFor="quantity">Quantity:</label>
-  //       <input type="number" id="quantity" name="quantity" min="1" max="10" />
-  //       <button>Add to Cart</button>
-  //     </div>
-  //   </div>
-  // );
+      {/* Add to Cart Form */}
+      <div className="add-to-cart">
+        <label htmlFor="size">Size:</label>
+        <select name="size" id="size">
+          <option value="small">Small</option>
+          <option value="medium">Medium</option>
+          <option value="large">Large</option>
+        </select>
+        <label htmlFor="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" min="1" max="10" />
+        <button>Add to Cart</button>
+      </div>
+    </div>
+  );
 };
 
 export default ProductOverview;
