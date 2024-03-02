@@ -50,9 +50,9 @@ const App = () => {
     <div className="main-container">
       <h2>Logo</h2>
       <div className="widget-container"><ProductOverview id={productID}/></div>
-      <div className="widget-container"><Related id={productID} meta={metaData} setID={changeID}/></div>
+      {/* <div className="widget-container"><Related id={productID} meta={metaData} setID={changeID}/></div>
       <div className="widget-container"><RatingsAndReviews id={productID}/></div>
-      <div className="widget-container"><QuestionsAndAnswers id={productID}/></div>
+      <div className="widget-container"><QuestionsAndAnswers id={productID}/></div> */}
     </div>
   );
 };

@@ -4,8 +4,10 @@
 /* Apply font to all elements */
 body {
   font-family: 'Roboto', sans-serif;
-  background:white;
-  color:black;
+  /* background:white; */
+  background:black;
+  /* color:black; */
+  color:white;
 }
 
 /* Style main container */
@@ -23,4 +25,25 @@ body {
   padding: 16px;
   margin-bottom: 20px; /* Add margin between modules */
 }
+
+/* ==========================================================================
+   Style for Product Overview Module
+   ========================================================================== */
+.product-overview {
+  display: flex;
+  /* flex-direction: column; */
+}
+
+.p-o-left {
+  border: 1px solid #ccc;
+  flex: 0 0 63%;
+}
+
+.p-o-right {
+  border: 1px solid #ccc;
+  flex: 1;
+}
+/* ==========================================================================
+   End of Product Overview Module styles
+   ========================================================================== */
 

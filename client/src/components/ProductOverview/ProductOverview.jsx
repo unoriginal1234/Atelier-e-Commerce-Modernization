@@ -1,38 +1,25 @@
 //client/components/ProductOverview/ProductOverview.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-// when the page first loads we want to show a cool product to make our demo more appealing
-// and also flex on the other teams
-// therefore, we can have a default id on App.js --> const [productID, setProductID] = useState(65631);
-// then, we can change the productID whenever clicking on a link that changes the productID
-
-// {
-//   "id": 65631,
-//   "campus": "rfp",
-//   "name": "Camo Onesie",
-//   "slogan": "Blend in to your crowd",
-//   "description": "The So Fatigues will wake you up and fit you in. This high energy camo will have you blending in to even the wildest surroundings.",
-//   "category": "Jackets",
-//   "default_price": "140.00",
-//   "created_at": "2022-03-29T15:08:08.445Z",
-//   "updated_at": "2022-03-29T15:08:08.445Z",
-//   "features": [
-//       {
-//           "feature": "Fabric",
-//           "value": "Canvas"
-//       },
-//       {
-//           "feature": "Buttons",
-//           "value": "Brass"
-//       }
-//   ]
-// }
+import Star from './Star.jsx';
 
 const ProductOverview = ({id}) => {
 
 const [data, setData] = useState(null);
 const [stylesData, setStylesData] = useState(null);
+const [reviewsData, setReviewsData] = useState(null);
+
+const [selectedStyle, setSelectedStyle] = useState(null);
+const [availableSizes, setAvailableSizes] = useState([]);
+const [quantity, setQuantity] = useState([]);
+
+// Event handler to update selected style and available sizes
+const handleStyleChange = (styleId) => {
+  const selected = stylesData.results.find(style => style.style_id === styleId);
+  setSelectedStyle(selected);
+  setAvailableSizes(Object.values(selected.skus).map(sku => sku.size));
+  setQuantity(Object.values(selected.skus).map(sku => sku.quantity));
+};
 
 const fetchData = (endpoint, setData) => {
   const options = {
@@ -45,7 +32,7 @@ const fetchData = (endpoint, setData) => {
   axios.get(endpoint, options)
     .then(response => {
       setData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     })
     .catch(error => {
       console.error(error);
@@ -56,113 +43,65 @@ const fetchData = (endpoint, setData) => {
 useEffect(() => {
   fetchData(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${id}`, setData);
   fetchData(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${id}/styles`, setStylesData);
+  fetchData(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${id}`, setReviewsData);
 }, [id]);
 
 
-if (!data || !stylesData) {
+if (!data || !stylesData || !reviewsData) {
   return <div>Loading...</div>;
 }
+// get total number of reviews
+const getNumberOfReviews = (ratings) => {
+  let totalReviews = 0;
+  for (let rating in ratings) {
+    totalReviews += parseInt(ratings[rating]);
+  }
+  return totalReviews;
+};
 
-const stylesArray = stylesData.results.map(style => {
-console.log(style);
-});
+// function to display rating stars
+const displayRatings = (ratings) => {
+  const stars = [];
+  let totalRatings = 0;
+  let totalScore = 0;
+  // Calculate total score and total number of ratings
+  for (let rating = 1; rating <= 5; rating++) {
+    const count = parseInt(ratings[rating] || 0);
+    totalScore += rating * count;
+    totalRatings += count;
+  }
+  // Calculate average rating
+  const averageRating = totalRatings > 0 ? totalScore / totalRatings : 0;
+  for (let rating = 1; rating <= 5; rating++) {
+    const filled = rating <= averageRating;
+    // get the Stars component
+    stars.push(<Star key={rating} filled={filled} size={14} />);
+  }
+  return stars;
+};
 
+const totalReviews = getNumberOfReviews(reviewsData.ratings);
 
-//single photo
-//console.log('stylesData.results: ', stylesData.results[0].photos[0].url);
 
 return (
   <div className="product-overview">
-    {stylesData.results.map(style => (
-      <div key={style.style_id} className="product-style">
-        <h2>{style.name}</h2>
-        <div className="price">
-          {style.sale_price ? (
-            <>
-              <span className="original-price">${style.original_price}</span>
-              <span className="sale-price">${style.sale_price}</span>
-            </>
-          ) : (
-            <span>${style.original_price}</span>
-          )}
-        </div>
-        <div className="photos">
-          {style.photos.map(photo => (
-            <img key={photo.url} src={photo.thumbnail_url} alt={style.name} />
-          ))}
-        </div>
-        <div className="sizes">
-          Available Sizes:
-          <ul>
-            {Object.values(style.skus).map(sku => (
-              <li key={sku.size}>
-                {sku.size} - {sku.quantity} in stock
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    ))}
-  </div>
-);
+    <div className="p-o-left">
+      {/* Product Images */}
+    </div>
 
-
-  return (
-    <div className="product-overview">
-      {/* Image Gallery */}
-      <div className="image-gallery">
-        <img className="main-image" src="https://via.placeholder.com/300"  alt="Main Product" />
-        <div className="thumbnails">
-          <img src="https://via.placeholder.com/50" alt="Thumbnail 1" />
-          <img src="https://via.placeholder.com/50" alt="Thumbnail 2" />
-          <img src="https://via.placeholder.com/50" alt="Thumbnail 3" />
-        </div>
-      </div>
-
+    <div className="p-o-right">
       {/* Product Information */}
       <div className="product-info">
-        <div className="rating">
-          <img src="https://via.placeholder.com/20" alt="Star" />
-          <img src="https://via.placeholder.com/20" alt="Star" />
-          <img src="https://via.placeholder.com/20" alt="Star" />
-          <img src="https://via.placeholder.com/20" alt="Star" />
-          <a href="#">Read all reviews</a>
-        </div>
-        <div className="details">
-          <p>CATEGORY</p>
-          <h2>Product Title</h2>
-          <p>PRICE: $99.99</p>
-          <p>Product Overview Text</p>
-        </div>
-        <div className="social-media">
-          <button>Share on Facebook</button>
-          <button>Share on Twitter</button>
-        </div>
+      {totalReviews > 0 && (
+      <div className="rating">
+        {displayRatings(reviewsData.ratings)}
+        <a href="#"> Read all {totalReviews} reviews</a>
       </div>
-
-      {/* Style Selector */}
-      <div className="style-selector">
-        <div className="style-thumbnails">
-          <img src="https://via.placeholder.com/50" alt="Style Thumbnail 1" />
-          <img src="https://via.placeholder.com/50" alt="Style Thumbnail 2" />
-          <img src="https://via.placeholder.com/50" alt="Style Thumbnail 3" />
-        </div>
-      </div>
-
-      {/* Add to Cart Form */}
-      <div className="add-to-cart">
-        <label htmlFor="size">Size:</label>
-        <select name="size" id="size">
-          <option value="small">Small</option>
-          <option value="medium">Medium</option>
-          <option value="large">Large</option>
-        </select>
-        <label htmlFor="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" min="1" max="10" />
-        <button>Add to Cart</button>
-      </div>
+    )}
     </div>
-  );
+  </div>
+  </div>
+);
 };
 
 export default ProductOverview;
