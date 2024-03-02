@@ -37,7 +37,7 @@ const ProductOverview = () => {
     axios.get('https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/65631 ', options).then (r => {
       // log and set Data
       setData(r.data);
-      console.log(r.data);
+      //console.log(r.data);
     }).catch(e => {
       //
       console.log(e);
