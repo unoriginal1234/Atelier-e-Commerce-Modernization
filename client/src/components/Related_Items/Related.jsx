@@ -1,20 +1,68 @@
 import React from 'react';
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Card from './Card.jsx';
 
 const Related = function (props) {
-  const onClick = function() {
-    console.log(props.meta, props.id);
-  }
-  const changeID = function () {
-    console.log(props.setID);
-    props.setID(20);
-  }
+  const [relatedIDs, setRelatedIDs] = useState([]);
+  const [relatedItems, setRelatedItems] = useState([]);
+  const [yourOutfit, setYourOutfit] = useState([]);
+
+  //API object
+  const options = {
+    headers: {
+      'Authorization': `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`
+    }
+  };
+  //related array useEffect
+  useEffect(() => {
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${props.id}/related`, options)
+      .then((response) => {
+        setRelatedIDs(response.data);
+      })
+  }, [props.id]);
+
+  //related array of Objects useEffect
+  useEffect(() => {
+    setRelatedItems([]);
+    if (relatedIDs.length !== 0) {
+      let currentCallIndex = 0;
+      let result = [];
+      const callback = function () {
+        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${relatedIDs[currentCallIndex]}`, options)
+          .then((response) => {
+            result.push(response.data);
+            currentCallIndex++;
+          })
+          .then(() => {
+            if (currentCallIndex === relatedIDs.length) {
+              setRelatedItems(result);
+            } else {
+              callback();
+            }
+          })
+      }
+      callback();
+    }
+  }, [relatedIDs]);
+
+  // if (!relatedItems) {
+  //   return <div>Loading ...</div>
+  // } else {
   return (
     <div>
-      <p onClick={onClick}>Related stuff id={props.id}</p>
-      <button onClick={changeID}>Click ME!</button>
+      <p>Related stuff id={props.id}</p>
+      {relatedItems.map((item) => {
+        return <Card item={item} setID={props.setID} />
+      })}
     </div>
   )
+  //  }
 };
 
 export default Related;
+
+//API calls
+//https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/65631
+//https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products
+//https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/65631/related
