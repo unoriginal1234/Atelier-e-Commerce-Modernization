@@ -35,6 +35,9 @@
     "redux": "^5.0.1",
     "styled-components": "^6.1.8"
   },
+  "resolutions": {
+    "styled-components": "^5"
+  },
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@babel/preset-env": "^7.24.0",
