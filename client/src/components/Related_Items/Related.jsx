@@ -35,6 +35,9 @@ const Related = function (props) {
             currentCallIndex++;
           })
           .then(() => {
+            
+          })
+          .then(() => {
             if (currentCallIndex === relatedIDs.length) {
               setRelatedItems(result);
             } else {
