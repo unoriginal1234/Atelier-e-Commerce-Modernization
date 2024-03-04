@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Star from './Star.jsx';
+import ImageGallery from './ImageGallery.jsx';
+import { product, styles, reviews } from './exampleData.js';
 import Styles from './Styles.jsx'; // Import the Styles component
 
 const ProductOverview = ({ id }) => {
@@ -11,32 +12,38 @@ const ProductOverview = ({ id }) => {
   const [selectedStyle, setSelectedStyle] = useState(null);
   const [availableSizes, setAvailableSizes] = useState([]);
   const [quantity, setQuantity] = useState(0); // Initialize as 0 or another appropriate default value
+  const [currentImage, setCurrentImage] = useState('');
 
   // Define state variables for selected size and quantity
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
-  // Fetch data useEffect
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const options = {
-          headers: {
-            'Authorization': `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`,
-          }
-        };
-        const [productResponse, stylesResponse, reviewsResponse] = await Promise.all([
-          axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${id}`, options),
-          axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${id}/styles`, options),
-          axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${id}`, options)
-        ]);
+    const fetchData = () => {
+      const options = {
+        headers: {
+          'Authorization': `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`,
+        }
+      };
+      Promise.all([
+        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${id}`, options),
+        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${id}/styles`, options),
+        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${id}`, options)
+      ])
+      .then(([productResponse, stylesResponse, reviewsResponse]) => {
         setData(productResponse.data);
         setStylesData(stylesResponse.data);
         setReviewsData(reviewsResponse.data);
-      } catch (error) {
+      })
+      .catch(error => {
         console.error('Error fetching data:', error);
-      }
+    // fake data
+        setData(product[0]);
+        setStylesData(styles);
+        setReviewsData(reviews);
+      });
     };
+
     fetchData();
   }, [id]);
 
@@ -58,7 +65,7 @@ const ProductOverview = ({ id }) => {
       const quantities = Object.values(selected.skus).map(sku => sku.quantity);
       const totalQuantity = quantities.length > 0 ? Math.min(...quantities) : 0;
       setQuantity(totalQuantity);
-
+      setCurrentImage(selected.photos[0].url); // Set default image for the new style
       setCurrentStyleId(styleId); // Update current style id
     }
   };
@@ -72,8 +79,9 @@ const ProductOverview = ({ id }) => {
     return totalReviews;
   };
 
+
   // Function to display rating stars
-  const displayRatings = (ratings) => {
+  const RatingStarsAndReviewsLink = (ratings, totalReviews) => {
     const stars = [];
     let totalRatings = 0;
     let totalScore = 0;
@@ -85,15 +93,20 @@ const ProductOverview = ({ id }) => {
     }
     // Calculate average rating
     const averageRating = totalRatings > 0 ? totalScore / totalRatings : 0;
-    for (let rating = 1; rating <= 5; rating++) {
-      const filled = rating <= averageRating;
-      // get the Stars component
-      stars.push(<Star key={rating} filled={filled} size={16} />);
-    }
-    return stars;
+    // return rating stars and number of reviews link;
+    return (
+    <div className="Stars" style={{ '--rating': averageRating }}>
+    <a href="#"> Read all {totalReviews} reviews</a></div>
+    );
   };
 
   const totalReviews = reviewsData ? getNumberOfReviews(reviewsData.ratings) : 0;
+
+  // Function to handle Thumbnail Click click
+  const handleThumbnailClick = (imageUrl) => {
+    setCurrentImage(imageUrl);
+  };
+
 
   // Function to handle Add to Cart button click
   const handleAddToCart = () => {
@@ -110,34 +123,52 @@ const ProductOverview = ({ id }) => {
     }
   };
 
+  // Render Loading message if data is being fetched
+  if (!data || !stylesData || !reviewsData) {
+    return <div>Loading...</div>;
+  // console.log(data[0], stylesData, reviewsData);
+  }
+
+
   return (
     <div className="product-overview">
-      {/* Div to hold the Product Gallery */}
+      {/* Left div to hold the current product SKU gallery images */}
       <div className="p-o-left">
-        {/* Product images div conteiner */}
-        <div className="gallery-images-conteiner">
-        <div className="navigation-thumnails-conteiner">
-        </div>
-      </div>
+      {/* {selectedStyle && <ImageGallery selectedStyle={selectedStyle} currentStyleId={currentStyleId} />} */}
+
+        {/* <div className="gallery-images-conteiner">
+          <img src={currentImage} alt="Product" />
+          <div className="navigation-thumnails-conteiner">
+            {selectedStyle && selectedStyle.photos.map((photo, index) => (
+              <img
+                key={index}
+                src={photo.thumbnail_url}
+                alt={`Thumbnail ${index}`}
+                onClick={() => handleThumbnailClick(photo.url)}
+              />
+            ))}
+          </div>
+        </div> */}
       </div>
 
-      {/* Product Information */}
+      {/* Product Information right div*/}
       <div className="p-o-right">
         <div className="product-info">
-          {/* Rating/stars and number of reviews if any */}
+          {/* Display rating stars and number of reviews if any */}
           {totalReviews > 0 && (
             <div className="product p-o-ratings-reviews">
-              {displayRatings(reviewsData.ratings)}
-              <a href="#"> Read all {totalReviews} reviews</a>
-            </div>
+  {/* displayRatings displays 5 stars filled according to the average rating score.*/}
+
+  {RatingStarsAndReviewsLink(reviewsData.ratings, totalReviews)}
+       </div>
           )}
-          {/* Category */}
+          {/* Display category */}
           <div className="product category">
-            <p>{data && data.category}</p>
+            <p>{data.category}</p>
           </div>
-          {/* Title/Name */}
+          {/* Display product title/name */}
           <div className="product title">
-            <h2 className="p-o-title">{data && data.name}</h2>
+            <h2 className="p-o-title">{data.name}</h2>
           </div>
           {/* Price */}
           <div className="product price">
@@ -158,7 +189,7 @@ const ProductOverview = ({ id }) => {
               </>
             )}
           </div>
-          {/* Display the name of the selected style */}
+          {/* Displays the name of the selected style */}
           {selectedStyle && (
             <div className="selected-style">
               Style > <b>{selectedStyle.name}</b>
@@ -192,6 +223,7 @@ const ProductOverview = ({ id }) => {
               defaultValue={availableSizes.length ? 1 : '-'} // Default value based on size selection
               onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
             >
+               {/* 1.1.3.2. Quantity Selector: "The maximum selection for quantity will be capped by either the quantity of this style and size in stock, or a hard limit of 15." */}
               {[...Array(Math.min(quantity, 15)).keys()].map((num) => (
                 <option key={`quantity-${num + 1}`} value={num + 1}>{num + 1}</option> // Improved key with quantity value
               ))}
@@ -204,13 +236,14 @@ const ProductOverview = ({ id }) => {
               Add to Cart
               {/* <span>Add to Cart</span><span>+</span> */}
             </button>
-            {/* Like button */}
+            {/* Like button - Not required but i'll be nice to implement it*/}
             <button className="like-button">⭐</button>
+            {/* <button className="like-button"><Star key={11} filled={true} size={16} /></button> */}
+
           </div>
         </div>
       </div>
     </div>
   );
 };
-
 export default ProductOverview;

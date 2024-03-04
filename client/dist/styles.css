@@ -37,30 +37,8 @@ body {
 .p-o-left {
   border: 1px solid #ccc;
   flex: 0 0 63%;
-  padding:16px;
+  padding:0px;
 }
-
-.gallery-images-conteiner{
-  background: rgb(232, 232, 232);
-  width: 100%;
-  height: 100%;
-  display: block;
-  box-sizing: border-box;
-}
-
-.navigation-thumnails-conteiner{
-  position: relative;
-  background: rgb(210, 210, 210);
-  width: 100px;
-  height: calc(100% - 32px);
-  left: 16px;
-  top: 16px;
-  box-sizing: border-box;
-}
-
-
-
-
 
 .p-o-right {
   border: 1px solid #ccc;
@@ -163,9 +141,6 @@ body {
 .size-select {width: 65%;}
 .quantity-select {width: 35%;}
 
-
-
-
 .add-to-cart-and-like {
   margin-top:16px;
   display: flex;
@@ -182,19 +157,6 @@ body {
   background-color: #f8f8f8;
 }
 
-/* To show the add to cart button like in the example design */
-/* .add-to-cart-and-like button {
-  cursor: pointer;
-  padding: 10px;
-  font-size: 16px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  background-color: #f8f8f8;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 20px 10px 20px;
-  align-items: center;
-} */
 
 /* Style for the disabled dropdown */
 .add-to-cart-and-like button:disabled {
@@ -204,6 +166,38 @@ body {
 
 .add-to-cart-button {width: 75%;}
 .like-button {width: 25%;}
+
+
+:root {
+  --star-size: 16px;
+  /* --star-color: rgb(255, 245, 206); */
+  --star-color: rgb(255, 255, 255);
+  --star-background: #fc0;
+}
+
+.Stars {
+  --percent: calc(var(--rating) / 5 * 100%);
+  display: inline-block;
+  font-size: var(--star-size);
+   /* make sure ★ appears correctly */
+  line-height: 1;
+}
+
+.Stars::before {
+  content: '★★★★★';
+  letter-spacing: 3px;
+  background: linear-gradient(90deg, var(--star-background) var(--percent), var(--star-color) var(--percent));
+  background-clip: text;
+  /* -webkit-background-clip: text; */
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-color: #fc0;
+  -webkit-text-stroke-width: 1px;
+}
+
+* {
+  position: relative;
+  box-sizing: border-box;
+}
 
 
 /* ==========================================================================
