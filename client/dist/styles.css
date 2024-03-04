@@ -5,7 +5,9 @@
 body {
   font-family: 'Roboto', sans-serif;
   background:white;
+  /* background:black; */
   color:black;
+  /* color:white; */
 }
 
 /* Style main container */
@@ -23,4 +25,182 @@ body {
   padding: 16px;
   margin-bottom: 20px; /* Add margin between modules */
 }
+
+/* ==========================================================================
+   Style for Product Overview Module
+   ========================================================================== */
+.product-overview {
+  display: flex;
+  /* flex-direction: column; */
+}
+
+.p-o-left {
+  border: 1px solid #ccc;
+  flex: 0 0 63%;
+  padding:0px;
+}
+
+.p-o-right {
+  border: 1px solid #ccc;
+  flex: 1;
+  padding:16px;
+  box-sizing: border-box;
+}
+
+.p-o-ratings-reviews {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.p-o-ratings-reviews a {
+  font-size: 12px;
+  margin-left:8px;
+  color:gray;
+}
+
+.p-o-ratings-reviews a:hover{
+  color:rgb(69, 69, 69);
+}
+
+.p-o-title {
+  font-size:25px;
+  color:rgb(38, 38, 38);
+  margin:0;
+  line-height: 0;
+  margin-bottom: 25px;
+}
+
+.styles-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0px;
+  padding: 20px;
+}
+
+.style-thumbnail {
+  position: relative;
+  width: 60px; /* Adjust as needed */
+  height: 60px; /* Adjust as needed */
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 10px;
+  cursor: pointer;
+  margin-right: 12.5px;
+  background-size: cover;
+  background-position: center;
+}
+
+.style-thumbnail.selected::after {
+  content: ''; /* Overlay for the checkmark */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent white */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:black;
+  z-index:1;
+}
+
+.checkmark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 18px;
+  z-index:2;
+}
+
+
+.product.size-and-quantity {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Adjust the space between selects */
+}
+
+.product.size-and-quantity select {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+}
+
+/* Style for the disabled dropdown */
+.product.size-and-quantity select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.size-select {width: 65%;}
+.quantity-select {width: 35%;}
+
+.add-to-cart-and-like {
+  margin-top:16px;
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Adjust the space between selects */
+}
+
+.add-to-cart-and-like button {
+  cursor:pointer;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+}
+
+
+/* Style for the disabled dropdown */
+.add-to-cart-and-like button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.add-to-cart-button {width: 75%;}
+.like-button {width: 25%;}
+
+
+:root {
+  --star-size: 16px;
+  /* --star-color: rgb(255, 245, 206); */
+  --star-color: rgb(255, 255, 255);
+  --star-background: #fc0;
+}
+
+.Stars {
+  --percent: calc(var(--rating) / 5 * 100%);
+  display: inline-block;
+  font-size: var(--star-size);
+   /* make sure ★ appears correctly */
+  line-height: 1;
+}
+
+.Stars::before {
+  content: '★★★★★';
+  letter-spacing: 3px;
+  background: linear-gradient(90deg, var(--star-background) var(--percent), var(--star-color) var(--percent));
+  background-clip: text;
+  /* -webkit-background-clip: text; */
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-color: #fc0;
+  -webkit-text-stroke-width: 1px;
+}
+
+* {
+  position: relative;
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   End of Product Overview Module styles
+   ========================================================================== */
 

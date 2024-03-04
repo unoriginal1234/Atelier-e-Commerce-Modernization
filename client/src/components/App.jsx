@@ -8,18 +8,17 @@ import Related from './Related_Items/Related.jsx';
 import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
 import QuestionsAndAnswers from './QuestionsAndAnswers/QuestionsAndAnswers.jsx';
 
-//https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=65631
+// https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=65631
 
 const App = () => {
   //-------------------------------------------------------
-  //Shared App states
+  // Shared App states
   //-------------------------------------------------------
   const [productID, setProductID] = useState(65631);
   const [metaData, setMetaData] = useState({});
 
-
   //-------------------------------------------------------
-  //Functions
+  // Functions
   //-------------------------------------------------------
 
   const changeID = function (val) {
@@ -27,7 +26,7 @@ const App = () => {
   }
 
   //-------------------------------------------------------
-  //Use Effect & relevant objects
+  // Use Effect & relevant objects
   //-------------------------------------------------------
 
   const options = {
@@ -36,16 +35,16 @@ const App = () => {
     }
   };
 
-    //Meta UseEffect
-  useEffect (() => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${productID}`, options)
-      .then((response) => {
-        setMetaData(response.data);
-      })
-      .catch((err) => {
-        console.log('Error retrieving meta data', err);
-      })
-  }, [productID]);
+    // Meta UseEffect
+  // useEffect (() => {
+  //   axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${productID}`, options)
+  //     .then((response) => {
+  //       setMetaData(response.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log('Error retrieving meta data', err);
+  //     })
+  // }, [productID]);
 
   return (
     <div className="main-container">
