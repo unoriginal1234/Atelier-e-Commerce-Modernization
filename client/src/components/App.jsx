@@ -31,7 +31,7 @@ const App = () => {
 
   const options = {
     headers: {
-      'Authorization': `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`
+      'Authorization': `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`
     }
   };
 
