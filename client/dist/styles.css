@@ -204,3 +204,35 @@ body {
    End of Product Overview Module styles
    ========================================================================== */
 
+   /* ==========================================================================
+   Ratings and Reviews Module Styles
+   ========================================================================== */
+
+   .rr-container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+   }
+
+   .rr-list {
+    border: solid;
+    margin: 2px;
+   }
+
+   .rr-card {
+    border: solid;
+    margin: 2px;
+    flex: 2;
+   }
+
+   .rr-breakdown {
+    flex: 1;
+    border: solid;
+    margin: 2px
+   }
+
+
+   /* ==========================================================================
+   End of Ratings and Reviews Module styles
+   ========================================================================== */
+

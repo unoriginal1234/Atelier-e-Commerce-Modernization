@@ -3,8 +3,8 @@ import {useState} from 'react';
 
 const Card = function ({item, setID}) {
   const [currentCard, setCurrentCard] = useState(item.id);
-  console.log(currentCard);
-  console.log(item);
+  // console.log(currentCard);
+  // console.log(item);
 
   const changeID = function () {
     setID(currentCard);
