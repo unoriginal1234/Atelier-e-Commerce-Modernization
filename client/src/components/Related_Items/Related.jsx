@@ -13,6 +13,10 @@ const Related = function (props) {
   const [lastOutfitIndex, setLastOutfitIndex] = useState(2);
 
 
+  //Type objects
+  let outfit = {type: 'outfit'};
+  let related = {type: 'related'};
+
   //Testing function onClick
   const onClick = function () {
     console.log('related items obj =', relatedItems, 'related items array =', relatedIDs);
@@ -126,7 +130,7 @@ const Related = function (props) {
         {(currentItemsIndex > 0) && <button className="r-i-carousel-btn" onClick={onLeftClick}>Left</button>}
         {relatedItems.map((item) => {
           if (relatedItems.indexOf(item) >= currentItemsIndex && relatedItems.indexOf(item) <= lastItemIndex) {
-            return <Card item={item} setID={props.setID} />
+            return <Card item={item} setID={props.setID} type={{type: 'related'}}/>
           }
         })}
         {(lastItemIndex + 1 < relatedItems.length) && <button className="r-i-carousel-btn" onClick={onRightClick}>Right</button>}
@@ -141,7 +145,7 @@ const Related = function (props) {
         {(yourOutfit.length >= 1) && yourOutfit.map((item) => {
           let current = yourOutfit.indexOf(item);
           if (current >= firstOutfitIndex && current <= lastOutfitIndex) {
-            return <Card item={item} setID={props.setID} />
+            return <Card item={item} setID={props.setID} type={{type: 'outfit'}}/>
           }
         })}
         {(lastOutfitIndex + 1 < yourOutfit.length) && <button className="r-i-carousel-btn" onClick={onYORightClick}>Right</button>}

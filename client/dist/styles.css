@@ -252,3 +252,21 @@ body {
   height: 63px;
   margin: auto;
 }
+
+.r-i-secret {
+  z-index: 100;
+  position: absolute;
+  background-color: white;
+  left: 68%;
+  top: -8%;
+  width: max-content;
+}
+
+.r-i-secret-btn {
+  color: black;
+  background-color: #f8f8f8;
+  padding: 2%;
+  border: 0;
+  position: relative;
+  left: 72%;
+}
