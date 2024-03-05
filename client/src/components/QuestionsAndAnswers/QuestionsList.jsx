@@ -1,11 +1,11 @@
 import React from 'react';
 import QuestionItem from './QuestionItem.jsx';
-const QuestionsList = ({ questionData }) => {
-  console.log(questionData);
+const QuestionsList = ({ questionData, token, handleQuestionsList }) => {
+
   return (
-    <div>
+    <div className="question-list-container">
       {questionData.map((question) => {
-        return <QuestionItem key={question.question_id} question={question}/>
+        return <QuestionItem key={question.question_id} questionData={questionData} question={question} token={token} handleQuestionsList={handleQuestionsList}/>
       })}
     </div>
   )
