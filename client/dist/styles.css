@@ -26,6 +26,15 @@ body {
   margin-bottom: 20px; /* Add margin between modules */
 }
 
+/* Resets some stuff for all elements in the DOM, (In CSS, the asterisk (*) matches any element in the document. It selects all elements, regardless of type, and sets the specified CSS properties defined inside the curly braces. *{margin:0} <-- this will affect all html elements in the document) we could use a reset library like normalize instead  which is basically a small css file.
+-->  https://necolas.github.io/normalize.css/
+What Does Normalize.css Do? All browsers assign default values to specific CSS properties, and each browser sets different ones. To mitigate this inconsistency, a Normalize CSS file can be used to create a baseline for browsers across the board, Normalize.css does that for us.
+"Normalize.css is a small CSS file that provides better cross-browser consistency in the default styling of HTML elements. It's a modern, HTML5-ready, alternative to the traditional CSS reset." */
+* {
+  position: relative;
+  box-sizing: border-box;
+}
+
 /* ==========================================================================
    Style for Product Overview Module
    ========================================================================== */
@@ -84,7 +93,7 @@ body {
   width: 60px; /* Adjust as needed */
   height: 60px; /* Adjust as needed */
   border-radius: 50%;
-  overflow: hidden;
+  overflow: auto;
   margin-bottom: 10px;
   cursor: pointer;
   margin-right: 12.5px;
@@ -130,6 +139,16 @@ body {
   border: 2px solid #ccc;
   border-radius: 5px;
   background-color: #f8f8f8;
+}
+
+.custom-dropdown {
+  cursor:pointer;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  width: 50%;
 }
 
 /* Style for the disabled dropdown */
@@ -193,12 +212,6 @@ body {
   -webkit-text-stroke-color: #fc0;
   -webkit-text-stroke-width: 1px;
 }
-
-* {
-  position: relative;
-  box-sizing: border-box;
-}
-
 
 /* ==========================================================================
    End of Product Overview Module styles
