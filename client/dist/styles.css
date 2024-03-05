@@ -415,17 +415,54 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   z-index: 100;
   position: absolute;
   background-color: white;
-  left: 68%;
-  top: -8%;
-  width: max-content;
+  font-size: smaller;
+  border: grey solid 2px;
+  border-radius: 4px;
+  left: 79%;
+  top: -97%;
+  width: 150%;
 }
 
 .r-i-secret-btn {
   color: black;
-  background-color: #f8f8f8;
   padding: 2%;
   border: 0;
   position: relative;
   left: 72%;
 }
 
+.r-i-cat {
+  font-size: small;
+}
+
+.r-i-name {
+  font-size: medium;
+  font-weight: 700;
+}
+
+/*
+Secret Div
+*/
+
+.r-i-category {
+  display: flex;
+}
+
+.r-i-secret-v1 {
+  margin-left: 2%;
+  text-align: left;
+  width: 31%;
+}
+
+.r-i-secret-v2 {
+  margin-right: 2%;
+  text-align: end;
+  width: 31%;
+}
+
+.r-i-secret-cat {
+  margin-left: 5%;
+  margin-right: 5%;
+  text-align: center;
+  width: 38%;
+}
