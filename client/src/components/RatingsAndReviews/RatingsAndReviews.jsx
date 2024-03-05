@@ -21,7 +21,7 @@ const RatingsAndReviews = ({id}) => {
   // Headers for API calls
   const options = {
     headers: {
-      'Authorization': `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`,
+      'Authorization': `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`,
     }
   };
 

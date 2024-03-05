@@ -4,15 +4,10 @@ import axios from 'axios';
 import SearchAnswers from './SearchAnswers.jsx';
 import QuestionsList from './QuestionsList.jsx';
 
-const QuestionsAndAnswers = ( { id } ) => {
+const QuestionsAndAnswers = ( { id, token } ) => {
   const [questionData, setQuestionData] = useState(null);
   const [oldData, setOldData] = useState(null);
   const [filterData, setFilterData] = useState(null);
-  const token = {
-    headers: {
-      'Authorization': `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`
-    }
-  };
 
   const handleSearch = (query) => {
     setOldData(questionData);

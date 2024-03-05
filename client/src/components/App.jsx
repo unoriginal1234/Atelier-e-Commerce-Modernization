@@ -29,9 +29,9 @@ const App = () => {
   // Use Effect & relevant objects
   //-------------------------------------------------------
 
-  const options = {
+  const token = {
     headers: {
-      'Authorization': `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`
+      'Authorization': `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`
     }
   };
 
@@ -52,7 +52,7 @@ const App = () => {
       <div className="widget-container"><ProductOverview id={productID}/></div>
       <div className="widget-container"><Related id={productID} meta={metaData} setID={changeID}/></div>
       <div className="widget-container"><RatingsAndReviews id={productID}/></div>
-      <div className="widget-container"><QuestionsAndAnswers id={productID}/></div>
+      <div className="widget-container"><QuestionsAndAnswers id={productID} token={token}/></div>
     </div>
   );
 };
