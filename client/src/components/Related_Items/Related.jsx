@@ -75,7 +75,7 @@ const Related = function (props) {
   //API object
   const options = {
     headers: {
-      'Authorization': `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`
+      'Authorization': `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`
     }
   };
 

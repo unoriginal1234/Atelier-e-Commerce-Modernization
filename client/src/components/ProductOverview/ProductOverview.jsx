@@ -1,25 +1,26 @@
+//components/ProductOverview/ProductOverview.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import ImageGallery from './ImageGallery.jsx';
-import { product, styles, reviews } from './exampleData.js';
 import Styles from './Styles.jsx'; // Import the Styles component
 
-const ProductOverview = ({ id }) => {
+const ProductOverview = ({ id, onClickReadAllReviews }) => {
+
+  const handleClickReadAllReviews = (e) => {
+    e.preventDefault();
+    onClickReadAllReviews();
+  };
+
+
   const [data, setData] = useState(null);
   const [stylesData, setStylesData] = useState(null);
   const [reviewsData, setReviewsData] = useState(null);
   const [currentStyleId, setCurrentStyleId] = useState(null);
   const [selectedStyle, setSelectedStyle] = useState(null);
   const [availableSizes, setAvailableSizes] = useState([]);
-  const [quantity, setQuantity] = useState(0); // Initialize as 0 or another appropriate default value
+  const [quantity, setQuantity] = useState(0);
   const [currentImage, setCurrentImage] = useState('');
   const selectRef = useRef(null); // Create a ref for the select element
-
-
-/* ===========================Testing stuff======================================
-
-
-====================================================================================================*/
 
 
   // Define state variables for selected size and quantity
@@ -40,7 +41,7 @@ const ProductOverview = ({ id }) => {
     const fetchData = () => {
       const options = {
         headers: {
-          'Authorization': `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`,
+          'Authorization': `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`,
         }
       };
       Promise.all([
@@ -70,11 +71,14 @@ const ProductOverview = ({ id }) => {
   useEffect(() => {
     if (stylesData) {
       setCurrentStyleId(stylesData.results[0].style_id); // Set default style id
+      setSelectedStyle(stylesData.results[0]); // Set default style
+      setAvailableSizes(Object.values(stylesData.results[0].skus).map(sku => sku.size)); // Set default size
     }
   }, [stylesData]);
 
   // Event handler to update selected style and available sizes
   const handleStyleChange = (styleId) => {
+    // console.log('handleStyleChange was invoked')
     if (styleId !== currentStyleId) {
       const selected = stylesData.results.find(style => style.style_id === styleId);
       setSelectedStyle(selected);
@@ -116,7 +120,8 @@ const ProductOverview = ({ id }) => {
     // return rating stars and number of reviews link
     return (
     <div className="Stars" style={{ '--rating': averageRating }}>
-    <a href="#"> Read all {totalReviews} reviews</a></div>
+    <a href="#" onClick={handleClickReadAllReviews}> Read all {totalReviews} reviews</a>
+    </div>
     );
   };
 
@@ -130,17 +135,17 @@ const ProductOverview = ({ id }) => {
   // Function to handle Add to Cart button click
   const handleAddToCart = () => {
   const newErrorMessages = [];
-    if (selectedSize === 'Select size' || selectedSize.trim() === '') {
-      // If 'Select Size' is selected, open the size dropdown and display a message
-      // alert('Please select size');
-      newErrorMessages.push('Please select a size.');
+    if (selectedSize === 'SELECT SIZE' || selectedSize.trim() === '') {
+      // If 'SELECT SIZE' is selected, open the size dropdown and display a message
+      // alert('Please SELECT SIZE');
+      newErrorMessages.push('Please select size');
       selectRef.current.focus();
 
     }
     if (selectedQuantity <= 0 || selectedQuantity === '-') {
       // If quantity is invalid, display an error message
       // alert('Please select a valid quantity');
-      newErrorMessages.push('Please select a quantity.');
+      newErrorMessages.push('Please select a quantity');
     }
     if (newErrorMessages.length > 0) {
       setErrorMessages(newErrorMessages);
@@ -161,14 +166,19 @@ const ProductOverview = ({ id }) => {
   // Render Loading message if data is being fetched
   if (!data || !stylesData || !reviewsData) {
     return <div>Loading...</div>;
-  console.log(data[0], stylesData, reviewsData);
+  // console.log(data[0], stylesData, reviewsData);
   }
 
   return (
-    <div className="product-overview">
+    <div className="product-overview-container">
+        <div className="global-announsment">
+          <i>SITE-WIDE ANNOUSNMENT MESSAGE &mdash;  SALE /&nbsp;</i> DISCOUNT <b>&nbsp;OFFER &nbsp;</b> &mdash;  <u>&nbsp;NEW PRODUCT HIGHLIGHT</u>
+          </div>
+       <div className="product-overview">
       {/* Left div to hold the current product SKU gallery images */}
-      {/* <div className="p-o-left"> */}
-      {selectedStyle && <ImageGallery selectedStyle={selectedStyle} currentStyleId={currentStyleId} />}
+      <div className="p-o-left"> <span className="temp-placeholder"></span>
+{/* {selectedStyle && <ImageGallery selectedStyle={selectedStyle} currentStyleId={currentStyleId} />} */}
+</div>
 
       {/* Product Information right div*/}
       <div className="p-o-right">
@@ -189,20 +199,20 @@ const ProductOverview = ({ id }) => {
             <h2 className="p-o-title">{data.name}</h2>
           </div>
           {/* Price */}
-          <div className="product price">
+          <div className="product p-o-price">
             {/* Display current style price */}
             {selectedStyle && (
               <>
                 {selectedStyle.sale_price ? ( // Check if there is a sale price
                   <p>
-                    <span style={{ color: "red" }}> ${selectedStyle.sale_price} </span>
+                    <span style={{ color: "#e35d6a" }}><b> ${selectedStyle.sale_price} </b></span>
                     {selectedStyle.original_price && ( // Check if there is an original price
-                      <span style={{ textDecoration: "line-through" }}> ${selectedStyle.original_price}</span>
+                      <span style={{ color: "#a6b0b9", textDecoration: "line-through" }}> ${selectedStyle.original_price}</span>
                     )}
                   </p>
                 ) : (
                   // If there is no sale price, display the original price
-                  <p>${selectedStyle.original_price}</p>
+                  <p><b>${selectedStyle.original_price}</b></p>
                 )}
               </>
             )}
@@ -223,28 +233,28 @@ const ProductOverview = ({ id }) => {
           )}
           {/* Size and Quantity selector*/}
           {errorMessages.length > 0 && <ErrorMessages messages={errorMessages} />}
-          {/* {selectedSize === 'Select Size' || selectedSize.trim() === '' && <p style={{ color: 'red' }}>Please select a size</p>} */}
+          {/* {selectedSize === 'SELECT SIZE' || selectedSize.trim() === '' && <p style={{ color: 'red' }}>Please select size</p>} */}
           <div className="product size-and-quantity">
           <select
               ref={selectRef}
           className="size-select"
           disabled={!availableSizes.length} // Disable if no sizes available
-          defaultValue={availableSizes.length ? 'Select size' : 'OUT OF STOCK'} // Default value based on availability
+          defaultValue={availableSizes.length ? 'SELECT SIZE' : 'OUT OF STOCK'} // Default value based on availability
           onChange={handleSizeSelection} // Call handleSizeSelection when a size is selected
         >
-              <option key="default-s">Select size</option>
+              <option key="default-s">SELECT SIZE</option>
               {availableSizes.map((size, i) => (
                 <option key={`size-${size}-${i}`}>{size}</option> // Improved key with size value
               ))}
             </select>
-            <select value={selectedSize.trim() === '' || selectedSize === 'Select size' ? '-' : selectedQuantity}
+            <select value={selectedSize.trim() === '' || selectedSize === 'SELECT SIZE' ? '-' : selectedQuantity}
   className="quantity-select"
-  disabled={selectedSize.trim() === '' || selectedSize === 'Select size'} // Disable if no sizes available
-  // defaultValue={selectedSize.trim() === '' || selectedSize === 'Select size' ? '-' : 1} // Default value based on size selection
+  disabled={selectedSize.trim() === '' || selectedSize === 'SELECT SIZE'} // Disable if no sizes available
+  // defaultValue={selectedSize.trim() === '' || selectedSize === 'SELECT SIZE' ? '-' : 1} // Default value based on size selection
   onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
 >
   <option key="default-q" value="1">
-    {selectedSize.trim() === '' || selectedSize === 'Select size' ? '-' : 1}
+    {selectedSize.trim() === '' || selectedSize === 'SELECT SIZE' ? '-' : 1}
   </option>
   {/* Start iteration from 2 to avoid showing two options with the value 1 */}
   {[...Array(Math.min(quantity, 15)).keys()].slice(1).map((num) => (
@@ -258,7 +268,7 @@ const ProductOverview = ({ id }) => {
           {/* Add to Cart button */}
           <div className="product add-to-cart-and-like">
             <button className="add-to-cart-button" onClick={handleAddToCart}>
-              Add to Cart
+              ADD TO CART
               {/* <span>Add to Cart</span><span>+</span> */}
             </button>
             {/* Like button - Not required but i'll be nice to implement it*/}
@@ -268,6 +278,25 @@ const ProductOverview = ({ id }) => {
           </div>
         </div>
       </div>
+      </div>
+                    {/* Slogan, description and features */}
+          <div className="product slogan-description-and-features">
+          <div className="product slogan-description">
+            <h4>{data.slogan}</h4>
+            <p>{data.description}</p>
+            <span className="rounded-right-border"></span>
+          </div>
+          <div className="product p-o-features">
+            <ul>
+              {data.features.map((product, i) => (
+                <li key={`feature-${i}`}>
+                  <span><b>&#10003;</b></span> {/* Checkmark */}
+                  {product.feature} {product.value}
+                </li>
+              ))}
+            </ul>
+          </div>
+          </div>
     </div>
   );
 };

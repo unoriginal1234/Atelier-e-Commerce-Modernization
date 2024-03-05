@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 
 const Styles = ({ styles, currentStyleId, setCurrentStyleId }) => {
 
+  // console.log('styles: ', currentStyleId, 'setCurrentStyleId: ', setCurrentStyleId )
+
   // Set default style upon component mounting
   useEffect(() => {
     if (styles && styles.length > 0 && !currentStyleId) {

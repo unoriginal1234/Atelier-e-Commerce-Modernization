@@ -10,7 +10,7 @@ const QuestionsAndAnswers = ( { id } ) => {
   const [filterData, setFilterData] = useState(null);
   const token = {
     headers: {
-      'Authorization': `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`
+      'Authorization': `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`
     }
   };
 
