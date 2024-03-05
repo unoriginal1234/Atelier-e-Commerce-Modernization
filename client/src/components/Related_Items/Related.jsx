@@ -87,11 +87,7 @@ const Related = function (props) {
 
 
   //API object
-  const options = {
-    headers: {
-      'Authorization': `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`
-    }
-  };
+  const options = props.token;
 
   //on id change useEffect
   useEffect(() => {
