@@ -2,7 +2,7 @@ import React from 'react';
 
 const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
 
-  console.log(reviewsMeta, 'reviews meta from inside Review Breakdown')
+  // console.log(reviewsMeta, 'reviews meta from inside Review Breakdown')
   // console.log(reviewsMeta.ratings.1, 'ratings')
   if (!reviewsMeta.ratings) {
     return (<div>Loading...</div>)

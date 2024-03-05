@@ -42,7 +42,7 @@ const RatingsAndReviews = ({id}) => {
       setReviews(reviewResponse.data.results.slice(0, 2));
       // console.log(reviewResponse.data, '-- review Response');
       setReviewsMeta(metaResponse.data)
-      console.log(metaResponse.data, '--meta Response');
+      // console.log(metaResponse.data, '--meta Response');
     })
     .catch(error => {
       console.error('Error fetching data:', error);
@@ -72,18 +72,18 @@ const RatingsAndReviews = ({id}) => {
   };
 
   const filterData = () => {
-    console.log(filteredResults, 'filtered results')
+    // console.log(filteredResults, 'filtered results')
     const pizza = filteredResults.filter((review)=>review.rating === 5)
-    console.log(pizza, 'pizza')
+    // console.log(pizza, 'pizza')
     setReviews(pizza)
   }
 
 
-  console.log(reviews, '-- Reviews data from API call');
+  // console.log(reviews, '-- Reviews data from API call');
 
   //Handlers
   const addReviewClickHandler = () => {
-    console.log('click');
+    // console.log('click');
     setIsReviewing(true);
   }
 
