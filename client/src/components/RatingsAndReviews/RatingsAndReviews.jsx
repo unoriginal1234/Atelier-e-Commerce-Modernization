@@ -51,7 +51,7 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
       setReviews(reviewResponse.data.results.slice(0, 2));
       // console.log(reviewResponse.data, '-- review Response');
       setReviewsMeta(metaResponse.data)
-      // console.log(metaResponse.data, '--meta Response');
+      console.log(metaResponse.data, '--meta Response');
     })
     .catch(error => {
       console.error('Error fetching data:', error);
@@ -80,9 +80,9 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
     })
   };
 
-  const filterData = () => {
+  const filterData = (rating) => {
     // console.log(filteredResults, 'filtered results')
-    const pizza = filteredResults.filter((review)=>review.rating === 5)
+    const pizza = filteredResults.filter((review)=>review.rating === rating)
     // console.log(pizza, 'pizza')
     setReviews(pizza)
   }
@@ -105,8 +105,8 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
     setSort(value);
   }
 
-  const filterHandler = () => {
-    filterData();
+  const filterHandler = (rating) => {
+    filterData(rating);
   }
 
   //RENDER

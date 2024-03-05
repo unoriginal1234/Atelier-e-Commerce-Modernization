@@ -6,9 +6,7 @@ const SearchAnswers = ({ handleSearch }) => {
 
   const handleSearchInput = (e) => {
     setSearch(e.target.value);
-    if(search.length >= 3) {
-      handleSearch(search);
-    }
+    handleSearch(search);
   }
 
   return (
