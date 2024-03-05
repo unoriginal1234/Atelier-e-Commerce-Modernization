@@ -7,6 +7,7 @@ const Card = function ({item, setID, type}) {
   const [currentCard, setCurrentCard] = useState(item.product.id);
   const [compare, setCompare] = useState(false);
 
+
   console.log(type);
 
   //Variable declaration to keep component dry

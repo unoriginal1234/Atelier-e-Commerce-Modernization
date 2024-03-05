@@ -218,6 +218,60 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
    ========================================================================== */
 
 /* ==========================================================================
+   Style for Question & Answers
+   ========================================================================== */
+.search-bar {
+  width: 100%;
+}
+.search-container {
+  display: flex;
+  flex-direction: row;
+}
+.yes-button, .answer-button {
+  color: #579dff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.question-list-container {
+  display: flex;
+  gap: 25px;
+  flex-direction: column;
+}
+.eachQ-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.qa-container {
+  border: 5px solid lightgrey;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+.yes-answer-button, .report-button {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.answer-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+.answer-body-container {
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.answer-body-text {
+  font-size: 15px;
+}
+.answer-small-container , .eachQ-rightSide-container {
+  column-gap: 10px;
+  display: flex;
+}
+   /*==========================================================================
    Style for Related Items Module
    ========================================================================== */
 

@@ -1,20 +1,36 @@
 //quests
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import SearchAnswers from './SearchAnswers.jsx';
 import QuestionsList from './QuestionsList.jsx';
+
 const QuestionsAndAnswers = ( { id } ) => {
   const [questionData, setQuestionData] = useState(null);
-  const options = {
+  const [oldData, setOldData] = useState(null);
+  const [filterData, setFilterData] = useState(null);
+  const token = {
     headers: {
-      'Authorization': `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`
+      'Authorization': `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`
     }
   };
+
+  const handleSearch = (query) => {
+    setOldData(questionData);
+    const result = filterData.filter(question => {
+      return question.question_body.toLowerCase().includes(query.toLowerCase());
+    })
+    setQuestionData(result);
+    if(query.length < 3) {
+      setQuestionData(oldData);
+    }
+  }
   //function to handle axios get request for data
   const handleQuestionsList = () => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/?product_id=${id}`, options)
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/?product_id=${id}`, token)
       .then((results) => {
         //const question = results.data.results;
         setQuestionData(results.data.results);
+        setFilterData(results.data.results);
       })
       .catch((err) => {
         console.error(`Error trying to get questions list for product_id:${id}`);
@@ -31,10 +47,13 @@ const QuestionsAndAnswers = ( { id } ) => {
     return (
 
       <div>
-        <p>This is Q&A  </p>
-        <QuestionsList questionData={questionData}/>
-
-
+        QUESTIONS & ANSWERS
+        <div>
+          <SearchAnswers handleSearch={handleSearch}/>
+        </div>
+        <div>
+          <QuestionsList questionData={questionData} token={token} handleQuestionsList={handleQuestionsList}/>
+        </div>
       </div>
 
     )
