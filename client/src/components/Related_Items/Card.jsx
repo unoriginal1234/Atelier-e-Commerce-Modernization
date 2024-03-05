@@ -1,12 +1,13 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 import Comparison from './Comparison.jsx';
+import { FaRegStar, FaStar } from "react-icons/fa";
 
 const Card = function ({item, setID, type, clearIndex, pageData}) {
   //States
   const [currentCard, setCurrentCard] = useState(item.product.id);
   const [compare, setCompare] = useState(false);
-  const [bothCategories, setBothCategories] = useState({})
+  const [bothCategories, setBothCategories] = useState({fabric: {v1: 'cotton', v2: 'polyester'}})
 
   //Variable declaration to keep component dry
   let img_url = item.styles.results[0].photos[0].thumbnail_url || `https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg`;
@@ -22,21 +23,26 @@ const Card = function ({item, setID, type, clearIndex, pageData}) {
     setCompare(!compare);
   };
   const yoAction = function () {
+    // deleteFunc(item);
   }
 
   //Feature maker
   const featureMaker = function () {
-    if (pageData.length !== 0) {
-      let pageCategoriesObj = pageData;
-      let newFeatures = item.product.features;
-      for (var i = 0; i < newFeatures.length; i ++) {
-        if (pageCategoriesObj[newFeatures[i].feature] !== undefined) {
-          pageCategoriesObj[newFeatures[i].feature].v2 = newFeatures[i].value;
-        } else {
-          pageCategoriesObj[newFeatures[i].feature] = {v2: newFeatures[i].value || 'N/A'}
+
+    if (pageData !== undefined && pageData !== null) {
+      console.log(pageData);
+      if (Object.keys(pageData).length !== 0) {
+        let pageCategoriesObj = pageData;
+        let newFeatures = item.product.features;
+        for (var i = 0; i < newFeatures.length; i ++) {
+          if (pageCategoriesObj[newFeatures[i].feature] !== undefined) {
+            pageCategoriesObj[newFeatures[i].feature].v2 = newFeatures[i].value;
+          } else {
+            pageCategoriesObj[newFeatures[i].feature] = {v2: newFeatures[i].value || 'N/A'}
+          }
         }
+        setBothCategories(pageCategoriesObj);
       }
-      setBothCategories(pageCategoriesObj);
     }
   }
 
@@ -62,7 +68,9 @@ const Card = function ({item, setID, type, clearIndex, pageData}) {
   return (
     <div className="r-i-card">
       {compare && <Comparison bothCategories={bothCategories}/>}
-      {type.type === 'related' && <button className="r-i-secret-btn" onClick={riAction}>Compare</button>}
+      {/* {type.type === 'related' && <button className="r-i-secret-btn" onClick={riAction}>Compare</button>} */}
+      {(type.type === 'related' && !compare)&& <div className="r-i-secret-btn" onClick={riAction}><FaRegStar /></div>}
+      {(type.type === 'related' && compare)&& <div className="r-i-secret-btn" onClick={riAction}><FaStar /></div>}
       {type.type === 'outfit' && <button className="r-i-secret-btn" onClick={yoAction}>Delete</button>}
       <div onClick={changeID}>
       <img className="r-i-img" src={img_url}></img>

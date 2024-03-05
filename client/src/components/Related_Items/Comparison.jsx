@@ -3,7 +3,6 @@ import { useState } from 'react';
 import RelatedCategory from './RelatedCategory.jsx';
 
 const Comparison = function ({ bothCategories }) {
-  console.log('loop here?');
 
   return (
     <div className="r-i-secret">

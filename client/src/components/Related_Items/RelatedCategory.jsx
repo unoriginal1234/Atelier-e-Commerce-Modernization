@@ -8,9 +8,9 @@ const RelatedCategory = function ({category, values}) {
   return (
     <div>
       <div className="r-i-category">
-        <div>{value1}</div>
-        <div>{category}</div>
-        <div>{value2}</div>
+        <div className="r-i-secret-v1">{value1}</div>
+        <div className="r-i-secret-cat">{category}</div>
+        <div className="r-i-secret-v2">{value2}</div>
       </div>
       <hr></hr>
     </div>

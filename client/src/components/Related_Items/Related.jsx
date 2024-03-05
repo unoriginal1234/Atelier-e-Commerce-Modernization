@@ -59,7 +59,6 @@ const Related = function (props) {
 
   //Add to outfit function
   const addToOutfit = function () {
-    console.log('added to outfit');
     let item = {product: pageData};
     let oldOutfit = yourOutfit.slice();
     axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${props.id}`, options)
@@ -72,9 +71,18 @@ const Related = function (props) {
         oldOutfit.push(item);
         setYourOutfit(oldOutfit);
       })
+      .catch((err) => {
+        console.error('Error adding to outfit', err);
+      })
   };
 
-  //Create features object
+  //Get rid of an outfit function
+  const deleteOutfitItem = function (item) {
+    console.log('delete item');
+  //   let index = yourOutfit.indexOf(item);
+  //   let newOutfit = yourOutfit.slice(0,index).concat(yourOutfit.slice(index+1));
+  //   setYourOutfit(newOutfit);
+  }
 
 
 
