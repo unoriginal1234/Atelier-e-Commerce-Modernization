@@ -358,8 +358,11 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   z-index: 100;
   position: absolute;
   background-color: white;
-  left: 68%;
-  top: -8%;
+  font-size: smaller;
+  border: grey solid 2px;
+  border-radius: 4px;
+  left: 73%;
+  top: -90%;
   width: max-content;
 }
 
@@ -370,5 +373,22 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   border: 0;
   position: relative;
   left: 72%;
+}
+
+.r-i-cat {
+  font-size: small;
+}
+
+.r-i-name {
+  font-size: medium;
+  font-weight: 700;
+}
+
+/*
+Secret Div
+*/
+
+.r-i-category {
+  display: flex;
 }
 

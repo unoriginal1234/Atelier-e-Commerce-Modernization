@@ -11,7 +11,8 @@ const Related = function (props) {
   const [lastItemIndex, setLastItemIndex] = useState(3);
   const [firstOutfitIndex, setFirstOutfitIndex] = useState(0);
   const [lastOutfitIndex, setLastOutfitIndex] = useState(2);
-
+  const [pageData, setPageData] = useState({});
+  const [pageCategories, setPageCategories] = useState({}) //f1: {v1: val1, v2: val2}
 
   //Type objects
   let outfit = {type: 'outfit'};
@@ -59,13 +60,9 @@ const Related = function (props) {
   //Add to outfit function
   const addToOutfit = function () {
     console.log('added to outfit');
-    let item = {};
+    let item = {product: pageData};
     let oldOutfit = yourOutfit.slice();
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${props.id}`, options)
-      .then((response) => {
-        item.product = response.data;
-        return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${props.id}`, options);
-      })
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${props.id}`, options)
       .then((response) => {
         item.meta = response.data;
         return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${props.id}/styles`, options);
@@ -75,24 +72,45 @@ const Related = function (props) {
         oldOutfit.push(item);
         setYourOutfit(oldOutfit);
       })
-  }
+  };
+
+  //Create features object
+
 
 
   //API object
   const options = {
     headers: {
-      'Authorization': `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`
+      'Authorization': `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`
     }
   };
 
-  //related array useEffect
+  //on id change useEffect
   useEffect(() => {
     axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${props.id}/related`, options)
       .then((response) => {
         setRelatedIDs(response.data);
+        return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${props.id}`, options);
+      })
+      .then((response) => {
+        setPageData(response.data)
       })
   }, [props.id]);
 
+  //Use effect for page categories
+  useEffect (() => {
+    if (Object.keys(pageData).length !== 0) {
+      let features = pageData.features;
+      let pageCategoriesObj = {};
+      for (var i = 0; i < features.length; i++) {
+        pageCategoriesObj[features[i].feature] = {v1: features[i].value || 'N/A'};
+      }
+      setPageCategories(pageCategoriesObj);
+    }
+  }, [pageData]);
+
+
+  //get all related items to state
   useEffect(() => {
     setRelatedItems([]);
     if (relatedIDs.length !== 0) {
@@ -129,6 +147,7 @@ const Related = function (props) {
     }
   }, [relatedIDs]);
 
+
   return (
     <div className="r-i">
       <h2>Related Items</h2>
@@ -136,7 +155,7 @@ const Related = function (props) {
         {(currentItemsIndex > 0) && <button className="r-i-carousel-btn" onClick={onLeftClick}>Left</button>}
         {relatedItems.map((item) => {
           if (relatedItems.indexOf(item) >= currentItemsIndex && relatedItems.indexOf(item) <= lastItemIndex) {
-            return <Card item={item} setID={props.setID} clearIndex={clearIndex} type={{type: 'related'}}/>
+            return <Card item={item} setID={props.setID} clearIndex={clearIndex} pageData={pageCategories} related={relatedItems} type={{type: 'related'}}/>
           }
         })}
         {(lastItemIndex + 1 < relatedItems.length) && <button className="r-i-carousel-btn" onClick={onRightClick}>Right</button>}

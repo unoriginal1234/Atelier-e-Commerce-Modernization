@@ -1,10 +1,19 @@
 import React from 'react';
-import {useState} from 'react';
+import { useState } from 'react';
+import RelatedCategory from './RelatedCategory.jsx';
 
-const Comparison = function () {
+const Comparison = function ({ bothCategories }) {
+  console.log('loop here?');
+
   return (
-    <div className="r-i-secret">Secret Sauce</div>
+    <div className="r-i-secret">
+      {Object.keys(bothCategories).map((key) => {
+        return <RelatedCategory category={key} values={bothCategories}/>
+      })}
+    </div>
   )
 };
 
 export default Comparison;
+
+//return <RelatedCategory category={key} values={bothCategories}/>

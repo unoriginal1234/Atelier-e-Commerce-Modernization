@@ -1,12 +1,12 @@
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Comparison from './Comparison.jsx';
 
-const Card = function ({item, setID, type, clearIndex}) {
+const Card = function ({item, setID, type, clearIndex, pageData}) {
   //States
   const [currentCard, setCurrentCard] = useState(item.product.id);
   const [compare, setCompare] = useState(false);
-
+  const [bothCategories, setBothCategories] = useState({})
 
   //Variable declaration to keep component dry
   let img_url = item.styles.results[0].photos[0].thumbnail_url || `https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg`;
@@ -24,6 +24,27 @@ const Card = function ({item, setID, type, clearIndex}) {
   const yoAction = function () {
   }
 
+  //Feature maker
+  const featureMaker = function () {
+    if (pageData.length !== 0) {
+      let pageCategoriesObj = pageData;
+      let newFeatures = item.product.features;
+      for (var i = 0; i < newFeatures.length; i ++) {
+        if (pageCategoriesObj[newFeatures[i].feature] !== undefined) {
+          pageCategoriesObj[newFeatures[i].feature].v2 = newFeatures[i].value;
+        } else {
+          pageCategoriesObj[newFeatures[i].feature] = {v2: newFeatures[i].value || 'N/A'}
+        }
+      }
+      setBothCategories(pageCategoriesObj);
+    }
+  }
+
+  useEffect (() => {
+    featureMaker();
+  }, [pageData])
+
+
   //Rating maker
   const setRating = function() {
     let reviewNumber = 0;
@@ -40,13 +61,13 @@ const Card = function ({item, setID, type, clearIndex}) {
   //Component return
   return (
     <div className="r-i-card">
-      {compare && <Comparison />}
+      {compare && <Comparison bothCategories={bothCategories}/>}
       {type.type === 'related' && <button className="r-i-secret-btn" onClick={riAction}>Compare</button>}
       {type.type === 'outfit' && <button className="r-i-secret-btn" onClick={yoAction}>Delete</button>}
       <div onClick={changeID}>
       <img className="r-i-img" src={img_url}></img>
-      <div>{product.category}</div>
-      <div>{product.name}</div>
+      <div className="r-i-cat">{product.category}</div>
+      <div className="r-i-name">{product.name}</div>
       <div>{product.default_price}</div>
       </div>
       <div  className="Stars" style={{ '--rating': star }}></div>
