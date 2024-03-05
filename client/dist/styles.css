@@ -204,3 +204,69 @@ body {
    End of Product Overview Module styles
    ========================================================================== */
 
+/* ==========================================================================
+   Style for Related Items Module
+   ========================================================================== */
+
+.r-i {
+  font-family: 'Roboto', sans-serif;
+}
+
+.r-i-card {
+  background-color: #f8f8f8;
+  height: 80%;
+  padding: 8px;
+  width: 22%;
+  border: grey;
+  border-width: 2px;
+  border-style: solid;
+  margin: 1%;
+  border-radius: 4px;
+}
+
+.r-i-carousel {
+  display: flex;
+}
+
+.y-o-carousel {
+  display: flex;
+}
+
+.r-i-img {
+  background-color: #f8f8f8;
+  width: 98%;
+  height: 180px;
+  margin: inherit;
+}
+
+.y-o-add {
+  background-color: #f8f8f8;
+  width: 98%;
+  height: 227px;
+  margin: inherit;
+}
+
+.r-i-carousel-btn {
+  color: black;
+  width: 5%;
+  height: 63px;
+  margin: auto;
+}
+
+.r-i-secret {
+  z-index: 100;
+  position: absolute;
+  background-color: white;
+  left: 68%;
+  top: -8%;
+  width: max-content;
+}
+
+.r-i-secret-btn {
+  color: black;
+  background-color: #f8f8f8;
+  padding: 2%;
+  border: 0;
+  position: relative;
+  left: 72%;
+}
