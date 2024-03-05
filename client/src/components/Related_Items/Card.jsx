@@ -8,8 +8,6 @@ const Card = function ({item, setID, type}) {
   const [compare, setCompare] = useState(false);
 
 
-  console.log(type);
-
   //Variable declaration to keep component dry
   let img_url = item.styles.results[0].photos[0].thumbnail_url || `https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg`;
   let preStarRatings = item.meta.ratings;
