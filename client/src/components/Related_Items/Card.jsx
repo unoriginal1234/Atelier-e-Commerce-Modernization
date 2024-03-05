@@ -2,7 +2,7 @@ import React from 'react';
 import {useState} from 'react';
 import Comparison from './Comparison.jsx';
 
-const Card = function ({item, setID, type}) {
+const Card = function ({item, setID, type, clearIndex}) {
   //States
   const [currentCard, setCurrentCard] = useState(item.product.id);
   const [compare, setCompare] = useState(false);
@@ -16,6 +16,7 @@ const Card = function ({item, setID, type}) {
   //On click functionality
   const changeID = function () {
     setID(currentCard);
+    clearIndex();
   };
   const riAction = function () {
     setCompare(!compare);

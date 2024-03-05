@@ -22,6 +22,12 @@ const Related = function (props) {
     console.log('related items obj =', relatedItems, 'related items array =', relatedIDs);
   }
 
+  //Clearing index function
+  const clearIndex = function () {
+    setCurrentItemsIndex(0);
+    setLastItemIndex(3);
+  }
+
   //Related ccarousel left and right buttons
   const onLeftClick = function () {
     if (currentItemsIndex > 0) {
@@ -130,7 +136,7 @@ const Related = function (props) {
         {(currentItemsIndex > 0) && <button className="r-i-carousel-btn" onClick={onLeftClick}>Left</button>}
         {relatedItems.map((item) => {
           if (relatedItems.indexOf(item) >= currentItemsIndex && relatedItems.indexOf(item) <= lastItemIndex) {
-            return <Card item={item} setID={props.setID} type={{type: 'related'}}/>
+            return <Card item={item} setID={props.setID} clearIndex={clearIndex} type={{type: 'related'}}/>
           }
         })}
         {(lastItemIndex + 1 < relatedItems.length) && <button className="r-i-carousel-btn" onClick={onRightClick}>Right</button>}
@@ -145,7 +151,7 @@ const Related = function (props) {
         {(yourOutfit.length >= 1) && yourOutfit.map((item) => {
           let current = yourOutfit.indexOf(item);
           if (current >= firstOutfitIndex && current <= lastOutfitIndex) {
-            return <Card item={item} setID={props.setID} type={{type: 'outfit'}}/>
+            return <Card item={item} setID={props.setID} clearIndex={clearIndex} type={{type: 'outfit'}}/>
           }
         })}
         {(lastOutfitIndex + 1 < yourOutfit.length) && <button className="r-i-carousel-btn" onClick={onYORightClick}>Right</button>}
