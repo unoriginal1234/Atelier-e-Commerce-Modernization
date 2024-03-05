@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import ImageGallery from './ImageGallery.jsx';
 import { product, styles, reviews } from './exampleData.js';
@@ -13,10 +13,28 @@ const ProductOverview = ({ id }) => {
   const [availableSizes, setAvailableSizes] = useState([]);
   const [quantity, setQuantity] = useState(0); // Initialize as 0 or another appropriate default value
   const [currentImage, setCurrentImage] = useState('');
+  const selectRef = useRef(null); // Create a ref for the select element
+
+
+/* ===========================Testing stuff======================================
+
+
+====================================================================================================*/
+
 
   // Define state variables for selected size and quantity
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedQuantity, setSelectedQuantity] = useState(1);
+
+  //for error messages
+  const [errorMessages, setErrorMessages] = useState([]);
+  const ErrorMessages = ({ messages }) => (
+    <div>
+      {messages.map((message, index) => (
+        <p key={index} style={{ color: 'red' }}>{message}</p>
+      ))}
+    </div>
+  );
 
   useEffect(() => {
     const fetchData = () => {
@@ -31,6 +49,7 @@ const ProductOverview = ({ id }) => {
         axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${id}`, options)
       ])
       .then(([productResponse, stylesResponse, reviewsResponse]) => {
+        // console.log('GET Responses --> productResponse.data: ', productResponse.data, 'stylesResponse.data: ', stylesResponse.data, 'reviewsResponse.data: ',  reviewsResponse.data);
         setData(productResponse.data);
         setStylesData(stylesResponse.data);
         setReviewsData(reviewsResponse.data);
@@ -65,6 +84,7 @@ const ProductOverview = ({ id }) => {
       const quantities = Object.values(selected.skus).map(sku => sku.quantity);
       const totalQuantity = quantities.length > 0 ? Math.min(...quantities) : 0;
       setQuantity(totalQuantity);
+      // console.log('selected.photos[0].url: ', selected.photos[0].url)
       setCurrentImage(selected.photos[0].url); // Set default image for the new style
       setCurrentStyleId(styleId); // Update current style id
     }
@@ -93,7 +113,7 @@ const ProductOverview = ({ id }) => {
     }
     // Calculate average rating
     const averageRating = totalRatings > 0 ? totalScore / totalRatings : 0;
-    // return rating stars and number of reviews link;
+    // return rating stars and number of reviews link
     return (
     <div className="Stars" style={{ '--rating': averageRating }}>
     <a href="#"> Read all {totalReviews} reviews</a></div>
@@ -107,49 +127,48 @@ const ProductOverview = ({ id }) => {
     setCurrentImage(imageUrl);
   };
 
-
   // Function to handle Add to Cart button click
   const handleAddToCart = () => {
-    if (selectedSize === 'Select Size') {
+  const newErrorMessages = [];
+    if (selectedSize === 'Select size' || selectedSize.trim() === '') {
       // If 'Select Size' is selected, open the size dropdown and display a message
-      alert('Please select size');
-    } else if (selectedQuantity <= 0) {
-      // If quantity is invalid, display an error message
-      alert('Please select a valid quantity');
-    } else {
-      // Add product to cart with selected size and quantity
-      // Implement your logic to add the product to the cart
-      alert(`Adding ${selectedQuantity} of size ${selectedSize} to cart`);
+      // alert('Please select size');
+      newErrorMessages.push('Please select a size.');
+      selectRef.current.focus();
+
     }
+    if (selectedQuantity <= 0 || selectedQuantity === '-') {
+      // If quantity is invalid, display an error message
+      // alert('Please select a valid quantity');
+      newErrorMessages.push('Please select a quantity.');
+    }
+    if (newErrorMessages.length > 0) {
+      setErrorMessages(newErrorMessages);
+      return;
+    }
+      // Add product to cart with selected size and quantity
+      // Implement logic to add the product to the cart
+      alert(`Adding ${selectedQuantity} of size ${selectedSize} to cart`);
+
+  };
+
+  const handleSizeSelection = (e) => {
+    setSelectedSize(e.target.value);
+    // Clear error messages when the user selects a size
+    setErrorMessages([]);
   };
 
   // Render Loading message if data is being fetched
   if (!data || !stylesData || !reviewsData) {
     return <div>Loading...</div>;
-  // console.log(data[0], stylesData, reviewsData);
+  console.log(data[0], stylesData, reviewsData);
   }
-
 
   return (
     <div className="product-overview">
       {/* Left div to hold the current product SKU gallery images */}
-      <div className="p-o-left">
-      {/* {selectedStyle && <ImageGallery selectedStyle={selectedStyle} currentStyleId={currentStyleId} />} */}
-
-        {/* <div className="gallery-images-conteiner">
-          <img src={currentImage} alt="Product" />
-          <div className="navigation-thumnails-conteiner">
-            {selectedStyle && selectedStyle.photos.map((photo, index) => (
-              <img
-                key={index}
-                src={photo.thumbnail_url}
-                alt={`Thumbnail ${index}`}
-                onClick={() => handleThumbnailClick(photo.url)}
-              />
-            ))}
-          </div>
-        </div> */}
-      </div>
+      {/* <div className="p-o-left"> */}
+      {selectedStyle && <ImageGallery selectedStyle={selectedStyle} currentStyleId={currentStyleId} />}
 
       {/* Product Information right div*/}
       <div className="p-o-right">
@@ -158,7 +177,6 @@ const ProductOverview = ({ id }) => {
           {totalReviews > 0 && (
             <div className="product p-o-ratings-reviews">
   {/* displayRatings displays 5 stars filled according to the average rating score.*/}
-
   {RatingStarsAndReviewsLink(reviewsData.ratings, totalReviews)}
        </div>
           )}
@@ -203,31 +221,38 @@ const ProductOverview = ({ id }) => {
               setCurrentStyleId={handleStyleChange}
             />
           )}
-
           {/* Size and Quantity selector*/}
+          {errorMessages.length > 0 && <ErrorMessages messages={errorMessages} />}
+          {/* {selectedSize === 'Select Size' || selectedSize.trim() === '' && <p style={{ color: 'red' }}>Please select a size</p>} */}
           <div className="product size-and-quantity">
-            <select
-              className="size-select"
-              disabled={!availableSizes.length} // Disable if no sizes available
-              defaultValue={availableSizes.length ? 'Select Size' : 'OUT OF STOCK'} // Default value based on availability
-              onChange={(e) => setSelectedSize(e.target.value)}
-            >
-              <option key="default">Select Size</option>
+          <select
+              ref={selectRef}
+          className="size-select"
+          disabled={!availableSizes.length} // Disable if no sizes available
+          defaultValue={availableSizes.length ? 'Select size' : 'OUT OF STOCK'} // Default value based on availability
+          onChange={handleSizeSelection} // Call handleSizeSelection when a size is selected
+        >
+              <option key="default-s">Select size</option>
               {availableSizes.map((size, i) => (
                 <option key={`size-${size}-${i}`}>{size}</option> // Improved key with size value
               ))}
             </select>
-            <select
-              className="quantity-select"
-              disabled={!availableSizes.length} // Disable if no sizes available
-              defaultValue={availableSizes.length ? 1 : '-'} // Default value based on size selection
-              onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
-            >
-               {/* 1.1.3.2. Quantity Selector: "The maximum selection for quantity will be capped by either the quantity of this style and size in stock, or a hard limit of 15." */}
-              {[...Array(Math.min(quantity, 15)).keys()].map((num) => (
-                <option key={`quantity-${num + 1}`} value={num + 1}>{num + 1}</option> // Improved key with quantity value
-              ))}
-            </select>
+            <select value={selectedSize.trim() === '' || selectedSize === 'Select size' ? '-' : selectedQuantity}
+  className="quantity-select"
+  disabled={selectedSize.trim() === '' || selectedSize === 'Select size'} // Disable if no sizes available
+  // defaultValue={selectedSize.trim() === '' || selectedSize === 'Select size' ? '-' : 1} // Default value based on size selection
+  onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
+>
+  <option key="default-q" value="1">
+    {selectedSize.trim() === '' || selectedSize === 'Select size' ? '-' : 1}
+  </option>
+  {/* Start iteration from 2 to avoid showing two options with the value 1 */}
+  {[...Array(Math.min(quantity, 15)).keys()].slice(1).map((num) => (
+    <option key={`quantity-${num + 1}`} value={num + 1}>
+      {num + 1}
+    </option>
+  ))}
+</select>
           </div>
 
           {/* Add to Cart button */}

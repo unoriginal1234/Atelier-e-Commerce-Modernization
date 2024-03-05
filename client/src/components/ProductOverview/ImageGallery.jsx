@@ -130,11 +130,11 @@ const ImageGallery = ({ selectedStyle }) => {
   const handleCloseExpandedView = () => {
     setIsExpanded(false);
   };
-
+  let noImageAvailable = 'https://tse4.mm.bing.net/th/id/OIG4.d5j1eGp1XNI8NlPNgqbR?pid=ImgGn';
   return (
     <div className="p-o-left">
       <GalleryImagesContainer>
-        <GalleryImage src={selectedStyle.photos[currentImageIndex].url} alt="Product" onClick={handleImageClick} />
+        <GalleryImage src={selectedStyle.photos[currentImageIndex].url === null ? noImageAvailable : selectedStyle.photos[currentImageIndex].url} alt="Product" onClick={handleImageClick} />
         <ThumbnailsContainer>
           {selectedStyle.photos.map((photo, index) => (
             <ThumbnailImage
