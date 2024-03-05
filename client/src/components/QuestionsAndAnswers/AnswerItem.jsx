@@ -3,6 +3,7 @@ import axios from 'axios';
 const AnswerItem = ({ answers, answer, handleAnswersList, token }) => {
   const answer_id = answer.answer_id;
   const [answerHelpful, setAnswerHelpful] = useState(answer.helpfulness);
+  const [reported, setReported] = useState(answer);
   const date = {
     year: 'numeric',
     month: 'long',
