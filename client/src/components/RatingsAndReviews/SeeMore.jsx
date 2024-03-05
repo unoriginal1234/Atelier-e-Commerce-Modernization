@@ -1,9 +1,9 @@
 import React from 'react';
 
-const SeeMore = () => {
+const SeeMore = ({fetchMore}) => {
   return (
     <div>
-      <button>See More...</button>
+      <button onClick={()=>fetchMore()}>See More...</button>
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 
-const AddReview = () => {
+const AddReview = ({addReviewClickHandler}) => {
   return (
     <div>
-      <button>Add Review</button>
+      <button onClick={addReviewClickHandler}>Add Review</button>
     </div>
   )
 }

@@ -215,6 +215,7 @@ body {
    }
 
    .rr-list {
+    flex: 2;
     border: solid;
     margin: 2px;
    }
@@ -222,7 +223,6 @@ body {
    .rr-card {
     border: solid;
     margin: 2px;
-    flex: 2;
    }
 
    .rr-breakdown {

@@ -1,9 +1,18 @@
 import React from 'react';
+const {useState} = React;
 
-const Sort = () => {
+const Sort = ({totalReviews, sortHandler}) => {
+
+
   return (
     <div>
-      <p>Sort by: ____ </p>
+      <p>{totalReviews} Reviews, sorted by:
+      <select onChange={()=>sortHandler(event.target.value)}>
+        <option value="relevant">Relevance</option>
+        <option value="newest">Newest</option>
+        <option value="helpful">Helpful</option>
+      </select>
+      </p>
     </div>
   )
 }
