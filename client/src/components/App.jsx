@@ -36,15 +36,15 @@ const App = () => {
   };
 
     // Meta UseEffect
-  // useEffect (() => {
-  //   axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${productID}`, options)
-  //     .then((response) => {
-  //       setMetaData(response.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log('Error retrieving meta data', err);
-  //     })
-  // }, [productID]);
+  useEffect (() => {
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}`, token)
+       .then((response) => {
+        setMetaData(response.data);
+       })
+       .catch((err) => {
+        console.log('Error retrieving meta data', err);
+       })
+  }, [productID]);
 
   return (
     <div className="main-container">
@@ -52,7 +52,7 @@ const App = () => {
       <div className="widget-container"><ProductOverview id={productID}/></div>
       <div className="widget-container"><Related id={productID} meta={metaData} setID={changeID}/></div>
       <div className="widget-container"><RatingsAndReviews id={productID}/></div>
-      <div className="widget-container"><QuestionsAndAnswers id={productID} token={token}/></div>
+      <div className="widget-container"><QuestionsAndAnswers id={productID} token={token} productData={metaData}/></div>
     </div>
   );
 };

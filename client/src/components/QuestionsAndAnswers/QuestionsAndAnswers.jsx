@@ -4,13 +4,12 @@ import axios from 'axios';
 import SearchAnswers from './SearchAnswers.jsx';
 import QuestionsList from './QuestionsList.jsx';
 
-const QuestionsAndAnswers = ( { id, token } ) => {
+const QuestionsAndAnswers = ( { id, token, productData } ) => {
   const [questionData, setQuestionData] = useState(null);
   const [oldData, setOldData] = useState(null);
   const [filterData, setFilterData] = useState(null);
 
   const handleSearch = (query) => {
-    setOldData(questionData);
     const result = filterData.filter(question => {
       return question.question_body.toLowerCase().includes(query.toLowerCase());
     })
@@ -25,6 +24,7 @@ const QuestionsAndAnswers = ( { id, token } ) => {
       .then((results) => {
         //const question = results.data.results;
         setQuestionData(results.data.results);
+        setOldData(results.data.results);
         setFilterData(results.data.results);
       })
       .catch((err) => {
@@ -47,7 +47,7 @@ const QuestionsAndAnswers = ( { id, token } ) => {
           <SearchAnswers handleSearch={handleSearch}/>
         </div>
         <div>
-          <QuestionsList questionData={questionData} token={token} handleQuestionsList={handleQuestionsList}/>
+          <QuestionsList questionData={questionData} token={token} handleQuestionsList={handleQuestionsList} productData={productData}/>
         </div>
       </div>
 
