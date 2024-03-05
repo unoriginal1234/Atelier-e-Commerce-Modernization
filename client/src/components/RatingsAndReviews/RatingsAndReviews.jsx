@@ -15,7 +15,8 @@ const RatingsAndReviews = ({id}) => {
   const [ isReviewing, setIsReviewing ] = useState(false);
   const [ moreReviews, setMoreReviews ] = useState(4);
   const [ totalReviews, setTotalReviews ] = useState(0);
-  const [ sort, setSort ] = useState('relevant')
+  const [ sort, setSort ] = useState('relevant');
+  const [ filteredResults, setFilteredResults ] = useState([])
 
   // Headers for API calls
   const options = {
@@ -37,6 +38,7 @@ const RatingsAndReviews = ({id}) => {
     .then(([reviewResponse, metaResponse]) => {
       // right now hard coding the limited response
       setTotalReviews(reviewResponse.data.results.length)
+      setFilteredResults(reviewResponse.data.results)
       setReviews(reviewResponse.data.results.slice(0, 2));
       // console.log(reviewResponse.data, '-- review Response');
       setReviewsMeta(metaResponse.data)
@@ -69,6 +71,13 @@ const RatingsAndReviews = ({id}) => {
     })
   };
 
+  const filterData = () => {
+    console.log(filteredResults, 'filtered results')
+    const pizza = filteredResults.filter((review)=>review.rating === 5)
+    console.log(pizza, 'pizza')
+    setReviews(pizza)
+  }
+
 
   console.log(reviews, '-- Reviews data from API call');
 
@@ -87,6 +96,10 @@ const RatingsAndReviews = ({id}) => {
     setSort(value);
   }
 
+  const filterHandler = () => {
+    filterData();
+  }
+
   //RENDER
 
   if (isReviewing) {
@@ -100,7 +113,7 @@ const RatingsAndReviews = ({id}) => {
       <h5>Ratings and Reviews</h5>
       <Sort totalReviews={totalReviews} sortHandler={sortHandler}/>
       <div className="rr-container">
-        <ReviewBreakdown reviewsMeta={reviewsMeta}/>
+        <ReviewBreakdown reviewsMeta={reviewsMeta} filterHandler={filterHandler}/>
         <ReviewsList reviews={reviews}/>
       </div>
       <AddReview addReviewClickHandler={addReviewClickHandler}/>

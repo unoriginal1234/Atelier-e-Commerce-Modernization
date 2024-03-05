@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ReviewBreakdown = ({reviewsMeta}) => {
+const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
 
   console.log(reviewsMeta, 'reviews meta from inside Review Breakdown')
   // console.log(reviewsMeta.ratings.1, 'ratings')
@@ -9,7 +9,7 @@ const ReviewBreakdown = ({reviewsMeta}) => {
   }
 
   return (
-    <div className="rr-breakdown">
+    <div className="rr-breakdown" onClick={filterHandler}>
       <h5>Review Breakdown</h5>
       <p>5 stars: {reviewsMeta.ratings['5']}</p>
       <p>4 stars: {reviewsMeta.ratings['4']}</p>
