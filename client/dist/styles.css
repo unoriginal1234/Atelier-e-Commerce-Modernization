@@ -232,11 +232,16 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
     flex: 2;
     border: solid;
     margin: 2px;
+    max-width: 750px;
    }
 
    .rr-card {
+    display: flex;
     border: solid;
     margin: 2px;
+    margin-inline: 5px;
+    flex-wrap: nowrap;
+    flex-direction: column;
    }
 
    .rr-breakdown {
@@ -245,6 +250,26 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
     margin: 2px
    }
 
+   .rr-summary {
+    font-weight: bold;
+   }
+
+   .rr-photo {
+    width:100px;
+    height:100px
+   }
+
+   .rr-recommend {
+    color: green
+   }
+
+   .rr-response {
+    background-color: #579dff;
+   }
+
+   .rr-body {
+    overflow-wrap: break-word;
+   }
 
    /* ==========================================================================
    End of Ratings and Reviews Module styles

@@ -40,7 +40,7 @@ const ProductOverview = ({ id }) => {
     const fetchData = () => {
       const options = {
         headers: {
-          'Authorization': `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`,
+          'Authorization': `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`,
         }
       };
       Promise.all([
