@@ -1,8 +1,5 @@
 //client/components/App.js
-// require('dotenv').config();
-import React from 'react';
-// import config from 'dotenv';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import ProductOverview from './ProductOverview/ProductOverview.jsx';
 import Related from './Related_Items/Related.jsx';
@@ -62,7 +59,7 @@ const App = () => {
 
       <div className="widget-container p-o"><ProductOverview id={productID} onClickReadAllReviews={scrollToRatingsAndReviews}/></div>
       <div className="widget-container"><Related id={productID} meta={metaData} setID={changeID}/></div>
-      <div className="widget-container"><RatingsAndReviews id={productID} ref={ratingsAndReviewsRef}/></div>
+      <div className="widget-container"><RatingsAndReviews id={productID} token={token} ref={ratingsAndReviewsRef}/></div>
       <div className="widget-container"><QuestionsAndAnswers id={productID} token={token} productData={metaData}/></div>
     </div>
   );
