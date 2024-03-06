@@ -5,14 +5,14 @@ import Card from './Card.jsx';
 
 const Related = function (props) {
   const [relatedIDs, setRelatedIDs] = useState([]);
-  const [relatedItems, setRelatedItems] = useState([]);
+  const [relatedItems, setRelatedItems] = useState(null);
   const [yourOutfit, setYourOutfit] = useState([]);
   const [currentItemsIndex, setCurrentItemsIndex] = useState(0);
   const [lastItemIndex, setLastItemIndex] = useState(3);
   const [firstOutfitIndex, setFirstOutfitIndex] = useState(0);
   const [lastOutfitIndex, setLastOutfitIndex] = useState(2);
   const [pageData, setPageData] = useState({});
-  const [pageCategories, setPageCategories] = useState({}) //f1: {v1: val1, v2: val2}
+  const [pageCategories, setPageCategories] = useState(null) //f1: {v1: val1, v2: val2}
 
   //Type objects
   let outfit = {type: 'outfit'};
@@ -78,10 +78,10 @@ const Related = function (props) {
 
   //Get rid of an outfit function
   const deleteOutfitItem = function (item) {
-    console.log('delete item');
-  //   let index = yourOutfit.indexOf(item);
-  //   let newOutfit = yourOutfit.slice(0,index).concat(yourOutfit.slice(index+1));
-  //   setYourOutfit(newOutfit);
+    console.log('delete item', yourOutfit.indexOf(item));
+    let index = yourOutfit.indexOf(item);
+    let newOutfit = yourOutfit.slice(0,index).concat(yourOutfit.slice(index+1));
+    setYourOutfit(newOutfit);
   }
 
 
@@ -89,7 +89,8 @@ const Related = function (props) {
   //API object
   const options = {
     headers: {
-      'Authorization': process.env.REACT_APP_API_KEY,
+      // 'Authorization': process.env.REACT_APP_API_KEY,
+      'Authorization': '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'
     }
   };
 
@@ -155,6 +156,9 @@ const Related = function (props) {
     }
   }, [relatedIDs]);
 
+  if (!pageCategories || !relatedItems) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="r-i">
@@ -178,7 +182,7 @@ const Related = function (props) {
         {(yourOutfit.length >= 1) && yourOutfit.map((item) => {
           let current = yourOutfit.indexOf(item);
           if (current >= firstOutfitIndex && current <= lastOutfitIndex) {
-            return <Card item={item} setID={props.setID} clearIndex={clearIndex} type={{type: 'outfit'}}/>
+            return <Card item={item} setID={props.setID} clearIndex={clearIndex} deleteOutfitItem={deleteOutfitItem} type={{type: 'outfit'}}/>
           }
         })}
         {(lastOutfitIndex + 1 < yourOutfit.length) && <button className="r-i-carousel-btn" onClick={onYORightClick}>Right</button>}

@@ -3,7 +3,7 @@ import {useState, useEffect} from 'react';
 import Comparison from './Comparison.jsx';
 import { FaRegStar, FaStar } from "react-icons/fa";
 
-const Card = function ({item, setID, type, clearIndex, pageData}) {
+const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitItem}) {
   //States
   const [currentCard, setCurrentCard] = useState(item.product.id);
   const [compare, setCompare] = useState(false);
@@ -23,7 +23,7 @@ const Card = function ({item, setID, type, clearIndex, pageData}) {
     setCompare(!compare);
   };
   const yoAction = function () {
-    // deleteFunc(item);
+    deleteOutfitItem(item);
   }
 
   //Feature maker
