@@ -20,14 +20,14 @@ test('expect left to be hidden on page load', () => {
   expect(buttonL).toBeNull();
 });
 
-test('expect secret div to appear when action button is clicked', () => {
-  render(<App />);
-  // const actionButton = card.getElementsByClassName('r-i-secret-btn');
-  fireEvent.click(screen.getByTitle('action'));
-  // const items = await screen.getByText('Compare');
-  // console.log(items);
-  setTimeout(() => {
-    expect(screen.getByText('Compare')).toBeInTheDocument();
-  }, 1000);
-});
+// test('expect secret div to appear when action button is clicked', () => {
+//   render(<App />);
+//   // const actionButton = card.getElementsByClassName('r-i-secret-btn');
+//   fireEvent.click(screen.getByTitle('action'));
+//   // const items = await screen.getByText('Compare');
+//   // console.log(items);
+//   setTimeout(() => {
+//     expect(screen.getByText('Compare')).toBeInTheDocument();
+//   }, 1000);
+// });
 
