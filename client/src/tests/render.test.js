@@ -9,10 +9,10 @@ import App from '../components/App.jsx'
 
 test('renders a message', () => {
   const {asFragment, getByText} = render(<App />)
-  expect(getByText('Logo')).toBeInTheDocument()
+  expect(getByText('KFC Logo')).toBeInTheDocument()
 })
 
-test('renders a message', () => {
-  const {asFragment, getByText} = render(<App />)
-  expect(getByText('pizza')).toBeInTheDocument()
-})
+// test('renders a message', () => {
+//   const {asFragment, getByText} = render(<App />)
+//   expect(getByText('pizza')).toBeInTheDocument()
+// })

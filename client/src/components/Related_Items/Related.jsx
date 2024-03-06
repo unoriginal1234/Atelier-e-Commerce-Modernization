@@ -87,7 +87,11 @@ const Related = function (props) {
 
 
   //API object
-  const options = props.token;
+  const options = {
+    headers: {
+      'Authorization': process.env.REACT_APP_API_KEY,
+    }
+  };
 
   //on id change useEffect
   useEffect(() => {

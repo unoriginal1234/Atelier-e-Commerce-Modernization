@@ -1,11 +1,14 @@
 //client/components/App.js
+// require('dotenv').config();
 import React from 'react';
+// import config from 'dotenv';
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import ProductOverview from './ProductOverview/ProductOverview.jsx';
 import Related from './Related_Items/Related.jsx';
 import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
 import QuestionsAndAnswers from './QuestionsAndAnswers/QuestionsAndAnswers.jsx';
+
 
 
 const App = () => {
@@ -32,7 +35,7 @@ const App = () => {
 
   const token = {
     headers: {
-      'Authorization': `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`
+      'Authorization': process.env.REACT_APP_API_KEY,
     }
   };
 
