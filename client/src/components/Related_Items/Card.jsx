@@ -12,6 +12,7 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
   const [compare, setCompare] = useState(false);
   const [bothCategories, setBothCategories] = useState({fabric: {v1: 'cotton', v2: 'polyester'}});
   const [deleteHover, setDeleteHover] = useState(false);
+  const [currentStylePic, setCurrentStylePic] = useState(item.styles.results[0].photos[0].thumbnail_url || `https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg`);
 
   //Style Carousel
   const [styles, setStyles] = useState(item.styles.results.slice(1));
@@ -34,6 +35,11 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
   };
   const yoAction = function () {
     deleteOutfitItem(item);
+  }
+
+  //Clicking tumbnail carousel img
+  const thumbClick = function (url) {
+    setCurrentStylePic(url);
   }
 
   //Feature maker
@@ -76,7 +82,7 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
 
   //Component return
   return (
-    <div onMouseLeave={() => setStyleCarousel(false)} className="r-i-card">
+    <div className="r-i-card">
       {compare && <Comparison bothCategories={bothCategories}/>}
       {(type.type === 'related' && !compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaRegStar /></div>}
       {(type.type === 'related' && compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaStar /></div>}
@@ -84,21 +90,23 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
         {deleteHover && <IoIosCloseCircle />}
         {!deleteHover && <IoIosCloseCircleOutline />}
       </div>}
+        <div onMouseLeave={() => setStyleCarousel(false)}>
+          <div className="r-i-img-holder"><img onMouseEnter={() => setStyleCarousel(true)} className="r-i-img" src={currentStylePic}></img></div>
+          <div className="r-i-style-thumbs">
+            {styleCarousel && styles.map((style, index) => {
+              if (styles.indexOf(style) >= firstThumbnailIndex && styles.indexOf(style) <= lastThumbnailIndex) {
+                return <StyleSlide key={index} change={thumbClick} style={style}/>
+              }
+            })}
+        </div>
+      </div>
       <div onClick={changeID}>
-      <div className="r-i-img-holder"><img onMouseEnter={() => setStyleCarousel(true)} className="r-i-img" src={img_url}></img></div>
-      <div className="r-i-style-thumbs">
-      {styleCarousel && styles.map((style) => {
-        if (styles.indexOf(style) >= firstThumbnailIndex && styles.indexOf(style) <= lastThumbnailIndex) {
-          return <StyleSlide style={style}/>
-        }
-      })}
+        <div className="r-i-cat">{product.category}</div>
+        <div className="r-i-name">{product.name}</div>
+        {item.styles.results[0].sale_price === null && <div>{product.default_price}</div>}
+        {item.styles.results[0].sale_price !== null && <div><p className="r-i-sale">{item.styles.results[0].sale_price}</p><p><s>{product.default_price}</s></p></div>}
+        <div  className="Stars" style={{ '--rating': star }}></div>
       </div>
-      <div className="r-i-cat">{product.category}</div>
-      <div className="r-i-name">{product.name}</div>
-      {item.styles.results[0].sale_price === null && <div>{product.default_price}</div>}
-      {item.styles.results[0].sale_price !== null && <div><p className="r-i-sale">{item.styles.results[0].sale_price}</p><p><s>{product.default_price}</s></p></div>}
-      </div>
-      <div  className="Stars" style={{ '--rating': star }}></div>
     </div>
   )
 };

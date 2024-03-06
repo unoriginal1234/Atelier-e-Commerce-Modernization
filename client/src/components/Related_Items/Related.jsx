@@ -172,9 +172,9 @@ const Related = function (props) {
         {(currentItemsIndex > 0) && <div className="r-i-carousel-btn-left" onClick={onLeftClick}><FaArrowLeft /></div>}
         {/* {(currentItemsIndex = 0) && <button className="r-i-carousel-btn">Left</button>} */}
         <div className="r-i-carousel-card-holder r-i-carousel">
-        {relatedItems.map((item) => {
+        {relatedItems.map((item, index) => {
           if (relatedItems.indexOf(item) >= currentItemsIndex && relatedItems.indexOf(item) <= lastItemIndex) {
-            return <Card item={item} setID={props.setID} clearIndex={clearIndex} pageData={pageCategories} related={relatedItems} type={{type: 'related'}}/>
+            return <Card key={index} item={item} setID={props.setID} clearIndex={clearIndex} pageData={pageCategories} related={relatedItems} type={{type: 'related'}}/>
           }
         })}
         </div>
@@ -189,10 +189,10 @@ const Related = function (props) {
           <p className="y-o-add-txt">Add to Outfit</p>
           <img className="y-o-add" src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Plus_symbol.svg"></img>
         </div>
-        {(yourOutfit.length >= 1) && yourOutfit.map((item) => {
+        {(yourOutfit.length >= 1) && yourOutfit.map((item, index) => {
           let current = yourOutfit.indexOf(item);
           if (current >= firstOutfitIndex && current <= lastOutfitIndex) {
-            return <Card item={item} setID={props.setID} clearIndex={clearIndex} deleteOutfitItem={deleteOutfitItem} type={{type: 'outfit'}}/>
+            return <Card key={index} item={item} setID={props.setID} clearIndex={clearIndex} deleteOutfitItem={deleteOutfitItem} type={{type: 'outfit'}}/>
           }
         })}
         </div>
