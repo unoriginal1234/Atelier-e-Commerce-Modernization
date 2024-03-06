@@ -6,6 +6,7 @@ const Comparison = function ({ bothCategories }) {
 
   return (
     <div className="r-i-secret">
+      <div>Compare</div>
       {Object.keys(bothCategories).map((key) => {
         return <RelatedCategory category={key} values={bothCategories}/>
       })}

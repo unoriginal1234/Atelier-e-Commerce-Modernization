@@ -69,8 +69,8 @@ const Card = function ({item, setID, type, clearIndex, pageData}) {
     <div className="r-i-card">
       {compare && <Comparison bothCategories={bothCategories}/>}
       {/* {type.type === 'related' && <button className="r-i-secret-btn" onClick={riAction}>Compare</button>} */}
-      {(type.type === 'related' && !compare)&& <div className="r-i-secret-btn" onClick={riAction}><FaRegStar /></div>}
-      {(type.type === 'related' && compare)&& <div className="r-i-secret-btn" onClick={riAction}><FaStar /></div>}
+      {(type.type === 'related' && !compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaRegStar /></div>}
+      {(type.type === 'related' && compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaStar /></div>}
       {type.type === 'outfit' && <button className="r-i-secret-btn" onClick={yoAction}>Delete</button>}
       <div onClick={changeID}>
       <img className="r-i-img" src={img_url}></img>
