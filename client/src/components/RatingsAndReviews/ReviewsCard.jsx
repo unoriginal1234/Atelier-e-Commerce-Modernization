@@ -9,7 +9,7 @@ const ReviewsCard = ({review}) => {
 
   const options = {
     headers: {
-      'Authorization': `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`,
+      'Authorization': process.env.REACT_APP_API_KEY,
     }
   };
 

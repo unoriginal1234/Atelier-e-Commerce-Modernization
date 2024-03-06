@@ -12,9 +12,36 @@ const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
     if (!reviewsMeta.ratings) {
       return 0
     }
-    let numerator = (parseInt(reviewsMeta.ratings['5']) * 5 + parseInt(reviewsMeta.ratings['4']) * 4 + parseInt(reviewsMeta.ratings['3']) * 3 + parseInt(reviewsMeta.ratings['2']) * 2 + parseInt(reviewsMeta.ratings['1']))
 
-    let denominator = (parseInt(reviewsMeta.ratings['5']) + parseInt(reviewsMeta.ratings['4']) + parseInt(reviewsMeta.ratings['3']) + parseInt(reviewsMeta.ratings['2']) + parseInt(reviewsMeta.ratings['1']))
+    let fiveStars = 0;
+    let fourStars = 0;
+    let threeStars = 0;
+    let twoStars = 0;
+    let oneStar = 0;
+
+    if (reviewsMeta.ratings['5']) {
+      fiveStars = parseInt(reviewsMeta.ratings['5'])
+    }
+
+    if (reviewsMeta.ratings['4']) {
+      fourStars = parseInt(reviewsMeta.ratings['4'])
+    }
+
+    if (reviewsMeta.ratings['3']) {
+      threeStars = parseInt(reviewsMeta.ratings['3'])
+    }
+
+    if (reviewsMeta.ratings['2']) {
+      twoStars = parseInt(reviewsMeta.ratings['2'])
+    }
+
+    if (reviewsMeta.ratings['1']) {
+      oneStar = parseInt(reviewsMeta.ratings['1'])
+    }
+
+    let numerator = (fiveStars * 5 + fourStars * 4 + threeStars * 3 + twoStars * 2 + oneStar)
+
+    let denominator = (fiveStars + fourStars + threeStars + twoStars + oneStar)
 
     let currentAverage = numerator / denominator
     Math.round(currentAverage * 10) / 10
