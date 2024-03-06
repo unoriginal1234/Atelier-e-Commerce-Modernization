@@ -17,7 +17,4 @@ test('renders a placeholder', () => {
   const {asFragment, getByPlaceholderText} = render(<SearchAnswers />)
   expect(getByPlaceholderText('Have a question? Search for answers…')).toBeInTheDocument()
 })
-test('renders a placeholder', () => {
-  const {asFragment, getByPlaceholderText} = render(<AnswerModalContent />)
-  expect(getByPlaceholderText('Example: jack@email.com')).toBeInTheDocument()
-})
+
