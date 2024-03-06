@@ -30,7 +30,7 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
   // Headers for API calls
   const options = {
     headers: {
-      'Authorization': `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`,
+      'Authorization': process.env.REACT_APP_API_KEY,
     }
   };
 
