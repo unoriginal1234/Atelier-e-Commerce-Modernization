@@ -47,9 +47,13 @@ const ReviewsCard = ({review}) => {
       <p className="rr-summary">Summary: {review.summary}</p>
 
       <p className="rr-body">Review Body: {review.body}</p>
-      {review.photos ? review.photos.map((photo, index) => {
-        return <img key={index} className="rr-photo" src={photo.url}/>
-      }) : ""}
+
+      <div className="rr-picture-thumbnails">
+        {review.photos ? review.photos.map((photo, index) => {
+          return <img key={index} className="rr-photo" src={photo.url}/>
+        }) : ""}
+      </div>
+
       <p>Name: {review.reviewer_name}</p>
 
       <p>Date: {finalDate}</p>

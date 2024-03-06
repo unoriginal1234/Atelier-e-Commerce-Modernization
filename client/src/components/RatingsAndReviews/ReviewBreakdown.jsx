@@ -53,12 +53,13 @@ const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
     return (<div>Loading...</div>)
   }
 
-
+console.log(average, ' average');
 
   return (
     <div className="rr-breakdown">
       <h5>Rating Breakdown</h5>
       <h1>{average}</h1>
+      <div className="Stars" style={{ '--rating': average }}></div>
       <p onClick={()=>filterHandler(5)}>5 stars: {reviewsMeta.ratings['5']}</p>
       <p onClick={()=>filterHandler(4)}>4 stars: {reviewsMeta.ratings['4']}</p>
       <p onClick={()=>filterHandler(3)}>3 stars: {reviewsMeta.ratings['3']}</p>

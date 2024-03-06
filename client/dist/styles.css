@@ -409,6 +409,10 @@ ul li span {
     overflow-wrap: break-word;
    }
 
+   .rr-picture-thumbnails {
+    display: flex;
+   }
+
    /* ==========================================================================
    End of Ratings and Reviews Module styles
    ========================================================================== */
