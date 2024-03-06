@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
+import { RiArrowLeftSLine, RiArrowRightSLine, RiArrowDownSLine } from 'react-icons/ri';
+import ReactImageZoom from 'react-image-zoom'; // more info about react-image-zoom -> https://www.npmjs.com/package/react-image-zoom
+// react-image-zoom demo: https://malaman.github.io/react-image-zoom/example/index.html
 
 // Styled components for the Image Gallery
 const GalleryImagesContainer = styled.div`
@@ -9,6 +12,7 @@ const GalleryImagesContainer = styled.div`
 `;
 
 const GalleryImage = styled.img`
+  border-radius: 4px;
   max-width: 100%;
   height: auto;
   display: block;
@@ -19,16 +23,9 @@ const GalleryImage = styled.img`
   ${({ isZoomed }) =>
     isZoomed &&
     css`
-      transform: scale(1.5); /* Adjust the scale factor as needed */
+      transform: scale(1.5);
     `}
 `;
-// .gallery-images-conteiner{
-//   background: rgb(232, 232, 232);
-//   width: 100%;
-//   height: 100%;
-//   display: block;
-//   box-sizing: border-box;
-// }
 
 const ThumbnailsContainer = styled.div`
   cursor: pointer;
@@ -36,16 +33,31 @@ const ThumbnailsContainer = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  padding: 6px;
+  padding: 8px 6px 0px 6px;
+  border-radius: 4px;
   position: absolute;
   width: 80px;
-  height: calc(100% - 32px);
+  height: -webkit-fill-available;
   left: 16px;
   top: 16px;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
   overflow-y: auto;
   z-index: 1;
+
+  /* Updated styles for custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 `;
 
 const ThumbnailImage = styled.img`
@@ -55,36 +67,93 @@ const ThumbnailImage = styled.img`
   cursor: pointer;
   box-sizing: border-box;
   border: 2px solid transparent;
+  border-radius: 4px;
 
   ${(props) =>
     props.selected &&
     css`
-      border-color: blue;
+      border-color: #174d7c;
     `}
 `;
 
-const LeftArrow = styled.button`
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  background: none;
+const DownArrowButton = styled.button`
+  /* Styles for the down arrow button */
+  display: ${({ showScroll }) => (showScroll ? 'block' : 'none')};
+  background-color: transparent;
   border: none;
   cursor: pointer;
   font-size: 20px;
-  z-index: 1;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
 `;
 
-const RightArrow = styled.button`
+const ArrowButton = styled.button`
+  /* Common styles for arrow buttons */
   position: absolute;
   top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  background: none;
+  background-color: rgba(255, 255, 255, 0.5);
   border: none;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 25px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1;
+  transition: box-shadow 0.3s ease;
+
+  /* Styles for non-expanded view */
+  ${({ isExpanded }) =>
+    !isExpanded &&
+    css`
+      /* Adjust the positioning of the arrows in non-expanded view */
+      ${({ left }) =>
+        left
+          ? css`
+              left: 110px; /* Default value for non-expanded view */
+              transform: translateY(-50%);
+            `
+          : css`
+              right: 12px; /* Default value for non-expanded view */
+              transform: translateY(-50%);
+            `}
+    `}
+
+  /* Styles for expanded view */
+  ${({ isExpanded }) =>
+    isExpanded &&
+    css`
+      /* Adjust the positioning of the arrows in non-expanded view */
+      ${({ left }) =>
+        left
+          ? css`
+              left: 12px; /* Default value for non-expanded view */
+              transform: translateY(-50%);
+            `
+          : css`
+              right: 12px; /* Default value for non-expanded view */
+              transform: translateY(-50%);
+            `}
+    `}
+
+  &:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  }
+`;
+
+const LeftArrowIcon = styled(RiArrowLeftSLine)`
+  color: #333;
+`;
+
+const RightArrowIcon = styled(RiArrowRightSLine)`
+  color: #333;
 `;
 
 const ExpandedOverlay = styled.div`
@@ -100,6 +169,17 @@ const ExpandedOverlay = styled.div`
   z-index: 10;
 `;
 
+const ExpandedImageContainer = styled.div`
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ExpandedImage = styled.img`
   max-width: 90%;
   max-height: 90%;
@@ -110,17 +190,18 @@ const ExpandedImage = styled.img`
 const ImageGallery = ({ selectedStyle }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showScroll, setShowScroll] = useState(false);
+  const thumbnailsContainerRef = useRef(null);
 
   const handleThumbnailClick = (index) => {
     setCurrentImageIndex(index);
   };
 
   const handleImageNavigation = (direction) => {
-    if (direction === 'prev') {
-      setCurrentImageIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : selectedStyle.photos.length - 1));
-    } else {
-      setCurrentImageIndex((prevIndex) => (prevIndex < selectedStyle.photos.length - 1 ? prevIndex + 1 : 0));
-    }
+    const length = selectedStyle.photos.length;
+    setCurrentImageIndex((prevIndex) =>
+      direction === 'prev' ? (prevIndex + length - 1) % length : (prevIndex + 1) % length
+    );
   };
 
   const handleImageClick = () => {
@@ -130,12 +211,28 @@ const ImageGallery = ({ selectedStyle }) => {
   const handleCloseExpandedView = () => {
     setIsExpanded(false);
   };
-  let noImageAvailable = 'https://tse4.mm.bing.net/th/id/OIG4.d5j1eGp1XNI8NlPNgqbR?pid=ImgGn';
+
+  const handleScrollThumbnails = () => {
+    thumbnailsContainerRef.current.scrollTop += 400; // Adjust the scroll amount as needed
+  };
+
+  useEffect(() => {
+    const container = thumbnailsContainerRef.current;
+    setShowScroll(container.scrollHeight > container.clientHeight);
+  }, [selectedStyle.photos]);
+
+  const noImageAvailable =
+    'https://tse4.mm.bing.net/th/id/OIG4.d5j1eGp1XNI8NlPNgqbR?pid=ImgGn';
+
   return (
     <div className="p-o-left">
       <GalleryImagesContainer>
-        <GalleryImage src={selectedStyle.photos[currentImageIndex].url === null ? noImageAvailable : selectedStyle.photos[currentImageIndex].url} alt="Product" onClick={handleImageClick} />
-        <ThumbnailsContainer>
+        <GalleryImage
+          src={selectedStyle.photos[currentImageIndex]?.url || noImageAvailable}
+          alt="Product"
+          onClick={handleImageClick}
+        />
+        <ThumbnailsContainer ref={thumbnailsContainerRef}>
           {selectedStyle.photos.map((photo, index) => (
             <ThumbnailImage
               key={index}
@@ -145,12 +242,45 @@ const ImageGallery = ({ selectedStyle }) => {
               selected={currentImageIndex === index}
             />
           ))}
+          {/* Down arrow button to scroll thumbnails */}
+          <DownArrowButton showScroll={showScroll} onClick={handleScrollThumbnails}>
+            <RiArrowDownSLine />
+          </DownArrowButton>
         </ThumbnailsContainer>
-        <LeftArrow onClick={() => handleImageNavigation('prev')}>◄</LeftArrow>
-        <RightArrow onClick={() => handleImageNavigation('next')}>►</RightArrow>
+        <ArrowButton isExpanded={isExpanded} $isLeft left onClick={() => handleImageNavigation('prev')}>
+          <LeftArrowIcon />
+        </ArrowButton>
+        <ArrowButton isExpanded={isExpanded} onClick={() => handleImageNavigation('next')}>
+          <RightArrowIcon />
+        </ArrowButton>
         {isExpanded && (
           <ExpandedOverlay onClick={handleCloseExpandedView}>
-            <ExpandedImage src={selectedStyle.photos[currentImageIndex].url} alt="Expanded Product" />
+            <ExpandedImageContainer>
+              <ArrowButton isExpanded={isExpanded} $isLeft left onClick={(e) => { e.stopPropagation(); handleImageNavigation('prev'); }}>
+                <LeftArrowIcon />
+              </ArrowButton>
+              <ArrowButton isExpanded={isExpanded} onClick={(e) => { e.stopPropagation(); handleImageNavigation('next'); }}>
+                <RightArrowIcon />
+              </ArrowButton>
+              <ReactImageZoom
+                zoomPosition={'original'}
+                img={selectedStyle.photos[currentImageIndex]?.url || noImageAvailable}
+                zoomScale={2} // Adjust the zoom scale as needed
+                width={500} // Adjust the width of the zoomed image container as needed// Adjust the height of the zoomed image container as needed
+              />
+              <div style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '5px' }}>
+                {selectedStyle.photos.map((photo, index) => (
+                  <ThumbnailImage
+                    key={index}
+                    src={photo.thumbnail_url}
+                    alt={`Thumbnail ${index}`}
+                    onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(index); }}
+                    selected={currentImageIndex === index}
+                    style={{ width: '30px', height: '30px', borderRadius: '50%', cursor: 'pointer', border: index === currentImageIndex ? '2px solid #00f' : '2px solid transparent' }}
+                  />
+                ))}
+              </div>
+            </ExpandedImageContainer>
           </ExpandedOverlay>
         )}
       </GalleryImagesContainer>

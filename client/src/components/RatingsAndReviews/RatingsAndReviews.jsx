@@ -1,5 +1,4 @@
-import React from 'react';
-const {useEffect, useState} = React;
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import ReviewsList from './ReviewsList.jsx';
 import axios from 'axios';
 import ReviewBreakdown from './ReviewBreakdown.jsx';
@@ -8,7 +7,17 @@ import AddReview from './AddReview.jsx';
 import SeeMore from './SeeMore.jsx';
 import NewReviewForm from './NewReviewForm.jsx'
 
-const RatingsAndReviews = ({id}) => {
+
+
+const RatingsAndReviews = forwardRef(({ id }, ref) => {
+  const ratingsAndReviewsRef = useRef(null);
+
+  // Expose a function to trigger scrolling
+  useImperativeHandle(ref, () => ({
+    scrollToRatingsAndReviews: () => {
+      ratingsAndReviewsRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }));
 
   const [ reviews, setReviews ] = useState([]);
   const [ reviewsMeta, setReviewsMeta ] = useState([]);
@@ -21,7 +30,7 @@ const RatingsAndReviews = ({id}) => {
   // Headers for API calls
   const options = {
     headers: {
-      'Authorization': `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`,
+      'Authorization': process.env.REACT_APP_API_KEY,
     }
   };
 
@@ -110,7 +119,7 @@ const RatingsAndReviews = ({id}) => {
 
   return (
     <div>
-      <h5>Ratings and Reviews</h5>
+      <h5  ref={ratingsAndReviewsRef}>Ratings and Reviews</h5>
       <Sort totalReviews={totalReviews} sortHandler={sortHandler}/>
       <div className="rr-container">
         <ReviewBreakdown reviewsMeta={reviewsMeta} filterHandler={filterHandler}/>
@@ -120,6 +129,6 @@ const RatingsAndReviews = ({id}) => {
       {moreReviews < totalReviews + 2 ? <SeeMore fetchMore={fetchMore}/> : ""}
     </div>
   )
-}
+});
 
 export default RatingsAndReviews;
