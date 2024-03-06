@@ -9,7 +9,7 @@ const ReviewsCard = ({review}) => {
 
   const options = {
     headers: {
-      'Authorization': `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`,
+      'Authorization': `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`,
     }
   };
 

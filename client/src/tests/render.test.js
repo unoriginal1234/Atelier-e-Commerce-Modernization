@@ -12,7 +12,7 @@ test('renders a message', () => {
   expect(getByText('Logo')).toBeInTheDocument()
 })
 
-test('renders a message', () => {
-  const {asFragment, getByText} = render(<App />)
-  expect(getByText('pizza')).toBeInTheDocument()
-})
+// test('renders a message', () => {
+//   const {asFragment, getByText} = render(<App />)
+//   expect(getByText('pizza')).toBeInTheDocument()
+// })

@@ -11,3 +11,4 @@ test('renders title', () => {
   const {asFragment, getByText} = render(<RatingsAndReviews />)
   expect(getByText('Ratings and Reviews')).toBeInTheDocument()
 })
+
