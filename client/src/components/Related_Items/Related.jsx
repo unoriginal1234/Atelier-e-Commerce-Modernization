@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Card from './Card.jsx';
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const Related = function (props) {
   const [relatedIDs, setRelatedIDs] = useState([]);
@@ -78,10 +79,13 @@ const Related = function (props) {
 
   //Get rid of an outfit function
   const deleteOutfitItem = function (item) {
-    console.log('delete item', yourOutfit.indexOf(item));
     let index = yourOutfit.indexOf(item);
     let newOutfit = yourOutfit.slice(0,index).concat(yourOutfit.slice(index+1));
     setYourOutfit(newOutfit);
+    if (lastOutfitIndex > 2 && lastOutfitIndex >= newOutfit.length) {
+      setLastOutfitIndex(newOutfit.length-1);
+      setFirstOutfitIndex(newOutfit.length-3);
+    }
   }
 
 
@@ -89,8 +93,7 @@ const Related = function (props) {
   //API object
   const options = {
     headers: {
-      // 'Authorization': process.env.REACT_APP_API_KEY,
-      'Authorization': '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'
+      'Authorization': process.env.REACT_APP_API_KEY,
     }
   };
 
@@ -110,7 +113,7 @@ const Related = function (props) {
   useEffect (() => {
     if (Object.keys(pageData).length !== 0) {
       let features = pageData.features;
-      let pageCategoriesObj = {};
+      let pageCategoriesObj = {'Product Name': {v1: pageData.name}};
       for (var i = 0; i < features.length; i++) {
         pageCategoriesObj[features[i].feature] = {v1: features[i].value || 'N/A'};
       }
@@ -163,20 +166,27 @@ const Related = function (props) {
   return (
     <div className="r-i">
       <h2>Related Items</h2>
+      <hr/>
       <div className="r-i-carousel">
-        {(currentItemsIndex > 0) && <button className="r-i-carousel-btn" onClick={onLeftClick}>Left</button>}
+        {relatedItems.length === 0 && <div className="r-i-missing">Loading...</div>}
+        {(currentItemsIndex > 0) && <div className="r-i-carousel-btn-left" onClick={onLeftClick}><FaArrowLeft /></div>}
+        {/* {(currentItemsIndex = 0) && <button className="r-i-carousel-btn">Left</button>} */}
+        <div className="r-i-carousel-card-holder r-i-carousel">
         {relatedItems.map((item) => {
           if (relatedItems.indexOf(item) >= currentItemsIndex && relatedItems.indexOf(item) <= lastItemIndex) {
             return <Card item={item} setID={props.setID} clearIndex={clearIndex} pageData={pageCategories} related={relatedItems} type={{type: 'related'}}/>
           }
         })}
-        {(lastItemIndex + 1 < relatedItems.length) && <button className="r-i-carousel-btn" onClick={onRightClick}>Right</button>}
+        </div>
+        {(lastItemIndex + 1 < relatedItems.length) && <div className="r-i-carousel-btn-right" onClick={onRightClick}><FaArrowRight /></div>}
       </div>
       <h2>Your Outfit</h2>
+      <hr/>
       <div className="y-o-carousel">
-        {(firstOutfitIndex > 0) && <button className="r-i-carousel-btn" onClick={onYOLeftClick}>Left</button>}
+        {(firstOutfitIndex > 0) && <div className="r-i-carousel-btn-left" onClick={onYOLeftClick}><FaArrowLeft /></div>}
+        <div className="r-i-carousel-card-holder r-i-carousel">
         <div className='r-i-card' onClick={addToOutfit}>
-          <p>Add Card</p>
+          <p className="y-o-add-txt">Add to Outfit</p>
           <img className="y-o-add" src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Plus_symbol.svg"></img>
         </div>
         {(yourOutfit.length >= 1) && yourOutfit.map((item) => {
@@ -185,7 +195,8 @@ const Related = function (props) {
             return <Card item={item} setID={props.setID} clearIndex={clearIndex} deleteOutfitItem={deleteOutfitItem} type={{type: 'outfit'}}/>
           }
         })}
-        {(lastOutfitIndex + 1 < yourOutfit.length) && <button className="r-i-carousel-btn" onClick={onYORightClick}>Right</button>}
+        </div>
+        {(lastOutfitIndex + 1 < yourOutfit.length) && <div className="r-i-carousel-btn-right" onClick={onYORightClick}><FaArrowRight /></div>}
       </div>
     </div>
   )
