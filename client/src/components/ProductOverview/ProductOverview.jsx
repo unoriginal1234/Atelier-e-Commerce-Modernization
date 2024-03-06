@@ -41,7 +41,7 @@ const ProductOverview = ({ id, onClickReadAllReviews }) => {
     const fetchData = () => {
       const options = {
         headers: {
-          'Authorization': `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`,
+          'Authorization': process.env.REACT_APP_API_KEY,
         }
       };
       Promise.all([
