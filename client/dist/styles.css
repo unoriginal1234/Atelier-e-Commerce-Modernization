@@ -419,7 +419,7 @@ ul li span {
    }
 
    meter {
-    width: 90%;
+    width: 100%;
     margin-left: 5px;
    }
 
@@ -433,7 +433,7 @@ ul li span {
    }
 
    .rr-product-breakdown p{
-    font-size: 12px;
+    font-size: medium;
    }
 
    .rr-response {
@@ -523,6 +523,41 @@ ul li span {
     align-items: center;
     font-size: small;
   }
+
+  .rr-spectrum-characteristic {
+    background: grey;
+    /* padding: 20px; */
+    margin-top: 4px;
+    /* height: 20px; */
+    width: 100%;
+    float: left;
+    border-radius: 4px;
+    border: 2px solid #a9a9a9;
+    box-shadow: inset 0 0 10px #f9f9f9;
+    position: relative;
+  }
+
+  /* .rr-indicator-icon {
+    padding: 5px;
+    border: 2px solid #a9a9a9;
+    width: 1px;
+    height: 8px;
+    position: relative;
+    border-radius: 4px;
+    box-shadow: inset 0 0 4px #a9a9a9;
+    transition-duration: 0.5s;
+    margin-left: 70%;
+    background-color: #f2f2f2;
+    z-index: 10;
+  } */
+
+  .rr-characteristic-breakdown {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: smaller;
+  }
+
   /* --------------------------------
 
 💡 How to create gradient borders in CSS
