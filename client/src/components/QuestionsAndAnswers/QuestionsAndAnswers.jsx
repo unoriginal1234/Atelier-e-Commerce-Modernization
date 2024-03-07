@@ -23,7 +23,9 @@ const QuestionsAndAnswers = ( { id, token, productData } ) => {
     axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/?product_id=${id}`, token)
       .then((results) => {
         //const question = results.data.results;
+
         setQuestionData(results.data.results);
+        console.log('question data:',questionData);
         setOldData(results.data.results);
         setFilterData(results.data.results);
       })
@@ -47,7 +49,7 @@ const QuestionsAndAnswers = ( { id, token, productData } ) => {
           <SearchAnswers handleSearch={handleSearch}/>
         </div>
         <div>
-          <QuestionsList questionData={questionData} token={token} handleQuestionsList={handleQuestionsList} productData={productData}/>
+          <QuestionsList questionData={questionData} token={token} handleQuestionsList={handleQuestionsList} productData={productData} id={id}/>
         </div>
       </div>
 
