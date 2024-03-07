@@ -500,39 +500,69 @@ ul li span {
   align-items: flex-start;
   justify-content: space-between;
 }
-   /*==========================================================================
-   Style for Related Items Module
-   ========================================================================== */
+/*==========================================================================
+Style for Related Items Module
+========================================================================== */
+
+/* .r-i-widget-container {
+  position: relative;
+} */
 
 .r-i {
   font-family: 'Roboto', sans-serif;
 }
 
-.r-i-card {
-  background-color: #f8f8f8;
-  height: 80%;
-  padding: 8px;
-  width: 22%;
-  border: grey;
-  border-width: 2px;
-  border-style: solid;
-  margin: 1%;
-  border-radius: 4px;
-}
-
 .r-i-carousel {
   display: flex;
+  align-items: stretch;
 }
 
 .y-o-carousel {
   display: flex;
 }
 
+.r-i-carousel-card-holder {
+  width: 92%;
+  margin-left: 1%;
+  margin-right: 1%;
+  left: 2.5%;
+}
+
+/*============================
+Related Items Card
+=========================== */
+.r-i-card {
+  background-color: #f8f8f8;
+  height: 95%;
+  padding: 3px;
+  width: 23%;
+  border: 1px solid #e9e9e9;
+  margin: 1%;
+  border-radius: 4px;
+}
+
+.r-i-img-holder {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .r-i-img {
   background-color: #f8f8f8;
-  width: 98%;
-  height: 180px;
+  width: 93%;
+  height: 215px;
   margin: inherit;
+  border-style: solid;
+  border-color: #e9e9e9;
+  border-width: thin;
+  border-radius: 3%;
+  left: 3%;
+}
+
+.r-i-secret-btn {
+  color: black;
+  position: relative;
+  left: 91%;
+  width: fit-content;
 }
 
 .y-o-add {
@@ -542,31 +572,50 @@ ul li span {
   margin: inherit;
 }
 
-.r-i-carousel-btn {
-  color: black;
-  width: 5%;
-  height: 63px;
-  margin: auto;
+.y-o-add-txt {
+  color: #788087;
+  text-align: center;
+  font-size: x-large;
 }
 
+.r-i-carousel-btn-right {
+  color: black;
+  position: absolute;
+  left: 99%;
+  top: 50%;
+}
+
+.r-i-carousel-btn-left {
+  color: black;
+  position: absolute;
+  top: 50%;
+  left: 0%;
+}
+
+.r-i-sale {
+  color: red;
+}
+
+.r-i-missing {
+  font-size: x-large;
+}
+
+/*============================
+Related secret div
+=========================== */
+
 .r-i-secret {
+  font-family: 'Roboto';
   z-index: 100;
   position: absolute;
   background-color: white;
   font-size: smaller;
-  border: grey solid 2px;
+  border: 1px solid #e9e9e9;
   border-radius: 4px;
-  left: 79%;
-  top: -97%;
-  width: 150%;
-}
-
-.r-i-secret-btn {
-  color: black;
-  padding: 2%;
-  border: 0;
-  position: relative;
-  left: 72%;
+  left: -7%;
+  top: auto;
+  width: 200%;
+  bottom: 100%;
 }
 
 .r-i-cat {
@@ -578,29 +627,68 @@ ul li span {
   font-weight: 700;
 }
 
-/*
-Secret Div
-*/
+.r-i-secret-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: medium;
+  font-family: cursive;
+  background: #e9e9e9;
+}
 
 .r-i-category {
   display: flex;
+  border: 1px solid #e9e9e9;
+}
+
+.r-i-category-title {
+  display: flex;
+  border: 1px solid #e9e9e9;
+  font-weight: bold;
 }
 
 .r-i-secret-v1 {
-  margin-left: 2%;
   text-align: left;
-  width: 31%;
+  width: 40%;
+  margin-left: 2%;
+  border-right: 1px solid #e9e9e9;
 }
 
 .r-i-secret-v2 {
-  margin-right: 2%;
   text-align: end;
-  width: 31%;
+  width: 40%;
+  margin-right: 2%;
+  border-left: 1px solid #e9e9e9;
 }
 
 .r-i-secret-cat {
   margin-left: 5%;
   margin-right: 5%;
   text-align: center;
-  width: 38%;
+  width: 40%;
+}
+
+/*============================
+Styles Carousel
+=========================== */
+
+.r-i-style-thumbs {
+  display: flex;
+  width: 110%;
+  left: 3%;
+  z-index: 50;
+  top: 75%;
+  position: absolute;
+}
+
+.r-i-style-card {
+  width: 21%;
+  height: 51px;
+  background-color: #e9e9e9;
+  border-radius: 1px;
+}
+
+.r-i-style-img {
+  height: 50px;
+  width: 100%;
+  padding: 1px;
 }
