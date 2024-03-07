@@ -368,28 +368,59 @@ ul li span {
 
    .rr-list {
     flex: 2;
-    border: solid;
+    /* border: 1px solid #ccc; */
     margin: 2px;
     max-width: 750px;
    }
 
    .rr-card {
     display: flex;
-    border: solid;
+    /* border: 1px solid #ccc; */
     margin: 2px;
     margin-inline: 5px;
     flex-wrap: nowrap;
     flex-direction: column;
    }
 
+   .rr-star-and-breakdown-container {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    justify-content: flex-start;
+    align-items: center;
+   }
+
    .rr-breakdown {
-    flex: 1;
-    border: solid;
+    /* flex: 1; */
+    /* border: 1px solid #ccc; */
     margin: 2px
+   }
+
+   .rr-star-and-breakdown-container Stars {
+    margin: 5px
+   }
+
+
+
+   .rr-rating-breakdown {
+    font-size: 50px;
+    font-style: bold;
+    margin: 5px;
+   }
+
+   .rr-star-meters p {
+      font-size: 14px;
+      text-decoration: underline;
+      cursor: pointer;
    }
 
    .rr-summary {
     font-weight: bold;
+   }
+
+   meter {
+    width: 90%;
+    margin-left: 5px;
    }
 
    .rr-photo {
@@ -399,6 +430,10 @@ ul li span {
 
    .rr-recommend {
     size: 6px;
+   }
+
+   .rr-product-breakdown p{
+    font-size: 12px;
    }
 
    .rr-response {

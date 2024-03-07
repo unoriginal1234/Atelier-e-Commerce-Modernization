@@ -68,18 +68,22 @@ const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
 
   return (
     <div className="rr-breakdown">
-      <h5>Rating Breakdown</h5>
-      <h1>{average}</h1>
-      <div className="Stars" style={{ '--rating': average }}></div>
-      <p onClick={()=>filterHandler(5)}>5 stars: <meter value={fiveStars / totalDenominator }></meter></p>
+      <div className="rr-star-and-breakdown-container">
+        <div className="rr-rating-breakdown">{average}</div>
+        <div className="Stars" style={{ '--rating': average }}></div>
+      </div>
+      <p>{Math.round(parseInt(reviewsMeta.recommended.true) / (parseInt(reviewsMeta.recommended.true) + parseInt(reviewsMeta.recommended.false)) * 100)} % of reviews recommend this product</p>
+      <div className="rr-star-meters">
+        <p onClick={()=>filterHandler(5)}>5 stars<meter value={fiveStars / totalDenominator }></meter></p>
 
-      <p onClick={()=>filterHandler(4)}>4 stars: <meter value={fourStars / totalDenominator }></meter></p>
+        <p onClick={()=>filterHandler(4)}>4 stars<meter value={fourStars / totalDenominator }></meter></p>
 
-      <p onClick={()=>filterHandler(3)}>3 stars: <meter value={threeStars / totalDenominator }></meter></p>
+        <p onClick={()=>filterHandler(3)}>3 stars<meter value={threeStars / totalDenominator }></meter></p>
 
-      <p onClick={()=>filterHandler(2)}>2 stars: <meter value={twoStars / totalDenominator }></meter></p>
+        <p onClick={()=>filterHandler(2)}>2 stars<meter value={twoStars / totalDenominator }></meter></p>
 
-      <p onClick={()=>filterHandler(1)}>1 stars: <meter value={oneStar / totalDenominator }></meter></p>
+        <p onClick={()=>filterHandler(1)}>1 star<meter value={oneStar / totalDenominator }></meter></p>
+      </div>
 
       <ProductBreakdown reviewsMeta={reviewsMeta}/>
     </div>
