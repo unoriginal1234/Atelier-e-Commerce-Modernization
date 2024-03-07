@@ -1,6 +1,8 @@
 import React from 'react';
 const {useState} = React;
 import axios from 'axios';
+import { FaCheckCircle } from "react-icons/fa";
+
 
 //TODO: review.photos
 // Recommend checkmark
@@ -43,8 +45,10 @@ const ReviewsCard = ({review}) => {
     <div className="rr-card">
       <div className="rr-stars-and-checks">
         <div className="Stars" style={{ '--rating': review.rating }}></div>
-        {review.recommend ? <p className="rr-recommend">✅</p> : ""}
-        <p>Name: {review.reviewer_name}</p>
+        <div className="rr-card-name">
+          {review.recommend ? <FaCheckCircle /> : ""}
+          <p>{review.reviewer_name}</p>
+        </div>
       </div>
 
       <p className="rr-summary">{review.summary}</p>
@@ -57,18 +61,13 @@ const ReviewsCard = ({review}) => {
         }) : ""}
       </div>
 
-
-      <p>Date: {finalDate}</p>
-
-
       {review.response ? <p className="rr-response">Response: {review.response}</p> : ""}
-
-      <div>Helpful?</div>
-
-      {!hasSetHelpfulness ?
-        <div><span onClick={handleYes} className="yes-answer-button report-button">Yes</span> ({reviewHelpful})</div>
-        : <div><span className="yes-answer-button report-button">Yes</span> ({reviewHelpful + 1})</div>
-      }
+        <div className="rr-card-footer">
+          <p>{finalDate}</p>
+          {!hasSetHelpfulness ?
+            <div> <div>Helpful?</div><span onClick={handleYes} className="yes-answer-button report-button">Yes</span> ({reviewHelpful})</div>
+            : <div><span className="yes-answer-button report-button">Yes</span> ({reviewHelpful + 1})</div>}
+        </div>
     </div>
   )
 }

@@ -464,8 +464,29 @@ ul li span {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rr-card-name {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
     justify-content: space-evenly;
     align-items: center;
+    font-size: small;
+    font-style: italic;
+    gap: 4px
+  }
+
+  .rr-card-footer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: small;
   }
   /* --------------------------------
 
