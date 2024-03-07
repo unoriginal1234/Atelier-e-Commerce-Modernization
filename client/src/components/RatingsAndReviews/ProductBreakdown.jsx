@@ -12,7 +12,7 @@ const ProuctBreakdown = ({reviewsMeta}) => {
   }
 
   const characteristicBreakdown = {
-    "Size": ['A size too small', 'Perfect', 'A size too wide'],
+    "Size": ['Too small', 'Perfect', 'Too wide'],
     "Width": ['Too narrow', 'Perfect', 'Too wide'],
     "Comfort": ['Uncomfortable', 'Ok', 'Perfect'],
     "Quality": ['Poor', 'What I expected', 'Perfect'],

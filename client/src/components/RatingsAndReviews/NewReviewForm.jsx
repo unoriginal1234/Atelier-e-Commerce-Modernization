@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-// TO DO: Need to get from the page on click the Characteristic Fields
-
 // TO DO : Upload photos
 
 const NewReviewForm = ({submitReview, characteristics, id}) => {
