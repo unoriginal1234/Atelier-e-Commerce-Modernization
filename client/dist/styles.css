@@ -398,7 +398,7 @@ ul li span {
    }
 
    .rr-recommend {
-    color: green
+    size: 6px;
    }
 
    .rr-response {
@@ -411,20 +411,21 @@ ul li span {
 
    .rr-picture-thumbnails {
     display: flex;
+    flex-direction: row;
    }
 
    .rr-form-review-body {
     padding-top: 0;
     padding-left: 0;
     width: 300px;
-    height: 100px;
+    height: 500px;
    }
 
    .rr-summary-review-body {
     padding-top: 0;
     padding-left: 0;
     width: 300px;
-    height: 500px;
+    height: 100px;
    }
 
    .rr-modal-container {
@@ -458,6 +459,60 @@ ul li span {
     align-items: flex-start;
     justify-content: space-between;
   }
+
+  .rr-stars-and-checks {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  /* --------------------------------
+
+💡 How to create gradient borders in CSS
+🔗 https://codyhouse.co/nuggets/css-gradient-borders
+
+-------------------------------- */
+
+/* method 1 -> use border-image */
+.btn-gradient-1 {
+  border-width: 4px;
+  border-style: solid;
+  border-image: linear-gradient(to right, darkblue, darkorchid) 1;
+}
+
+/* method 2 -> use background-clip to support border-radius */
+.btn-gradient-2 {
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(to right, darkblue, darkorchid) border-box;
+  border-radius: 50em;
+  border: 4px solid transparent;
+}
+
+/* demo stuff
+.parent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 3rem;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+} */
+
+.btn-gradient-1,
+.btn-gradient-2 {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  color: darkblue;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+
 
    /* ==========================================================================
    End of Ratings and Reviews Module styles

@@ -129,13 +129,19 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
       </div>, document.body) }
 
       <h5  ref={ratingsAndReviewsRef}>Ratings and Reviews</h5>
-      <Sort totalReviews={totalReviews} sortHandler={sortHandler}/>
+
       <div className="rr-container">
         <ReviewBreakdown reviewsMeta={reviewsMeta} filterHandler={filterHandler}/>
-        <ReviewsList reviews={reviews}/>
+        <div>
+          <Sort totalReviews={totalReviews} sortHandler={sortHandler}/>
+          <ReviewsList reviews={reviews}/>
+          <div className="rr-container">
+            <AddReview addReviewClickHandler={addReviewClickHandler}/>
+            {moreReviews < totalReviews + 2 ? <SeeMore fetchMore={fetchMore}/> : ""}
+          </div>
+        </div>
       </div>
-      <AddReview addReviewClickHandler={addReviewClickHandler}/>
-      {moreReviews < totalReviews + 2 ? <SeeMore fetchMore={fetchMore}/> : ""}
+
     </div>
   )
 });

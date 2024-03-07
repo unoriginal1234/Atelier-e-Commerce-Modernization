@@ -290,12 +290,7 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
           onClick={()=>{
             var charEntry = {}
             submitReview()
-            console.log(id, ': product_id')
-            console.log(rating,  ': rating')
-            console.log(reviewBody, ': body')
-            console.log(recommend, ': recommend')
-            console.log(nickName, ': name')
-            console.log(email, ': email')
+
             if (size) {
               charEntry[characteristics.Size.id] = parseInt(size)
             }

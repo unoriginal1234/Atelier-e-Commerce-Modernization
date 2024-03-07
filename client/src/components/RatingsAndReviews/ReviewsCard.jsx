@@ -41,12 +41,15 @@ const ReviewsCard = ({review}) => {
 
   return (
     <div className="rr-card">
-      <p>Rating: {review.rating} Star(s)</p>
-      {review.recommend ? <p className="rr-recommend">Recommended</p> : ""}
+      <div className="rr-stars-and-checks">
+        <div className="Stars" style={{ '--rating': review.rating }}></div>
+        {review.recommend ? <p className="rr-recommend">✅</p> : ""}
+        <p>Name: {review.reviewer_name}</p>
+      </div>
 
-      <p className="rr-summary">Summary: {review.summary}</p>
+      <p className="rr-summary">{review.summary}</p>
 
-      <p className="rr-body">Review Body: {review.body}</p>
+      <p className="rr-body">{review.body}</p>
 
       <div className="rr-picture-thumbnails">
         {review.photos ? review.photos.map((photo, index) => {
@@ -54,7 +57,6 @@ const ReviewsCard = ({review}) => {
         }) : ""}
       </div>
 
-      <p>Name: {review.reviewer_name}</p>
 
       <p>Date: {finalDate}</p>
 
