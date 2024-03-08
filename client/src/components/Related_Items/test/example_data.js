@@ -133,23 +133,10 @@ const example_data = {
         "v2": "Blues Suede Shoes"
     },
     "Fabric": {
-        "v1": "Canvas",
-        "v2": "100% Cotton"
+        "v1": "Canvas"
     },
     "Buttons": {
         "v1": "Brass"
-    },
-    "Lenses": {
-        "v2": "Ultrasheen"
-    },
-    "UV Protection": {
-        "v2": "N/A"
-    },
-    "Frames": {
-        "v2": "LightCompose"
-    },
-    "Cut": {
-        "v2": "Skinny"
     },
     "Sole": {
         "v2": "Rubber"

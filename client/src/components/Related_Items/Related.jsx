@@ -112,7 +112,7 @@ const Related = function (props) {
   //API object
   const options = {
     headers: {
-      'Authorization': process.env.REACT_APP_API_KEY || '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',
+      'Authorization': process.env.REACT_APP_API_KEY,
     }
   };
 
@@ -137,7 +137,6 @@ const Related = function (props) {
         pageCategoriesObj[features[i].feature] = {v1: features[i].value || 'N/A'};
       }
       setPageCategories(pageCategoriesObj);
-      console.log(pageCategoriesObj);
     }
   }, [pageData]);
 

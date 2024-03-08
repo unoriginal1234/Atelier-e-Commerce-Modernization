@@ -21,6 +21,11 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
   const [lastThumbnailIndex, setLastThumbnailIndex] = useState(3);
   const [styleCarousel, setStyleCarousel] = useState(false);
 
+  //Image in-line css
+  const image = {
+    backgroundImage: `url(${currentStylePic})`,
+  }
+
   //Variable declaration to keep component dry
   let img_url = item.styles.results[0].photos[0].thumbnail_url || `https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg`;
   let preStarRatings = item.meta.ratings;
@@ -29,7 +34,9 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
   //On click functionality
   const changeID = function () {
     setID(currentCard);
-    clearIndex();
+    if (typeof clearIndex === 'function') {
+      clearIndex();
+    }
   };
   const riAction = function () {
     setCompare(!compare);
@@ -45,14 +52,12 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
     if (firstThumbnailIndex > 0) {
       setFirstThubmnailIndex(firstThumbnailIndex - 1);
       setLastThumbnailIndex(lastThumbnailIndex - 1);
-      console.log('left');
     }
   };
   const onRightClick = function () {
     if (styles.length - 1 > lastThumbnailIndex) {
       setFirstThubmnailIndex(firstThumbnailIndex + 1);
       setLastThumbnailIndex(lastThumbnailIndex + 1);
-      console.log('right');
     }
   };
 
@@ -103,14 +108,15 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
   return (
     <div className="r-i-card">
       {compare && <Comparison bothCategories={bothCategories}/>}
-      {(type.type === 'related' && !compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaRegStar /></div>}
+      {(type.type === 'related' && !compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaRegStar title="r-i-empty-star"/></div>}
       {(type.type === 'related' && compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaStar /></div>}
       {type.type === 'outfit' && <div className="r-i-secret-btn" onMouseEnter={()=> setDeleteHover(true)} onMouseLeave={()=> setDeleteHover(false)} onClick={yoAction}>
         {deleteHover && <IoIosCloseCircle />}
         {!deleteHover && <IoIosCloseCircleOutline />}
       </div>}
-        <div onMouseLeave={() => setStyleCarousel(true)}>
-          <div className="r-i-img-holder"><img onMouseEnter={() => setStyleCarousel(true)} className="r-i-img" onClick={changeID} src={currentStylePic}></img></div>
+        <div onMouseEnter={() => setStyleCarousel(true)} onMouseLeave={() => setStyleCarousel(true)}>
+          {/* <div className="r-i-img-holder"><img onMouseEnter={() => setStyleCarousel(true)} className="r-i-img" onClick={changeID} src={currentStylePic}></img></div> */}
+          <div className="r-i-img-size"><div onClick={changeID} className="r-i-img" title="r-i-image" style={image}></div></div>
           {styleCarousel && <div className="r-i-style-thumbs">
             {styles.length !== 0 && <BsChevronCompactLeft onClick={onLeftClick} className="r-i-style-carousel-left"/>}
             {styles.map((style, index) => {
@@ -122,11 +128,11 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
           </div>}
         </div>
       <div onClick={changeID}>
-        <div className="r-i-cat">{product.category}</div>
-        <div className="r-i-name">{product.name}</div>
-        {item.styles.results[0].sale_price === null && <div>{product.default_price}</div>}
+        <div className="r-i-cat" title="r-i-cat">{product.category}</div>
+        <div className="r-i-name" title="r-i-name">{product.name}</div>
+        {item.styles.results[0].sale_price === null && <div title="r-i-price">{product.default_price}</div>}
         {item.styles.results[0].sale_price !== null && <div><p className="r-i-sale">{item.styles.results[0].sale_price}</p><p><s>{product.default_price}</s></p></div>}
-        <div  className="Stars" style={{ '--rating': star }}></div>
+        <div  className="Stars" title="r-i-stars" style={{ '--rating': star }}></div>
       </div>
     </div>
   )
