@@ -968,6 +968,10 @@ Style for Related Items Module
 /*============================
 Related Items Card
 =========================== */
+.r-i-container {
+  border-width: 0px;
+}
+
 .r-i-card {
   background-color: #f8f8f8;
   height: 95%;
@@ -1053,8 +1057,11 @@ Related Items Card
   cursor: pointer;
 }
 
+
+/*r-i-loading div*/
 .r-i-missing {
   font-size: x-large;
+  height: 333px;
 }
 
 /*============================
