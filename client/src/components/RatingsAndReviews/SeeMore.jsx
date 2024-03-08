@@ -3,7 +3,7 @@ import React from 'react';
 const SeeMore = ({fetchMore}) => {
   return (
     <div>
-      <button onClick={()=>fetchMore()}>See More...</button>
+      <button className="btn-gradient-2" onClick={()=>fetchMore()}>See More...</button>
     </div>
   )
 }

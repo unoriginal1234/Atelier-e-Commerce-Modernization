@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-const AnswerItem = ({ answers, answer, handleAnswersList, token }) => {
+import AnswerImageItem from './AnswerImageItem.jsx';
+const AnswerItem = ({ answers, answer, handleAnswersList, token, forImageID }) => {
   const answer_id = answer.answer_id;
   const [answerHelpful, setAnswerHelpful] = useState(answer.helpfulness);
   const [reported, setReported] = useState(answer);
+  const [disabled, setDisabled] = useState(false);
   const date = {
     year: 'numeric',
     month: 'long',
@@ -16,6 +18,7 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token }) => {
   const handleYes = () => {
     axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/answers/${answer_id}/helpful`, null ,token)
       .then(() => {
+        setDisabled(true);
         handleAnswersList();
         console.log("Successfully updated helpfulness")
       })
@@ -35,8 +38,12 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token }) => {
       })
   }
   useEffect(()=> {
+    forImageID(answer.answer_id);
+  },[])
+  useEffect(()=> {
     setAnswerHelpful(answer.helpfulness)
   }, [answers])
+
   return (
     <div className="answer-container">
       <h4>A:</h4>
@@ -44,8 +51,23 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token }) => {
         <p className="answer-body-text">
           {answer.body}
         </p>
+        <div className="answer-images-container">
+          {answer.photos.map(photo => {
+            return <AnswerImageItem key={photo.id} answer={answer} photo={photo} token={token} handleAnswersList={handleAnswersList}/>
+          })}
+        </div>
         <div>
-          <small className="answer-small-container"><div>by {answer.answerer_name}, {finalDate}</div> | <div>Helpful?</div> <div><span onClick={handleYes} className="yes-answer-button report-button">Yes</span> ({answerHelpful})</div> | <span className="report-button" onClick={handleReport}>Report</span></small>
+          <small className="answer-small-container">
+            <div>by {answer.answerer_name.toLowerCase() === "seller"?<strong>{answer.answerer_name}</strong>:answer.answerer_name}, {finalDate}</div>
+             |
+             <div>Helpful?</div>
+             <div>
+              <button onClick={handleYes} disabled={disabled} className="yes-answer-button report-button">Yes</button>
+               ({answerHelpful})
+              </div>
+               |
+              <span className="report-button" onClick={handleReport}>Report</span>
+          </small>
         </div>
       </div>
     </div>

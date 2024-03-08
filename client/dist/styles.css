@@ -537,37 +537,86 @@ ul li span {
 
    .rr-list {
     flex: 2;
-    border: solid;
+    /* border: 1px solid #ccc; */
     margin: 2px;
     max-width: 750px;
    }
 
    .rr-card {
     display: flex;
-    border: solid;
+    /* border: 1px solid #ccc; */
     margin: 2px;
     margin-inline: 5px;
     flex-wrap: nowrap;
     flex-direction: column;
    }
 
+   .rr-star-and-breakdown-container {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    justify-content: flex-start;
+    align-items: center;
+   }
+
    .rr-breakdown {
-    flex: 1;
-    border: solid;
+    /* flex: 1; */
+    /* border: 1px solid #ccc; */
     margin: 2px
    }
 
+   .rr-star-and-breakdown-container Stars {
+    margin: 5px
+   }
+
+
+
+   .rr-rating-breakdown {
+    font-size: 50px;
+    font-style: bold;
+    margin: 5px;
+   }
+
+   .rr-star-meters p {
+      font-size: 14px;
+      text-decoration: underline;
+      cursor: pointer;
+   }
+
    .rr-summary {
+    font-size: 20px;
     font-weight: bold;
+   }
+
+   meter {
+    width: 100%;
+    margin-left: 5px;
    }
 
    .rr-photo {
     width:100px;
-    height:100px
+    height:100%
    }
 
    .rr-recommend {
-    color: green
+    size: 6px;
+   }
+
+   .rr-help-and-report {
+    display: flex;
+    gap: 10%
+   }
+
+   .rr-report-button {
+    text-decoration: underline;
+   }
+
+   .rr-report-button:hover {
+    cursor:pointer;
+   }
+
+   .rr-product-breakdown p{
+    font-size: medium;
    }
 
    .rr-response {
@@ -577,6 +626,174 @@ ul li span {
    .rr-body {
     overflow-wrap: break-word;
    }
+
+   .rr-picture-thumbnails {
+    display: flex;
+    flex-direction: row;
+   }
+
+   .rr-form-review-body {
+    width: 80%;
+   }
+
+   .rr-summary-review-body {
+    width: 80%;
+   }
+
+   .rr-form-person {
+    display: flex;
+    margin-top: 3%;
+    gap: 10%
+   }
+
+   .rr-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999;
+    justify-content: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+
+  .rr-modal-content {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 70%;
+    height: 80%;
+    max-width: 80%;
+    max-height: 80%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rr-form-topper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .rr-form-characteristics {
+    font-size: small;
+  }
+
+  .rr-stars-and-checks {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rr-card-name {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: small;
+    font-style: italic;
+    gap: 4px
+  }
+
+  .rr-card-footer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: small;
+  }
+
+  .rr-spectrum-characteristic {
+    background: grey;
+    /* padding: 20px; */
+    margin-top: 4px;
+    /* height: 20px; */
+    width: 100%;
+    float: left;
+    border-radius: 4px;
+    border: 2px solid #a9a9a9;
+    box-shadow: inset 0 0 10px #f9f9f9;
+    position: relative;
+  }
+
+
+
+  /* .rr-indicator-icon {
+    padding: 5px;
+    border: 2px solid #a9a9a9;
+    width: 1px;
+    height: 8px;
+    position: relative;
+    border-radius: 4px;
+    box-shadow: inset 0 0 4px #a9a9a9;
+    transition-duration: 0.5s;
+    margin-left: 70%;
+    background-color: #f2f2f2;
+    z-index: 10;
+  } */
+
+  .rr-characteristic-breakdown {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: smaller;
+  }
+
+  .rr-form-stars input[type="radio"] {
+    display: none;
+  }
+  .rr-star {
+    cursor: pointer;
+    font-size: 2rem;
+    margin: 5px;
+  }
+
+  /* --------------------------------
+
+💡 How to create gradient borders in CSS
+🔗 https://codyhouse.co/nuggets/css-gradient-borders
+
+-------------------------------- */
+
+/* method 1 -> use border-image */
+.btn-gradient-1 {
+  border-width: 4px;
+  border-style: solid;
+  border-image: linear-gradient(to right, darkblue, darkorchid) 1;
+}
+
+/* method 2 -> use background-clip to support border-radius */
+.btn-gradient-2 {
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(to right, darkblue, darkorchid) border-box;
+  border-radius: 50em;
+  border: 4px solid transparent;
+}
+
+.btn-gradient-1,
+.btn-gradient-2 {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  color: darkblue;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+
 
    /* ==========================================================================
    End of Ratings and Reviews Module styles
@@ -624,6 +841,12 @@ ul li span {
   justify-content: flex-start;
   align-items: baseline;
 }
+.answer-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
 .answer-body-container {
   gap: 5px;
   display: flex;
@@ -637,7 +860,7 @@ ul li span {
   column-gap: 10px;
   display: flex;
 }
-.answer-modal-container {
+.answer-modal-container, .answer-modal-upload, .question-modal-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -654,13 +877,13 @@ ul li span {
 }
 
 /* Styles for modal content */
-.answer-modal-content {
+.answer-modal-content, .question-modal-content {
   background-color: #f8f8f8;
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 70%;
-  height: 50%;
+  width: fit-content;
+  height: fit-content;
   max-width: 80%;
   max-height: 80%;
   overflow-y: auto;
@@ -669,39 +892,124 @@ ul li span {
   align-items: flex-start;
   justify-content: space-between;
 }
-   /*==========================================================================
-   Style for Related Items Module
-   ========================================================================== */
+
+.answer-image {
+  max-height: 100px;
+  max-width: 100px;
+}
+.answer-images-container {
+  display: flex;
+  column-gap: 5px;
+}
+.answer-image-modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 9999;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: column;
+
+}
+ .answer-image-onClose {
+  position:fixed;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+.answer-image-modal-settings {
+  width: 100%;
+  height: 100%;
+}
+.bottom-buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  column-gap: 10px;
+}
+.invalid-inputs {
+  color: red;
+}
+/*==========================================================================
+Style for Related Items Module
+========================================================================== */
+
+/* .r-i-widget-container {
+  position: relative;
+} */
+
 
 .r-i {
   font-family: 'Roboto', sans-serif;
 }
 
-.r-i-card {
-  background-color: #f8f8f8;
-  height: 80%;
-  padding: 8px;
-  width: 22%;
-  border: grey;
-  border-width: 2px;
-  border-style: solid;
-  margin: 1%;
-  border-radius: 4px;
-}
-
 .r-i-carousel {
   display: flex;
+  align-items: stretch;
 }
 
 .y-o-carousel {
   display: flex;
 }
 
+.r-i-carousel-card-holder {
+  width: 92%;
+  margin-left: 1%;
+  margin-right: 1%;
+  left: 2.5%;
+}
+
+/*============================
+Related Items Card
+=========================== */
+.r-i-card {
+  background-color: #f8f8f8;
+  height: 95%;
+  padding: 3px;
+  width: 23%;
+  border: 1px solid #e9e9e9;
+  margin: 1%;
+  border-radius: 4px;
+}
+
+.r-i-img-holder {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 .r-i-img {
   background-color: #f8f8f8;
-  width: 98%;
-  height: 180px;
+  width: 100%;
+  height: 215px;
   margin: inherit;
+  border-style: solid;
+  border-color: #e9e9e9;
+  border-width: thin;
+  border-radius: 3%;
+  left: 1%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+}
+
+.r-i-img-size {
+  width: 98%;
+  height: 60%;
+}
+
+.r-i-secret-btn {
+  color: black;
+  position: relative;
+  left: 91%;
+  width: fit-content;
 }
 
 .y-o-add {
@@ -709,67 +1017,168 @@ ul li span {
   width: 98%;
   height: 227px;
   margin: inherit;
+  cursor: pointer;
 }
 
-.r-i-carousel-btn {
-  color: black;
-  width: 5%;
-  height: 63px;
-  margin: auto;
+.y-o-add-txt {
+  color: #788087;
+  text-align: center;
+  font-size: x-large;
 }
+
+.r-i-carousel-btn-right {
+  color: black;
+  position: absolute;
+  left: 99%;
+  top: 50%;
+}
+
+.r-i-carousel-btn-left {
+  color: black;
+  position: absolute;
+  top: 50%;
+  left: 0%;
+}
+
+.r-i-stars {
+  cursor: pointer;
+}
+
+.r-i-sale {
+  color: red;
+  cursor: pointer;
+}
+
+.r-i-price {
+  cursor: pointer;
+}
+
+.r-i-missing {
+  font-size: x-large;
+}
+
+/*============================
+Related secret div
+=========================== */
 
 .r-i-secret {
+  font-family: 'Roboto';
   z-index: 100;
   position: absolute;
   background-color: white;
   font-size: smaller;
-  border: grey solid 2px;
+  border: 1px solid #e9e9e9;
   border-radius: 4px;
-  left: 79%;
-  top: -97%;
-  width: 150%;
-}
-
-.r-i-secret-btn {
-  color: black;
-  padding: 2%;
-  border: 0;
-  position: relative;
-  left: 72%;
+  left: -7%;
+  top: auto;
+  width: 200%;
+  bottom: 100%;
 }
 
 .r-i-cat {
   font-size: small;
+  cursor: pointer;
 }
 
 .r-i-name {
   font-size: medium;
   font-weight: 700;
+  cursor: pointer;
 }
 
-/*
-Secret Div
-*/
+.r-i-secret-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: medium;
+  font-family: cursive;
+  background: #e9e9e9;
+}
 
 .r-i-category {
   display: flex;
+  border: 1px solid #e9e9e9;
+}
+
+.r-i-category-title {
+  display: flex;
+  border: 1px solid #e9e9e9;
+  font-weight: bold;
 }
 
 .r-i-secret-v1 {
-  margin-left: 2%;
   text-align: left;
-  width: 31%;
+  width: 40%;
+  margin-left: 2%;
+  border-right: 1px solid #e9e9e9;
 }
 
 .r-i-secret-v2 {
-  margin-right: 2%;
   text-align: end;
-  width: 31%;
+  width: 40%;
+  margin-right: 2%;
+  border-left: 1px solid #e9e9e9;
 }
 
 .r-i-secret-cat {
   margin-left: 5%;
   margin-right: 5%;
   text-align: center;
-  width: 38%;
+  width: 40%;
+}
+
+/*============================
+Styles Carousel
+=========================== */
+
+.r-i-style-thumbs {
+  display: flex;
+  width: 100%;
+  height: 20%;
+  left: 1%;
+  z-index: 50;
+  top: 80%;
+  position: absolute;
+  background-color: #f8f8f8;
+  border-top: 1px solid #e9e9e9;
+  border-bottom: 1px solid #e9e9e9;
+}
+
+.r-i-style-card {
+  width: 21%;
+  height: 100%;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-right: 1px solid #f8f8f8;
+  border-left: 1px solid #f8f8f8;
+}
+
+.r-i-style-img {
+  height: 50px;
+  width: 100%;
+  padding: 1px;
+  border-left: 1px solid #f8f8f8;
+  cursor: pointer;
+}
+
+.r-i-style-carousel-left {
+  color: green;
+  background-color: #f8f8f8;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 7px;
+  height: 100%;
+  width: 6%;
+}
+
+.r-i-style-carousel-right {
+  color: green;
+  background-color: #f8f8f8;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 7px;
+  height: 100%;
+  width: 6%;
+  position: absolute;
+  left: 90%;
 }

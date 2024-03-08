@@ -10,6 +10,7 @@ import ProductOverview from '../ProductOverview.jsx'
 
 // test('renders App Logo', () => {
 //   const {asFragment, getByText} = render(<App />)
+
 //   expect(getByText('KFC Logo')).toBeInTheDocument()
 // })
 
@@ -26,3 +27,4 @@ describe('Button component', () => {
     expect(handleAddToCart).toHaveBeenCalled();
   });
 });
+
