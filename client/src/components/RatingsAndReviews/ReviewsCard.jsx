@@ -16,6 +16,7 @@ const ReviewsCard = ({review}) => {
   };
 
   const [ hasSetHelpfulness, setHasSetHelpfulness ] = useState(false)
+  const [ hasReported, setHasReported ] = useState(false)
 
   // console.log(review, 'review')
 
@@ -38,6 +39,17 @@ const ReviewsCard = ({review}) => {
       .then(()=> setHasSetHelpfulness(true))
       .catch((err) => {
         console.error("Error adding helpfulness count", err);
+      })
+  }
+
+  const handleReport = () => {
+    axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/${review.review_id}/report`, null , options)
+      .then(() => {
+        console.log("Successfully reported")
+      })
+      .then(()=> setHasReported(true))
+      .catch((err) => {
+        console.error("Error reporting", err);
       })
   }
 
@@ -64,9 +76,14 @@ const ReviewsCard = ({review}) => {
       {review.response ? <p className="rr-response">Response: {review.response}</p> : ""}
         <div className="rr-card-footer">
           <p>{finalDate}</p>
-          {!hasSetHelpfulness ?
-            <div> <div>Helpful?</div><span onClick={handleYes} className="yes-answer-button report-button">Yes</span> ({reviewHelpful})</div>
-            : <div><span className="yes-answer-button report-button">Yes</span> ({reviewHelpful + 1})</div>}
+          <div className="rr-help-and-report">
+            {!hasSetHelpfulness ?
+              <div> <div>Helpful?</div><span onClick={handleYes} className="yes-answer-button report-button">Yes</span> ({reviewHelpful})</div>
+              : <div><span className="yes-answer-button report-button">Yes</span> ({reviewHelpful + 1})</div>}
+              {!hasReported ?
+              <div>| <div className="rr-report-button" onClick={handleReport}>Report?</div></div>
+              : <span className="rr-report-button" style={{"textDecoration": "none", "fontColor": "red"}}>Reported</span>}
+          </div>
         </div>
     </div>
   )

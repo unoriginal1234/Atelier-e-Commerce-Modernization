@@ -433,6 +433,18 @@ ul li span {
     size: 6px;
    }
 
+   .rr-help-and-report {
+    display: flex;
+   }
+
+   .rr-report-button {
+    text-decoration: underline;
+   }
+
+   .rr-report-button:hover {
+    cursor:pointer;
+   }
+
    .rr-product-breakdown p{
     font-size: medium;
    }
