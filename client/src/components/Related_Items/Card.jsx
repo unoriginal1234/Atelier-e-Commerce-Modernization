@@ -117,7 +117,7 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
         <div onMouseEnter={() => setStyleCarousel(true)} onMouseLeave={() => setStyleCarousel(false)}>
           {/* <div className="r-i-img-holder"><img onMouseEnter={() => setStyleCarousel(true)} className="r-i-img" onClick={changeID} src={currentStylePic}></img></div> */}
           <div className="r-i-img-size"><div onClick={changeID} className="r-i-img" title="r-i-image" style={image}></div></div>
-          {styleCarousel && <div className="r-i-style-thumbs">
+          {styleCarousel && <div title="r-i-style-carousel" className="r-i-style-thumbs">
             {styles.length !== 0 && <BsChevronCompactLeft onClick={onLeftClick} className="r-i-style-carousel-left"/>}
             {styles.map((style, index) => {
               if (styles.indexOf(style) >= firstThumbnailIndex && styles.indexOf(style) <= lastThumbnailIndex) {

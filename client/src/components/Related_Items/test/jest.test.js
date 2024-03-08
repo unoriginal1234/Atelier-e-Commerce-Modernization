@@ -70,4 +70,15 @@ describe('Card secret functionality', ()=> {
 
     expect(mockSet.mock.calls).toHaveLength(5);
   })
+
+  test('does hovering over the image make the style carousel appear', async () => {
+    const mockSet = jest.fn();
+    const { getByTitle, getByText } = render(<Card item={item} setID={mockSet} clearIndex={console.log('cleared index')} pageData={pageData} type={{type: 'related'}}/>);
+
+    fireEvent.mouseOver(screen.getByTitle("r-i-image"));
+
+    waitFor(() => getByTitle("r-i-style-carousel"));
+
+    expect(getByTitle("r-i-style-carousel")).toBeInTheDocument();
+  })
 })
