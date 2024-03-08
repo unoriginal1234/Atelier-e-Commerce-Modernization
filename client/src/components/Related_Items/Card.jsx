@@ -114,7 +114,7 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
         {deleteHover && <IoIosCloseCircle />}
         {!deleteHover && <IoIosCloseCircleOutline />}
       </div>}
-        <div onMouseEnter={() => setStyleCarousel(true)} onMouseLeave={() => setStyleCarousel(true)}>
+        <div onMouseEnter={() => setStyleCarousel(true)} onMouseLeave={() => setStyleCarousel(false)}>
           {/* <div className="r-i-img-holder"><img onMouseEnter={() => setStyleCarousel(true)} className="r-i-img" onClick={changeID} src={currentStylePic}></img></div> */}
           <div className="r-i-img-size"><div onClick={changeID} className="r-i-img" title="r-i-image" style={image}></div></div>
           {styleCarousel && <div className="r-i-style-thumbs">
