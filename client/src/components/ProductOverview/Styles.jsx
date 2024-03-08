@@ -1,30 +1,31 @@
-// client/components/ProductOverview/Styles.jsx
-import React, { useEffect } from 'react';
+// import React from 'react';
+// It's not necessary to import React in the styles.jsx file if you're not explicitly using any React features like JSX. Since the file only contains a functional component and JavaScript code, removing the import statement won't affect its functionality. JSX gets transpiled to regular JavaScript code during the build process, so as long as your build setup supports it, you can omit the import statement for React in files that don't directly use JSX. This can help reduce unnecessary imports and keep your code cleaner.
+import { FaCheck } from "react-icons/fa6";
 
-const Styles = ({ styles, currentStyleId, setCurrentStyleId }) => {
+const Styles = ({ styles, currentStyleId, handleStyleChange }) => {
+  // console.log('Styles.jsx: currentStyleId:', currentStyleId)
+  // console.log('Styles.jsx: stylesData.results.style_id:', styles.results)
 
-  // console.log('styles: ', currentStyleId, 'setCurrentStyleId: ', setCurrentStyleId )
-
-  // Set default style upon component mounting
-  useEffect(() => {
-    if (styles && styles.length > 0 && !currentStyleId) {
-      setCurrentStyleId(styles[0].style_id);
+  // function to set the ID of the selected style on thumbnail click
+  const handleStyleClick = (styleId) => {
+    if (styleId !== currentStyleId) {
+      handleStyleChange(styleId);
     }
-  }, [styles, currentStyleId, setCurrentStyleId]);
+  };
 
   return (
     <div className="styles-container">
-      {/* Map through styles and display thumbnails */}
-      {styles.map((style, index) => (
+      {styles.map((style) => (
         <div
           key={style.style_id}
+          /* add CSS overlay class to the current selected style */
           className={`style-thumbnail ${style.style_id === currentStyleId ? 'selected' : ''}`}
-          onClick={() => setCurrentStyleId(style.style_id)}
+          onClick={() => handleStyleClick(style.style_id)}
           style={{ backgroundImage: `url(${style.photos[0].thumbnail_url})` }}
         >
-          {/* Overlay checkmark if the style is selected */}
+          {/*  add checkmark to the current selected style */}
           {style.style_id === currentStyleId && (
-            <div className="checkmark">&#10003;</div>
+            <div className="checkmark"><FaCheck /></div>
           )}
         </div>
       ))}

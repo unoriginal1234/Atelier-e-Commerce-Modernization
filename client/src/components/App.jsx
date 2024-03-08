@@ -1,12 +1,12 @@
 //client/components/App.js
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { IoSearch } from "react-icons/io5";
+import { PiBagBold } from "react-icons/pi";
 import ProductOverview from './ProductOverview/ProductOverview.jsx';
 import Related from './Related_Items/Related.jsx';
 import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
 import QuestionsAndAnswers from './QuestionsAndAnswers/QuestionsAndAnswers.jsx';
-
-
 
 const App = () => {
   //-------------------------------------------------------
@@ -14,7 +14,9 @@ const App = () => {
   //-------------------------------------------------------
   const [productID, setProductID] = useState(65631);
   const [metaData, setMetaData] = useState({});
+  const [cartData, setCartData] = useState([]);
   const ratingsAndReviewsRef = useRef(null); // to scroll down to ratings and reviews from product overview
+
   //-------------------------------------------------------
   // Functions
   //-------------------------------------------------------
@@ -29,21 +31,24 @@ const App = () => {
   //-------------------------------------------------------
   // Use Effect & relevant objects
   //-------------------------------------------------------
-
   const token = {
     headers: {
       'Authorization': process.env.REACT_APP_API_KEY,
     }
   };
-
-    // Meta UseEffect
-  useEffect (() => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}`, token)
-       .then((response) => {
-        setMetaData(response.data);
+    // Meta and Cart UseEffect
+    useEffect(() => {
+      // Fetching data using Promise.all
+      Promise.all([
+        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}`, token),
+        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp/cart?session_id=${productID}`, token)
+      ])
+        .then(([metaResponse, cartResponse]) => {
+          setMetaData(metaResponse.data);
+          setCartData(cartResponse.data);
        })
        .catch((err) => {
-        console.log('Error retrieving meta data', err);
+        console.log('Error retrieving data', err);
        })
   }, [productID]);
 
@@ -51,13 +56,13 @@ const App = () => {
     <div className="main-container">
       {/* Logo and search input, fake stuff to make it look more real */}
       <div className="widget-container nav-bar"><h1>KFC Logo</h1>
-      <span className="fake-search"> <input placeholder="Search" />
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-    <path fill="none" d="M0 0h24v24H0z"/>
-    <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-    </svg></span></div>
+      <i><span className="fake-search"> <input placeholder="Search" />
+      <IoSearch className="searchIcon"/></span><PiBagBold className="cartIcon" /></i> {cartData.length > 0 && (<span className="cart-info-icon">{cartData.length}</span>)}</div>
+      <div className="global-announsment">
+          <i>SITE-WIDE ANNOUSNMENT MESSAGE &mdash;  SALE /&nbsp;</i> DISCOUNT <b>&nbsp;OFFER &nbsp;</b> &mdash;  <u>&nbsp;NEW PRODUCT HIGHLIGHT</u>
+      </div>
 
-      <div className="widget-container p-o"><ProductOverview id={productID} onClickReadAllReviews={scrollToRatingsAndReviews}/></div>
+      <div className="widget-container p-o"><ProductOverview setCartData={setCartData} authKey={token} id={productID} onClickReadAllReviews={scrollToRatingsAndReviews}/></div>
       <div className="widget-container"><Related id={productID} meta={metaData} setID={changeID}/></div>
       <div className="widget-container"><RatingsAndReviews id={productID} token={token} ref={ratingsAndReviewsRef}/></div>
       <div className="widget-container"><QuestionsAndAnswers id={productID} token={token} productData={metaData}/></div>

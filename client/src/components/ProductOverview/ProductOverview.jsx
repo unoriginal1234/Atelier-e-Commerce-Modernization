@@ -1,303 +1,262 @@
-//components/ProductOverview/ProductOverview.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import ProductInformation from './ProductInformation.jsx';
+import Styles from './Styles.jsx';
+import SelectOptions from './SelectOptions.jsx';
+import SloganDescFeat from './SloganDescFeat.jsx';
 import ImageGallery from './ImageGallery.jsx';
-import Styles from './Styles.jsx'; // Import the Styles component
+import ImageGalleryV1 from './ImageGalleryV1.jsx';
+import Modal from './Modal.jsx';
+import fetchData from './fetchData.js';
+import axios from 'axios';
+import { FaFacebookSquare, FaPinterestSquare, FaCheck, FaHeart } from "react-icons/fa";
+import { FaSquareXTwitter } from "react-icons/fa6";
 
-const ProductOverview = ({ id, onClickReadAllReviews }) => {
+// ProductOverview Component
+const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllReviews }) => {
 
-  const handleClickReadAllReviews = (e) => {
-    e.preventDefault();
-    onClickReadAllReviews();
-  };
-
-
-  const [data, setData] = useState(null);
+  // State variables for product, styles, reviews, selected style, and current style id
+  const [productData, setProductData] = useState(null);
   const [stylesData, setStylesData] = useState(null);
   const [reviewsData, setReviewsData] = useState(null);
-  const [currentStyleId, setCurrentStyleId] = useState(null);
+
   const [selectedStyle, setSelectedStyle] = useState(null);
-  const [availableSizes, setAvailableSizes] = useState([]);
-  const [quantity, setQuantity] = useState(0);
-  const [currentImage, setCurrentImage] = useState('');
-  const selectRef = useRef(null); // Create a ref for the select element
+  const [currentStyleId, setCurrentStyleId] = useState(null);
 
+  // State variables for available sizes and quantity
+  // const [availableSizes, setAvailableSizes] = useState([]);
+  const [availableQuantities, setavailableQuantities] = useState([]);
 
-  // Define state variables for selected size and quantity
-  const [selectedSize, setSelectedSize] = useState('');
-  const [selectedQuantity, setSelectedQuantity] = useState(1);
-
-  //for error messages
+  // State variable for error messages - separate this eventually
   const [errorMessages, setErrorMessages] = useState([]);
+
+  // State variable to track the selected quantity, default is "-"
+  const [selectedQuantity, setSelectedQuantity] = useState('-');
+  const [selectedSize, setSelectedSize] = useState('');
+
+  // to trigger the opening the select size menu option
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // State of California LA... SKU and cart stuff
+  const [currentSKUs, setCurrentSKUs] = useState([]);
+  const [SKU, setSKU] = useState('');
+  const [cartDataUpdated, setCartDataUpdated] = useState(false);
+
+  // ref for select size option (trying to make it to open in add to cart button click and no size is selected)
+  const selectSizeRef = useRef(null);
+
+  // to many state variables, wonder if I can combine them
+  const [showModalCartItem, setShowModalCartItem] = useState(false);
+
+  // Fetching data from API on component mount
+  useEffect(() => {
+    if (!cartDataUpdated) {
+      // Call fetchData function
+      fetchData(
+        id,
+        authKey,
+        setProductData,
+        setStylesData,
+        setReviewsData,
+        setCurrentStyleId,
+        setSelectedStyle,
+        setavailableQuantities,
+        setCurrentSKUs
+      );
+    }
+  }, [id, authKey, cartDataUpdated]);
+
+  // Function to handle style change from the Styles component
+  const handleStyleChange = (styleId) => {
+    if (styleId !== currentStyleId) {
+      setCurrentStyleId(styleId);
+      // set the style selected data to pass it to the ProductInformation component
+      setSelectedStyle(stylesData.results.find(style => style.style_id === styleId));
+      // set the sizes data to pass it to the SelectOptions component
+      // setAvailableSizes(Object.values(selectedStyle.skus).map(sku => sku.size));
+      setCurrentSKUs(
+      Object.entries(selectedStyle.skus).map(sku => sku));
+      // set available quantity for current style to pass it to the SelectOptions component
+      const quantities = Object.values(selectedStyle.skus).map(sku => sku.quantity);
+      const totalQuantity = quantities.length > 0 ? Math.min(...quantities) : 0;
+      setavailableQuantities(totalQuantity);
+      // console.log(selectedSize)
+    }
+  };
+
+  // Funtion to handle change on size selection
+  const handleSizeSelection = (e) => {
+    // set the SKU on size selection to use it in the cart
+    setSKU(e.target.selectedOptions[0].getAttribute('sku'));
+    // set current selected size
+    setSelectedSize(e.target.value);
+    if (e.target.value === 'selectSize') {
+      setSelectedQuantity('-');
+    } else {
+      setSelectedQuantity('1');
+    }
+    setErrorMessages([]);
+    setIsDropdownOpen(false)
+  };
+
   const ErrorMessages = ({ messages }) => (
     <div>
       {messages.map((message, index) => (
-        <p key={index} style={{ color: 'red' }}>{message}</p>
+        <p key={index} style={{ color: '#F4493C' }}>{message}</p>
       ))}
     </div>
   );
 
-  useEffect(() => {
-    const fetchData = () => {
-      const options = {
-        headers: {
-          'Authorization': process.env.REACT_APP_API_KEY,
-        }
-      };
-      Promise.all([
-        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${id}`, options),
-        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${id}/styles`, options),
-        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${id}`, options)
-      ])
-      .then(([productResponse, stylesResponse, reviewsResponse]) => {
-        // console.log('GET Responses --> productResponse.data: ', productResponse.data, 'stylesResponse.data: ', stylesResponse.data, 'reviewsResponse.data: ',  reviewsResponse.data);
-        setData(productResponse.data);
-        setStylesData(stylesResponse.data);
-        setReviewsData(reviewsResponse.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-    // fake data
-        setData(product[0]);
-        setStylesData(styles);
-        setReviewsData(reviews);
-      });
-    };
-
-    fetchData();
-  }, [id]);
-
-  // useEffect to set default style id
-  useEffect(() => {
-    if (stylesData) {
-      setCurrentStyleId(stylesData.results[0].style_id); // Set default style id
-      setSelectedStyle(stylesData.results[0]); // Set default style
-      setAvailableSizes(Object.values(stylesData.results[0].skus).map(sku => sku.size)); // Set default size
-    }
-  }, [stylesData]);
-
-  // Event handler to update selected style and available sizes
-  const handleStyleChange = (styleId) => {
-    // console.log('handleStyleChange was invoked')
-    if (styleId !== currentStyleId) {
-      const selected = stylesData.results.find(style => style.style_id === styleId);
-      setSelectedStyle(selected);
-      setAvailableSizes(Object.values(selected.skus).map(sku => sku.size));
-
-      // Handle cases where quantity is not available or skus is empty
-      const quantities = Object.values(selected.skus).map(sku => sku.quantity);
-      const totalQuantity = quantities.length > 0 ? Math.min(...quantities) : 0;
-      setQuantity(totalQuantity);
-      // console.log('selected.photos[0].url: ', selected.photos[0].url)
-      setCurrentImage(selected.photos[0].url); // Set default image for the new style
-      setCurrentStyleId(styleId); // Update current style id
-    }
+  const handleShareClick = (platform) => {
+    alert(`Sharing product SKU ${currentStyleId} on ${platform}`);
   };
 
-  // Function to get total number of reviews
-  const getNumberOfReviews = (ratings) => {
-    let totalReviews = 0;
-    for (let rating in ratings) {
-      totalReviews += parseInt(ratings[rating]);
-    }
-    return totalReviews;
-  };
-
-
-  // Function to display rating stars
-  const RatingStarsAndReviewsLink = (ratings, totalReviews) => {
-    const stars = [];
-    let totalRatings = 0;
-    let totalScore = 0;
-    // Calculate total score and total number of ratings
-    for (let rating = 1; rating <= 5; rating++) {
-      const count = parseInt(ratings[rating] || 0);
-      totalScore += rating * count;
-      totalRatings += count;
-    }
-    // Calculate average rating
-    const averageRating = totalRatings > 0 ? totalScore / totalRatings : 0;
-    // return rating stars and number of reviews link
-    return (
-    <div className="Stars" style={{ '--rating': averageRating }}>
-    <a href="#" onClick={handleClickReadAllReviews}> Read all {totalReviews} reviews</a>
-    </div>
-    );
-  };
-
-  const totalReviews = reviewsData ? getNumberOfReviews(reviewsData.ratings) : 0;
-
-  // Function to handle Thumbnail Click click
-  const handleThumbnailClick = (imageUrl) => {
-    setCurrentImage(imageUrl);
-  };
-
-  // Function to handle Add to Cart button click
   const handleAddToCart = () => {
-  const newErrorMessages = [];
-    if (selectedSize === 'SELECT SIZE' || selectedSize.trim() === '') {
-      // If 'SELECT SIZE' is selected, open the size dropdown and display a message
-      // alert('Please SELECT SIZE');
-      newErrorMessages.push('Please select size');
-      selectRef.current.focus();
-
-    }
-    if (selectedQuantity <= 0 || selectedQuantity === '-') {
-      // If quantity is invalid, display an error message
-      // alert('Please select a valid quantity');
-      newErrorMessages.push('Please select a quantity');
-    }
-    if (newErrorMessages.length > 0) {
-      setErrorMessages(newErrorMessages);
+    const { value: selectedSize } = selectSizeRef.current;
+    // Validate selected size and quantity
+    if (selectedSize === "selectSize" || selectedSize.trim() === "") {
+      setErrorMessages(["Please select size"]);
+      selectSizeRef.current.focus();
+      setIsDropdownOpen(true)
       return;
     }
-      // Add product to cart with selected size and quantity
-      // Implement logic to add the product to the cart
-      alert(`Adding ${selectedQuantity} of size ${selectedSize} to cart`);
+    if (isNaN(selectedQuantity) || selectedQuantity <= 0) {
+      setErrorMessages(["Please select a valid quantity"]);
+      return;
+    }
 
-  };
-
-  const handleSizeSelection = (e) => {
-    setSelectedSize(e.target.value);
-    // Clear error messages when the user selects a size
+    // Clear any existing error messages
     setErrorMessages([]);
+
+    const newCartItem = {
+      sku_id: SKU,
+      size: selectedSize,
+      count: selectedQuantity,
+    };
+
+    // Add item to the cart
+    axios
+      .post("https://app-hrsei-api.herokuapp.com/api/fec2/rfp/cart", newCartItem, authKey)
+      .then((response) => {
+        setCartDataUpdated(true);
+
+        // Update cart data
+        setCartData((prevCartData) => {
+          let newCartItemIndex = prevCartData.findIndex((item) => item.sku_id === newCartItem.sku_id,);
+          let modalTitle = newCartItemIndex > -1 ? "Cart Updated" : "Success";
+          let modalText =
+            newCartItemIndex > -1
+              ? `${selectedStyle.name} SKU:${SKU} quantity updated successfully`
+              : `${selectedStyle.name} SKU:${SKU} Size:${selectedSize} added to the cart`;
+          // Show modal with dynamic content
+          setShowModalCartItem({ title: modalTitle, text: modalText });
+            // Reset showModalCartItem to false after a certain duration
+            setTimeout(() => {
+              setShowModalCartItem(false);
+            }, 4000); // Adjust the duration as needed
+          if (newCartItemIndex > -1) {
+            // If item already exists, update its count
+            let updatedCart = [...prevCartData];
+            updatedCart[newCartItemIndex].count += selectedQuantity;
+            return updatedCart;
+          } else {
+            // If item doesn't exist, add it to the cart
+            return [...prevCartData, newCartItem];
+          }
+        });
+        console.log(
+          `${selectedQuantity} of size ${selectedSize} SKU ${currentStyleId} added to the cart`,
+          response.data
+        );
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error("Error adding item to cart:", error);
+      });
   };
 
-  // Render Loading message if data is being fetched
-  if (!data || !stylesData || !reviewsData) {
+
+  // Rendering loading message if data is not available
+  if (!productData || !stylesData || !reviewsData || !selectedStyle) {
     return <div>Loading...</div>;
-  // console.log(data[0], stylesData, reviewsData);
   }
 
+  // Props for the select option elements
+  const selectOptionsProps = {
+    // availableSizes,
+    availableQuantities,
+    handleSizeSelection,
+    selectedQuantity,
+    setSelectedQuantity,
+    selectedSize,
+    setErrorMessages,
+    selectSizeRef,
+    currentSKUs,
+    isDropdownOpen,
+  };
+
+  // Rendering ProductOverview component
   return (
-    <div className="product-overview-container">
-        <div className="global-announsment">
-          <i>SITE-WIDE ANNOUSNMENT MESSAGE &mdash;  SALE /&nbsp;</i> DISCOUNT <b>&nbsp;OFFER &nbsp;</b> &mdash;  <u>&nbsp;NEW PRODUCT HIGHLIGHT</u>
-          </div>
-       <div className="product-overview">
-      {/* Left div to hold the current product SKU gallery images */}
-      <div className="p-o-left"> <span className="temp-placeholder"></span>
-{/* {selectedStyle && <ImageGallery selectedStyle={selectedStyle} currentStyleId={currentStyleId} />} */}
-</div>
+    <>
+    {showModalCartItem && (
+      <Modal
+        size="small"
+        title={showModalCartItem.title}
+        text={showModalCartItem.text}
+        closeAfter={3}
+        autoClose={true}
+        autoOpen={true}
+        color="#333"
+        iconCenter={<FaCheck />}
+        iconSize={40}
+        iconColor="#16FFFF"
+      />)}
+        {/* Main container for product overview module */}
+      <div className="product-overview-module">
+          {/* Placeholder text */}
+      <span className="temp-placeholder">KFC IS COOKING! WE ARE LOADING YOUR IMAGE...</span>
 
-      {/* Product Information right div*/}
-      <div className="p-o-right">
-        <div className="product-info">
-          {/* Display rating stars and number of reviews if any */}
-          {totalReviews > 0 && (
-            <div className="product p-o-ratings-reviews">
-  {/* displayRatings displays 5 stars filled according to the average rating score.*/}
-  {RatingStarsAndReviewsLink(reviewsData.ratings, totalReviews)}
-       </div>
-          )}
-          {/* Display category */}
-          <div className="product category">
-            <p>{data.category}</p>
-          </div>
-          {/* Display product title/name */}
-          <div className="product title">
-            <h2 className="p-o-title">{data.name}</h2>
-          </div>
-          {/* Price */}
-          <div className="product p-o-price">
-            {/* Display current style price */}
-            {selectedStyle && (
-              <>
-                {selectedStyle.sale_price ? ( // Check if there is a sale price
-                  <p>
-                    <span style={{ color: "#e35d6a" }}><b> ${selectedStyle.sale_price} </b></span>
-                    {selectedStyle.original_price && ( // Check if there is an original price
-                      <span style={{ color: "#a6b0b9", textDecoration: "line-through" }}> ${selectedStyle.original_price}</span>
-                    )}
-                  </p>
-                ) : (
-                  // If there is no sale price, display the original price
-                  <p><b>${selectedStyle.original_price}</b></p>
-                )}
-              </>
-            )}
-          </div>
-          {/* Displays the name of the selected style */}
-          {selectedStyle && (
-            <div className="selected-style">
-              Style > <b>{selectedStyle.name}</b>
-            </div>
-          )}
-          {/* Render Styles component */}
-          {stylesData && (
-            <Styles
-              styles={stylesData.results}
-              currentStyleId={currentStyleId}
-              setCurrentStyleId={handleStyleChange}
-            />
-          )}
-          {/* Size and Quantity selector*/}
+          {/* Gallery Images */}
+        <ImageGallery selectedStyle={selectedStyle} currentStyleId={currentStyleId} />
+        {/* <ImageGalleryV1 selectedStyle={selectedStyle} currentStyleId={currentStyleId} /> */}
+
+           {/* Product Details */}
+        <div className="product-details-container">
+          {/* Product Information */}
+          <ProductInformation
+            productData={productData}
+            reviewsData={reviewsData}
+            onClickReadAllReviews={onClickReadAllReviews}
+            selectedStyle={selectedStyle}
+          />
+          {/* Social media sharing - Facebook, x, Pinterest*/}
+          <div className="social-media-sharing">
+          Share <span className="social-media-icons">
+          <FaFacebookSquare onClick={() => handleShareClick('Facebook')} />
+          <FaSquareXTwitter onClick={() => handleShareClick('Twitter')} />
+          <FaPinterestSquare onClick={() => handleShareClick('Pinterest')} />
+          </span></div>
+          {/* Style Selector - Thumbnails for each style */}
+          <Styles
+            styles={stylesData.results}
+            currentStyleId={currentStyleId}
+            handleStyleChange={handleStyleChange}
+          />
+          {/* Size, Quantity Selector and error messages */}
           {errorMessages.length > 0 && <ErrorMessages messages={errorMessages} />}
-          {/* {selectedSize === 'SELECT SIZE' || selectedSize.trim() === '' && <p style={{ color: 'red' }}>Please select size</p>} */}
-          <div className="product size-and-quantity">
-          <select
-              ref={selectRef}
-          className="size-select"
-          disabled={!availableSizes.length} // Disable if no sizes available
-          defaultValue={availableSizes.length ? 'SELECT SIZE' : 'OUT OF STOCK'} // Default value based on availability
-          onChange={handleSizeSelection} // Call handleSizeSelection when a size is selected
-        >
-              <option key="default-s">SELECT SIZE</option>
-              {availableSizes.map((size, i) => (
-                <option key={`size-${size}-${i}`}>{size}</option> // Improved key with size value
-              ))}
-            </select>
-            <select value={selectedSize.trim() === '' || selectedSize === 'SELECT SIZE' ? '-' : selectedQuantity}
-  className="quantity-select"
-  disabled={selectedSize.trim() === '' || selectedSize === 'SELECT SIZE'} // Disable if no sizes available
-  // defaultValue={selectedSize.trim() === '' || selectedSize === 'SELECT SIZE' ? '-' : 1} // Default value based on size selection
-  onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
->
-  <option key="default-q" value="1">
-    {selectedSize.trim() === '' || selectedSize === 'SELECT SIZE' ? '-' : 1}
-  </option>
-  {/* Start iteration from 2 to avoid showing two options with the value 1 */}
-  {[...Array(Math.min(quantity, 15)).keys()].slice(1).map((num) => (
-    <option key={`quantity-${num + 1}`} value={num + 1}>
-      {num + 1}
-    </option>
-  ))}
-</select>
-          </div>
-
-          {/* Add to Cart button */}
-          <div className="product add-to-cart-and-like">
-            <button className="add-to-cart-button" onClick={handleAddToCart}>
+          <SelectOptions {...selectOptionsProps} />
+          {/* Add to Cart and like buttons */}
+          <div className="add-to-cart-and-like">
+            <button className="p-o-add-to-cart-button" onClick={handleAddToCart}>
               ADD TO CART
-              {/* <span>Add to Cart</span><span>+</span> */}
             </button>
-            {/* Like button - Not required but i'll be nice to implement it*/}
-            <button className="like-button">⭐</button>
-            {/* <button className="like-button"><Star key={11} filled={true} size={16} /></button> */}
-
+            <button className="p-o-like-button"><FaHeart style={{fontSize:'20px'}}/></button>
           </div>
         </div>
       </div>
-      </div>
-                    {/* Slogan, description and features */}
-          <div className="product slogan-description-and-features">
-          <div className="product slogan-description">
-            <h4>{data.slogan}</h4>
-            <p>{data.description}</p>
-            <span className="rounded-right-border"></span>
-          </div>
-          <div className="product p-o-features">
-            <ul>
-              {data.features.map((product, i) => (
-                <li key={`feature-${i}`}>
-                  <span><b>&#10003;</b></span> {/* Checkmark */}
-                  {product.feature} {product.value}
-                </li>
-              ))}
-            </ul>
-          </div>
-          </div>
-    </div>
+      {/* Product Slogan, Description and Features */}
+      <SloganDescFeat productData={productData} />
+    </>
   );
-};
+});
+
 export default ProductOverview;
