@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { RxCross1 } from "react-icons/rx";
+import { RxCross2 } from "react-icons/rx";
+import { FaCheckCircle } from "react-icons/fa";
+
+
 
 // TO DO : Upload photos
 
@@ -12,11 +17,17 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
   const [ isLength, setIsLength ] = useState(Object.keys(characteristics).indexOf('Length') > -1)
   const [ isFit, setIsFit ] = useState(Object.keys(characteristics).indexOf('Fit') > -1)
 
-  const [ rating, setRating ] = useState("")
+  // const [ rating, setRating ] = useState("")
   const ratingText = ['Poor', 'Fair', 'Average', 'Good', 'Great']
-  const onRatingChange = (e) => {
-    setRating(e.target.value)
-  }
+  // const onRatingChange = (e) => {
+  //   console.log(e.target.value)
+  //   setRating(e.target.value)
+  // }
+  const [hasRated, setHasRated] = useState(false)
+
+  const [rating, setRating] = useState(null);
+  const [hover, setHover] = useState(null);
+  const [totalStars, setTotalStars] = useState(5);
 
   const [ size , setSize ] = useState("")
   const sizeText = ['A size too small', '½ a size too small', 'Perfect', '½ a size too big', 'A size too wide']
@@ -81,167 +92,202 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
 
   return (
     <div className="rr-modal-content">
+
+    <div className="rr-form-topper">
       <h3>Write Your Review</h3>
-      <h4>About the ____</h4>
+      <h1 onClick={submitReview}> <RxCross1 /></h1>
+    </div>
+
+{/* Thanks to https://dev.to/kartikbudhraja/creating-a-dynamic-star-rating-system-in-react-2c8 */}
       <div>
         <form>
-          <div>
-            <p>RATING:</p>
-            {ratingText.map((currentRating, index)=>{
+          <div className="rr-form-stars">
+            <p>RATING: {hasRated ? ratingText[rating - 1] : ""}</p>
+            <span>
+            {[...Array(totalStars)].map((star, index) => {
+              const currentRating = index + 1;
+
               return (
-                <>
+                <label key={index}>
                   <input
                     type="radio"
                     name="rating"
-                    value={(index + 1).toString()}
-                    key={index}
-                    checked={rating === (index + 1).toString()}
-                    onChange={onRatingChange}
+                    value={currentRating}
+                    onChange={() => {
+                      setRating(currentRating)
+                      setHasRated(true)
+                    }}
                   />
-                  <label>{currentRating}</label>
-                </>
-              )
+                  <span
+                    className="rr-star"
+                    style={{
+                      color:
+                        currentRating <= (hover || rating) ? "#ffc107" : "#e4e5e9"
+                    }}
+                    onMouseEnter={() => setHover(currentRating)}
+                    onMouseLeave={() => setHover(null)}
+                  >
+                    &#9733;
+                  </span>
+                </label>
+              );
             })}
+            </span>
           </div>
 
+            <div className="rr-form-person">
+              <label>
+                What is your nickname:
+                <input type="text" name="nickname" value={nickName} onChange={onNickNameChange}/>
+              </label>
 
-          {isSize ?
+              <label>
+                Email:
+                <input type="text" name="email" value={email} onChange={onEmailChange}/>
+              </label>
+            </div>
+
+
+          <div className="rr-form-characteristics">
+
+            {isSize ?
+              <div>
+                <br></br>
+                <p>SIZE:</p>
+                {sizeText.map((currentSize, index)=>{
+                  return (
+                    <>
+                      <input
+                        type="radio"
+                        name="size"
+                        value={(index + 1).toString()}
+                        key={index}
+                        checked={size === (index + 1).toString()}
+                        onChange={onSizeChange}
+                      />
+                      <label>{currentSize}</label>
+                    </>
+                  )
+                })}
+              </div>
+              : <></>
+            }
+
+            {isWidth ?
             <div>
               <br></br>
-              <p>SIZE:</p>
-              {sizeText.map((currentSize, index)=>{
+              <p>WIDTH:</p>
+              {widthText.map((currentWidth, index)=>{
                 return (
                   <>
                     <input
                       type="radio"
-                      name="size"
+                      name="width"
                       value={(index + 1).toString()}
                       key={index}
-                      checked={size === (index + 1).toString()}
-                      onChange={onSizeChange}
+                      checked={width === (index + 1).toString()}
+                      onChange={onWidthChange}
                     />
-                    <label>{currentSize}</label>
+                    <label>{currentWidth}</label>
                   </>
                 )
               })}
             </div>
             : <></>
-          }
+            }
 
-          {isWidth ?
-          <div>
-            <br></br>
-            <p>WIDTH:</p>
-            {widthText.map((currentWidth, index)=>{
-              return (
-                <>
-                  <input
-                    type="radio"
-                    name="width"
-                    value={(index + 1).toString()}
-                    key={index}
-                    checked={width === (index + 1).toString()}
-                    onChange={onWidthChange}
-                  />
-                  <label>{currentWidth}</label>
-                </>
-              )
-            })}
-          </div>
-          : <></>
-          }
+            {isComfort ?
+            <div>
+              <br></br>
+              <p>COMFORT:</p>
+              {comfortText.map((currentComfort, index)=>{
+                return (
+                  <>
+                    <input
+                      type="radio"
+                      name="comfort"
+                      value={(index + 1).toString()}
+                      key={index}
+                      checked={comfort === (index + 1).toString()}
+                      onChange={onComfortChange}
+                    />
+                    <label>{currentComfort}</label>
+                  </>
+                )
+              })}
+            </div>
+            : <></>
+            }
 
-          {isComfort ?
-          <div>
-            <br></br>
-            <p>COMFORT:</p>
-            {comfortText.map((currentComfort, index)=>{
-              return (
-                <>
-                  <input
-                    type="radio"
-                    name="comfort"
-                    value={(index + 1).toString()}
-                    key={index}
-                    checked={comfort === (index + 1).toString()}
-                    onChange={onComfortChange}
-                  />
-                  <label>{currentComfort}</label>
-                </>
-              )
-            })}
-          </div>
-          : <></>
-          }
+            {isQuality ?
+            <div>
+              <br></br>
+              <p>QUALITY:</p>
+              {qualityText.map((currentQuality, index)=>{
+                return (
+                  <>
+                    <input
+                      type="radio"
+                      name="quality"
+                      value={(index + 1).toString()}
+                      key={index}
+                      checked={quality === (index + 1).toString()}
+                      onChange={onQualityChange}
+                    />
+                    <label>{currentQuality}</label>
+                  </>
+                )
+              })}
+            </div>
+            : <></>
+            }
 
-          {isQuality ?
-          <div>
-            <br></br>
-            <p>QUALITY:</p>
-            {qualityText.map((currentQuality, index)=>{
-              return (
-                <>
-                  <input
-                    type="radio"
-                    name="quality"
-                    value={(index + 1).toString()}
-                    key={index}
-                    checked={quality === (index + 1).toString()}
-                    onChange={onQualityChange}
-                  />
-                  <label>{currentQuality}</label>
-                </>
-              )
-            })}
-          </div>
-          : <></>
-          }
+            {isLength ?
+            <div>
+              <br></br>
+              <p>LENGTH:</p>
+              {lengthText.map((currentLength, index)=>{
+                return (
+                  <>
+                    <input
+                      type="radio"
+                      name="length"
+                      value={(index + 1).toString()}
+                      key={index}
+                      checked={length === (index + 1).toString()}
+                      onChange={onLengthChange}
+                    />
+                    <label>{currentLength}</label>
+                  </>
+                )
+              })}
+            </div>
+            : <></>
+            }
 
-          {isLength ?
-          <div>
-            <br></br>
-            <p>LENGTH:</p>
-            {lengthText.map((currentLength, index)=>{
-              return (
-                <>
-                  <input
-                    type="radio"
-                    name="length"
-                    value={(index + 1).toString()}
-                    key={index}
-                    checked={length === (index + 1).toString()}
-                    onChange={onLengthChange}
-                  />
-                  <label>{currentLength}</label>
-                </>
-              )
-            })}
+            {isFit ?
+            <div>
+              <br></br>
+              <p>FIT:</p>
+              {fitText.map((currentFit, index)=>{
+                return (
+                  <>
+                    <input
+                      type="radio"
+                      name="fit"
+                      value={(index + 1).toString()}
+                      key={index}
+                      checked={fit === (index + 1).toString()}
+                      onChange={onFitChange}
+                    />
+                    <label>{currentFit}</label>
+                  </>
+                )
+              })}
+            </div>
+            : <></>
+            }
           </div>
-          : <></>
-          }
-
-          {isFit ?
-          <div>
-            <br></br>
-            <p>FIT:</p>
-            {fitText.map((currentFit, index)=>{
-              return (
-                <>
-                  <input
-                    type="radio"
-                    name="fit"
-                    value={(index + 1).toString()}
-                    key={index}
-                    checked={fit === (index + 1).toString()}
-                    onChange={onFitChange}
-                  />
-                  <label>{currentFit}</label>
-                </>
-              )
-            })}
-          </div>
-          : <></>
-          }
 
           <br></br>
 
@@ -261,73 +307,80 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
             Summary:
           </label>
             <br></br>
-            <input className="rr-summary-review-body" type="text" name="summary" value={reviewSummary} onChange={onReviewSummaryChange}/>
+            <textarea className="rr-summary-review-body" type="text" rows="3" name="summary" value={reviewSummary} onChange={onReviewSummaryChange} placeholder="A short summary of your thoughts..."/>
 
           <br></br>
           <label>
             Review:
           </label>
             <br></br>
-            <input className="rr-form-review-body" type="text" name="review" value={reviewBody} onChange={onReviewBodyChange}/>
+            <textarea className="rr-form-review-body" type="text" name="review" value={reviewBody} onChange={onReviewBodyChange} rows="6" placeholder="Must be at least 60 characters. Tell us what you really think..."/>
 
-          <br></br>
-
-          <label>
-            What is your nickname:
-            <input type="text" name="nickname" value={nickName} onChange={onNickNameChange}/>
-          </label>
-          <br></br>
-
-          <label>
-            Email:
-            <input type="text" name="email" value={email} onChange={onEmailChange}/>
-          </label>
           <br></br>
 
           <input type="submit" value="Submit"
           onClick={()=>{
-            var charEntry = {}
-            submitReview()
 
-            if (size) {
-              charEntry[characteristics.Size.id] = parseInt(size)
+            if (reviewBody.length < 60) {
+              event.preventDefault();
+              alert("Please include a longer review. We'd love to hear your thoughts! At least 60 characters...")
+            } else if (isSize && !size || isWidth && !width || isComfort && !comfort || isQuality && !isQuality || isLength && !length || isFit && !fit) {
+              event.preventDefault();
+              alert("Please make let us know about the characteristics!")
+            } else if (!rating) {
+              event.preventDefault();
+              alert("What, no rating?!")
+            } else if (!email || email.indexOf('@') === -1) {
+              preventDefault();
+              alert("Please include your email (we won't share it, promise)")
+            } else if (!nickName) {
+              preventDefault();
+              alert("What should we call you?)")
             }
-            if (width) {
-              charEntry[characteristics.Width.id] = parseInt(width)
-            }
-            if (comfort) {
-              charEntry[characteristics.Comfort.id] = parseInt(comfort)
-            }
-            if (quality) {
-              charEntry[characteristics.Quality.id] = parseInt(quality)
-            }
-            if (length) {
-              charEntry[characteristics.Length.id] = parseInt(length)
-            }
-            if (fit) {
-              charEntry[characteristics.Fit.id] = parseInt(fit)
-            }
-            var rec = recommend === true;
-            console.log(rec)
-            axios({
-              method: 'post',
-              url: 'https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews',
-              headers: {
-                'Authorization': process.env.REACT_APP_API_KEY,
-              },
-              data: {
-                "product_id": id,
-                "rating": parseInt(rating),
-                "summary": reviewSummary.toString(),
-                "body": reviewBody.toString(),
-                "recommend": rec,
-                "name": nickName.toString(),
-                "email": email.toString(),
-                "photos": [],
-                "characteristics": charEntry
+            else {
+              var charEntry = {}
+              submitReview()
+
+              if (size) {
+                charEntry[characteristics.Size.id] = parseInt(size)
               }
-            })
-            .catch((error)=> console.log(error));
+              if (width) {
+                charEntry[characteristics.Width.id] = parseInt(width)
+              }
+              if (comfort) {
+                charEntry[characteristics.Comfort.id] = parseInt(comfort)
+              }
+              if (quality) {
+                charEntry[characteristics.Quality.id] = parseInt(quality)
+              }
+              if (length) {
+                charEntry[characteristics.Length.id] = parseInt(length)
+              }
+              if (fit) {
+                charEntry[characteristics.Fit.id] = parseInt(fit)
+              }
+              var rec = recommend === true;
+              console.log(rec)
+              axios({
+                method: 'post',
+                url: 'https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews',
+                headers: {
+                  'Authorization': process.env.REACT_APP_API_KEY,
+                },
+                data: {
+                  "product_id": id,
+                  "rating": parseInt(rating),
+                  "summary": reviewSummary.toString(),
+                  "body": reviewBody.toString(),
+                  "recommend": rec,
+                  "name": nickName.toString(),
+                  "email": email.toString(),
+                  "photos": [],
+                  "characteristics": charEntry
+                }
+              })
+              .catch((error)=> console.log(error));
+            }
 
 
           }}/>

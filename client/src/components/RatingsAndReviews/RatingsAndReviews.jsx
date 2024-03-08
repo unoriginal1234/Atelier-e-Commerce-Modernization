@@ -55,7 +55,7 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
       // console.log(reviewResponse.data, '-- review Response');
       setReviewsMeta(metaResponse.data)
       setCharacteristics(metaResponse.data.characteristics)
-      console.log(metaResponse.data, '--meta Response');
+      // console.log(metaResponse.data, '--meta Response');
     })
     .catch(error => {
       console.error('Error fetching data:', error);

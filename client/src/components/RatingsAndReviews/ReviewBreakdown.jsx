@@ -23,7 +23,7 @@ const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
     }
 
     if (reviewsMeta.ratings['5']) {
-      console.log(parseInt(reviewsMeta.ratings['5']), 'five not state')
+      // console.log(parseInt(reviewsMeta.ratings['5']), 'five not state')
       setFiveStars(parseInt(reviewsMeta.ratings['5']))
     }
 
@@ -51,7 +51,7 @@ const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
     }
 
     let numerator = (fiveStars * 5 + fourStars * 4 + threeStars * 3 + twoStars * 2 + oneStar)
-    console.log(numerator, 'numer')
+    // console.log(numerator, 'numer')
 
     let denominator = (fiveStars + fourStars + threeStars + twoStars + oneStar)
     setTotalDenominator(denominator)

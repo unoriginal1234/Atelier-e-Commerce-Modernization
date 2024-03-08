@@ -28,7 +28,7 @@ const ProuctBreakdown = ({reviewsMeta}) => {
             <p>{characteristic}</p>
             <div className="rr-spectrum-wrapper">
               <div className="rr-spectrum-characteristic"></div>
-              <AiTwotoneTag className="rr-indicator-icon" style={{"margin-left":
+              <AiTwotoneTag className="rr-indicator-icon" style={{"marginLeft":
               (Math.round((parseFloat(reviewsMeta.characteristics[characteristic].value) -1) * 25)).toString()+"%"}}/>
             </div>
             <div className="rr-characteristic-breakdown">
