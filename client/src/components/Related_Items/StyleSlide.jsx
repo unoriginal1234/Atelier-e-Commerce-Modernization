@@ -7,9 +7,14 @@ const StyleSlide = function (props) {
   const changePreviewImage = function () {
     props.change(url);
   }
+  const img = {
+    backgroundImage: `url(${url})`
+  }
   return (
-    <div className="r-i-style-card" onClick={changePreviewImage}><img className="r-i-style-img" src={url}/></div>
+    <div className="r-i-style-card" style={img} onClick={changePreviewImage}></div>
   )
 }
 
 export default StyleSlide;
+
+//<div className="r-i-style-card" onClick={changePreviewImage}><img className="r-i-style-img" src={url}/></div>
