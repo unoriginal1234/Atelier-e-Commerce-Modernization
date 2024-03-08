@@ -368,37 +368,86 @@ ul li span {
 
    .rr-list {
     flex: 2;
-    border: solid;
+    /* border: 1px solid #ccc; */
     margin: 2px;
     max-width: 750px;
    }
 
    .rr-card {
     display: flex;
-    border: solid;
+    /* border: 1px solid #ccc; */
     margin: 2px;
     margin-inline: 5px;
     flex-wrap: nowrap;
     flex-direction: column;
    }
 
+   .rr-star-and-breakdown-container {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    justify-content: flex-start;
+    align-items: center;
+   }
+
    .rr-breakdown {
-    flex: 1;
-    border: solid;
+    /* flex: 1; */
+    /* border: 1px solid #ccc; */
     margin: 2px
    }
 
+   .rr-star-and-breakdown-container Stars {
+    margin: 5px
+   }
+
+
+
+   .rr-rating-breakdown {
+    font-size: 50px;
+    font-style: bold;
+    margin: 5px;
+   }
+
+   .rr-star-meters p {
+      font-size: 14px;
+      text-decoration: underline;
+      cursor: pointer;
+   }
+
    .rr-summary {
+    font-size: 20px;
     font-weight: bold;
+   }
+
+   meter {
+    width: 100%;
+    margin-left: 5px;
    }
 
    .rr-photo {
     width:100px;
-    height:100px
+    height:100%
    }
 
    .rr-recommend {
-    color: green
+    size: 6px;
+   }
+
+   .rr-help-and-report {
+    display: flex;
+    gap: 10%
+   }
+
+   .rr-report-button {
+    text-decoration: underline;
+   }
+
+   .rr-report-button:hover {
+    cursor:pointer;
+   }
+
+   .rr-product-breakdown p{
+    font-size: medium;
    }
 
    .rr-response {
@@ -408,6 +457,174 @@ ul li span {
    .rr-body {
     overflow-wrap: break-word;
    }
+
+   .rr-picture-thumbnails {
+    display: flex;
+    flex-direction: row;
+   }
+
+   .rr-form-review-body {
+    width: 80%;
+   }
+
+   .rr-summary-review-body {
+    width: 80%;
+   }
+
+   .rr-form-person {
+    display: flex;
+    margin-top: 3%;
+    gap: 10%
+   }
+
+   .rr-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999;
+    justify-content: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+
+  .rr-modal-content {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 70%;
+    height: 80%;
+    max-width: 80%;
+    max-height: 80%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rr-form-topper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .rr-form-characteristics {
+    font-size: small;
+  }
+
+  .rr-stars-and-checks {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rr-card-name {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: small;
+    font-style: italic;
+    gap: 4px
+  }
+
+  .rr-card-footer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: small;
+  }
+
+  .rr-spectrum-characteristic {
+    background: grey;
+    /* padding: 20px; */
+    margin-top: 4px;
+    /* height: 20px; */
+    width: 100%;
+    float: left;
+    border-radius: 4px;
+    border: 2px solid #a9a9a9;
+    box-shadow: inset 0 0 10px #f9f9f9;
+    position: relative;
+  }
+
+
+
+  /* .rr-indicator-icon {
+    padding: 5px;
+    border: 2px solid #a9a9a9;
+    width: 1px;
+    height: 8px;
+    position: relative;
+    border-radius: 4px;
+    box-shadow: inset 0 0 4px #a9a9a9;
+    transition-duration: 0.5s;
+    margin-left: 70%;
+    background-color: #f2f2f2;
+    z-index: 10;
+  } */
+
+  .rr-characteristic-breakdown {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: smaller;
+  }
+
+  .rr-form-stars input[type="radio"] {
+    display: none;
+  }
+  .rr-star {
+    cursor: pointer;
+    font-size: 2rem;
+    margin: 5px;
+  }
+
+  /* --------------------------------
+
+💡 How to create gradient borders in CSS
+🔗 https://codyhouse.co/nuggets/css-gradient-borders
+
+-------------------------------- */
+
+/* method 1 -> use border-image */
+.btn-gradient-1 {
+  border-width: 4px;
+  border-style: solid;
+  border-image: linear-gradient(to right, darkblue, darkorchid) 1;
+}
+
+/* method 2 -> use background-clip to support border-radius */
+.btn-gradient-2 {
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(to right, darkblue, darkorchid) border-box;
+  border-radius: 50em;
+  border: 4px solid transparent;
+}
+
+.btn-gradient-1,
+.btn-gradient-2 {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  color: darkblue;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+
 
    /* ==========================================================================
    End of Ratings and Reviews Module styles

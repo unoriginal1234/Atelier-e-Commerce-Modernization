@@ -1,6 +1,9 @@
 import React from 'react';
-const {useState} = React;
+const {useState, useEffect} = React;
 import axios from 'axios';
+import { FaCheckCircle } from "react-icons/fa";
+import AnswerImageItem from '../QuestionsAndAnswers/AnswerImageItem.jsx'
+
 
 //TODO: review.photos
 // Recommend checkmark
@@ -13,7 +16,11 @@ const ReviewsCard = ({review}) => {
     }
   };
 
+  useEffect(()=> {setHasSetHelpfulness(false)
+    setHasReported(false)}, [review])
+
   const [ hasSetHelpfulness, setHasSetHelpfulness ] = useState(false)
+  const [ hasReported, setHasReported ] = useState(false)
 
   // console.log(review, 'review')
 
@@ -39,30 +46,56 @@ const ReviewsCard = ({review}) => {
       })
   }
 
+  const handleReport = () => {
+    axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/${review.review_id}/report`, null , options)
+      .then(() => {
+        console.log("Successfully reported")
+      })
+      .then(()=> setHasReported(true))
+      .catch((err) => {
+        console.error("Error reporting", err);
+      })
+  }
+
   return (
     <div className="rr-card">
-      <p>Rating: {review.rating} Star(s)</p>
-      {review.recommend ? <p className="rr-recommend">Recommended</p> : ""}
+      <div className="rr-stars-and-checks">
+        <div className="Stars" style={{ '--rating': review.rating }}></div>
+        <div className="rr-card-name">
+          {review.recommend ? <FaCheckCircle /> : ""}
+          <p>{review.reviewer_name}</p>
+        </div>
+      </div>
 
-      <p className="rr-summary">Summary: {review.summary}</p>
+      <p className="rr-summary">{review.summary}</p>
 
-      <p className="rr-body">Review Body: {review.body}</p>
-      {review.photos ? review.photos.map((photo, index) => {
-        return <img key={index} className="rr-photo" src={photo.url}/>
-      }) : ""}
-      <p>Name: {review.reviewer_name}</p>
+      <p className="rr-body">{review.body}</p>
 
-      <p>Date: {finalDate}</p>
-
+      {/* <div className="rr-picture-thumbnails">
+        {review.photos ? review.photos.map((photo, index) => {
+          return <img key={index} className="rr-photo" src={photo.url}/>
+        }) : ""}
+      </div> */}
+      <div className="answer-images-container">
+          {review.photos.map(photo => {
+            return <AnswerImageItem key={photo.id} answer={review} photo={photo} />
+          })}
+      </div>
 
       {review.response ? <p className="rr-response">Response: {review.response}</p> : ""}
+        <div className="rr-card-footer">
+          <p>{finalDate}</p>
+          <div className="rr-help-and-report">
+            {!hasSetHelpfulness ?
+              <div> <div>Helpful?</div><span onClick={handleYes} className="yes-answer-button report-button">Yes</span> ({reviewHelpful})</div>
+              : <div><span className="yes-answer-button report-button">Yes</span> ({reviewHelpful + 1})</div>}
 
-      <div>Helpful?</div>
+              {!hasReported ?
+              <div> <div className="rr-report-button" onClick={handleReport}>Report?</div></div>
+              : <span className="rr-report-button" style={{"textDecoration": "none", "color": "red"}}>Reported</span>}
 
-      {!hasSetHelpfulness ?
-        <div><span onClick={handleYes} className="yes-answer-button report-button">Yes</span> ({reviewHelpful})</div>
-        : <div><span className="yes-answer-button report-button">Yes</span> ({reviewHelpful + 1})</div>
-      }
+          </div>
+        </div>
     </div>
   )
 }
