@@ -9,9 +9,11 @@ const QuestionItem = ({ questionData, question, token, handleQuestionsList, prod
   const [questionHelpful , setQuestionHelpful] = useState(question.question_helpfulness);
   const [showModal, setShowModal] = useState(false);
   const [answerID, setAnswerID] = useState('');
+  const [disabled, setDisabled] = useState(false);
   const handleYes = () => {
     axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${question_id}/helpful`, null ,token)
       .then(() => {
+        setDisabled(true);
         handleQuestionsList();
         console.log("Successfully updated helpfulness")
       })
@@ -35,7 +37,7 @@ const QuestionItem = ({ questionData, question, token, handleQuestionsList, prod
         <div className="eachQ-rightSide-container">
           Helpful?
           <div>
-            <span onClick={handleYes} className="yes-button answer-button">Yes</span> ({questionHelpful})
+            <button type="text" onClick={handleYes} disabled={disabled} className="yes-button answer-button">Yes</button> ({questionHelpful})
           </div>
           |
           <u onClick={() => setShowModal(true)}className="answer-button">Add Answer</u>
@@ -48,7 +50,7 @@ const QuestionItem = ({ questionData, question, token, handleQuestionsList, prod
           , document.body)}
         </div>
       </div>
-        <AnswerList question_id={question_id} token={token} forImageID={forImageID} product_id={product_id}/>
+      <AnswerList question_id={question_id} token={token} forImageID={forImageID} product_id={product_id}/>
     </div>
 
   )
