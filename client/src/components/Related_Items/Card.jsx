@@ -130,9 +130,9 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
       <div onClick={changeID}>
         <div className="r-i-cat" title="r-i-cat">{product.category}</div>
         <div className="r-i-name" title="r-i-name">{product.name}</div>
-        {item.styles.results[0].sale_price === null && <div title="r-i-price">{product.default_price}</div>}
+        {item.styles.results[0].sale_price === null && <div className="r-i-price" title="r-i-price">{product.default_price}</div>}
         {item.styles.results[0].sale_price !== null && <div><p className="r-i-sale">{item.styles.results[0].sale_price}</p><p><s>{product.default_price}</s></p></div>}
-        <div  className="Stars" title="r-i-stars" style={{ '--rating': star }}></div>
+        <div className="r-i-stars" title="r-i-stars"><div  className="Stars" style={{ '--rating': star }}></div></div>
       </div>
     </div>
   )
