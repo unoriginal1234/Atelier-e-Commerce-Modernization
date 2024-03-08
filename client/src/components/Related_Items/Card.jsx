@@ -43,6 +43,9 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
   };
   const yoAction = function () {
     deleteOutfitItem(item);
+  };
+  const closeSecret = function () {
+    setCompare(false);
   }
 
   //Carousel click functions --------------------------
@@ -106,7 +109,7 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
 
   //Component return
   return (
-    <div className="r-i-card">
+    <div onMouseLeave={closeSecret} className="r-i-card">
       {compare && <Comparison bothCategories={bothCategories}/>}
       {(type.type === 'related' && !compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaRegStar title="r-i-empty-star"/></div>}
       {(type.type === 'related' && compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaStar /></div>}
