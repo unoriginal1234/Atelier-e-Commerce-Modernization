@@ -57,12 +57,30 @@ const Related = function (props) {
       setLastOutfitIndex(lastOutfitIndex + 1);
     }
   };
+  //Outfit useEffect / saving locally
+  useEffect(() => {
+    localStorage.setItem('outfit', JSON.stringify(yourOutfit));
+  }, [yourOutfit]);
+
+  useEffect(() => {
+    const collection = JSON.parse(localStorage.getItem('outfit'));
+    if (collection) {
+      setYourOutfit(collection);
+    }
+  }, []);
 
   //Add to outfit function
   const addToOutfit = function () {
     let item = {product: pageData};
     let oldOutfit = yourOutfit.slice();
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${props.id}`, options)
+    let notInside = true;
+    for (var i = 0; i < yourOutfit.length; i ++) {
+      if (yourOutfit[i].product === pageData) {
+        notInside = false;
+      }
+    }
+    if (notInside) {
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${props.id}`, options)
       .then((response) => {
         item.meta = response.data;
         return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${props.id}/styles`, options);
@@ -75,6 +93,7 @@ const Related = function (props) {
       .catch((err) => {
         console.error('Error adding to outfit', err);
       })
+    }
   };
 
   //Get rid of an outfit function
@@ -93,7 +112,7 @@ const Related = function (props) {
   //API object
   const options = {
     headers: {
-      'Authorization': process.env.REACT_APP_API_KEY,
+      'Authorization': process.env.REACT_APP_API_KEY || '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',
     }
   };
 
@@ -118,6 +137,7 @@ const Related = function (props) {
         pageCategoriesObj[features[i].feature] = {v1: features[i].value || 'N/A'};
       }
       setPageCategories(pageCategoriesObj);
+      console.log(pageCategoriesObj);
     }
   }, [pageData]);
 
@@ -152,7 +172,7 @@ const Related = function (props) {
             }
           })
           .catch((err) => {
-            console.log('Error setting related items', err);
+            console.error('Error setting related items', err);
           })
       }
       callback();
@@ -187,7 +207,7 @@ const Related = function (props) {
         <div className="r-i-carousel-card-holder r-i-carousel">
         <div className='r-i-card' onClick={addToOutfit}>
           <p className="y-o-add-txt">Add to Outfit</p>
-          <img className="y-o-add" src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Plus_symbol.svg"></img>
+          <img className="y-o-add" title="r-i-add" src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Plus_symbol.svg"></img>
         </div>
         {(yourOutfit.length >= 1) && yourOutfit.map((item, index) => {
           let current = yourOutfit.indexOf(item);

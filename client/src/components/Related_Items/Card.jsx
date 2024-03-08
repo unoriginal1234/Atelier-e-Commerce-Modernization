@@ -4,6 +4,7 @@ import Comparison from './Comparison.jsx';
 import StyleSlide from './StyleSlide.jsx';
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { IoIosCloseCircleOutline, IoIosCloseCircle } from "react-icons/io";
+import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 
 const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitItem}) {
 
@@ -37,6 +38,24 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
     deleteOutfitItem(item);
   }
 
+  //Carousel click functions --------------------------
+
+  //Clicking carousel arrows
+  const onLeftClick = function () {
+    if (firstThumbnailIndex > 0) {
+      setFirstThubmnailIndex(firstThumbnailIndex - 1);
+      setLastThumbnailIndex(lastThumbnailIndex - 1);
+      console.log('left');
+    }
+  };
+  const onRightClick = function () {
+    if (styles.length - 1 > lastThumbnailIndex) {
+      setFirstThubmnailIndex(firstThumbnailIndex + 1);
+      setLastThumbnailIndex(lastThumbnailIndex + 1);
+      console.log('right');
+    }
+  };
+
   //Clicking tumbnail carousel img
   const thumbClick = function (url) {
     setCurrentStylePic(url);
@@ -47,7 +66,7 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
 
     if (pageData !== undefined && pageData !== null) {
       if (Object.keys(pageData).length !== 0) {
-        let pageCategoriesObj = pageData;
+        let pageCategoriesObj = JSON.parse(JSON.stringify(pageData));
         let newFeatures = item.product.features;
         pageCategoriesObj['Product Name'].v2 = item.product.name;
         for (var i = 0; i < newFeatures.length; i ++) {
@@ -90,16 +109,18 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
         {deleteHover && <IoIosCloseCircle />}
         {!deleteHover && <IoIosCloseCircleOutline />}
       </div>}
-        <div onMouseLeave={() => setStyleCarousel(false)}>
-          <div className="r-i-img-holder"><img onMouseEnter={() => setStyleCarousel(true)} className="r-i-img" src={currentStylePic}></img></div>
-          <div className="r-i-style-thumbs">
-            {styleCarousel && styles.map((style, index) => {
+        <div onMouseLeave={() => setStyleCarousel(true)}>
+          <div className="r-i-img-holder"><img onMouseEnter={() => setStyleCarousel(true)} className="r-i-img" onClick={changeID} src={currentStylePic}></img></div>
+          {styleCarousel && <div className="r-i-style-thumbs">
+            {styles.length !== 0 && <BsChevronCompactLeft onClick={onLeftClick} className="r-i-style-carousel-left"/>}
+            {styles.map((style, index) => {
               if (styles.indexOf(style) >= firstThumbnailIndex && styles.indexOf(style) <= lastThumbnailIndex) {
                 return <StyleSlide key={index} change={thumbClick} style={style}/>
               }
             })}
+            <BsChevronCompactRight onClick={onRightClick} className="r-i-style-carousel-right"/>
+          </div>}
         </div>
-      </div>
       <div onClick={changeID}>
         <div className="r-i-cat">{product.category}</div>
         <div className="r-i-name">{product.name}</div>
