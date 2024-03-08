@@ -597,6 +597,7 @@ Related Items Card
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  cursor: pointer;
 }
 
 .r-i-img-size {
@@ -616,6 +617,7 @@ Related Items Card
   width: 98%;
   height: 227px;
   margin: inherit;
+  cursor: pointer;
 }
 
 .y-o-add-txt {
@@ -638,8 +640,17 @@ Related Items Card
   left: 0%;
 }
 
+.r-i-stars {
+  cursor: pointer;
+}
+
 .r-i-sale {
   color: red;
+  cursor: pointer;
+}
+
+.r-i-price {
+  cursor: pointer;
 }
 
 .r-i-missing {
@@ -666,11 +677,13 @@ Related secret div
 
 .r-i-cat {
   font-size: small;
+  cursor: pointer;
 }
 
 .r-i-name {
   font-size: medium;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .r-i-secret-title {
@@ -746,6 +759,7 @@ Styles Carousel
   width: 100%;
   padding: 1px;
   border-left: 1px solid #f8f8f8;
+  cursor: pointer;
 }
 
 .r-i-style-carousel-left {
