@@ -1,7 +1,8 @@
 import React from 'react';
-const {useState} = React;
+const {useState, useEffect} = React;
 import axios from 'axios';
 import { FaCheckCircle } from "react-icons/fa";
+import AnswerImageItem from '../QuestionsAndAnswers/AnswerImageItem.jsx'
 
 
 //TODO: review.photos
@@ -14,6 +15,9 @@ const ReviewsCard = ({review}) => {
       'Authorization': process.env.REACT_APP_API_KEY,
     }
   };
+
+  useEffect(()=> {setHasSetHelpfulness(false)
+    setHasReported(false)}, [review])
 
   const [ hasSetHelpfulness, setHasSetHelpfulness ] = useState(false)
   const [ hasReported, setHasReported ] = useState(false)
@@ -67,10 +71,15 @@ const ReviewsCard = ({review}) => {
 
       <p className="rr-body">{review.body}</p>
 
-      <div className="rr-picture-thumbnails">
+      {/* <div className="rr-picture-thumbnails">
         {review.photos ? review.photos.map((photo, index) => {
           return <img key={index} className="rr-photo" src={photo.url}/>
         }) : ""}
+      </div> */}
+      <div className="answer-images-container">
+          {review.photos.map(photo => {
+            return <AnswerImageItem key={photo.id} answer={review} photo={photo} />
+          })}
       </div>
 
       {review.response ? <p className="rr-response">Response: {review.response}</p> : ""}
@@ -80,9 +89,11 @@ const ReviewsCard = ({review}) => {
             {!hasSetHelpfulness ?
               <div> <div>Helpful?</div><span onClick={handleYes} className="yes-answer-button report-button">Yes</span> ({reviewHelpful})</div>
               : <div><span className="yes-answer-button report-button">Yes</span> ({reviewHelpful + 1})</div>}
+
               {!hasReported ?
-              <div>| <div className="rr-report-button" onClick={handleReport}>Report?</div></div>
-              : <span className="rr-report-button" style={{"textDecoration": "none", "fontColor": "red"}}>Reported</span>}
+              <div> <div className="rr-report-button" onClick={handleReport}>Report?</div></div>
+              : <span className="rr-report-button" style={{"textDecoration": "none", "color": "red"}}>Reported</span>}
+
           </div>
         </div>
     </div>

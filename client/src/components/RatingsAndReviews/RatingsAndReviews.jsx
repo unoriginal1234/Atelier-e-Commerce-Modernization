@@ -27,6 +27,7 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
   const [ sort, setSort ] = useState('relevant');
   const [ filteredResults, setFilteredResults ] = useState([])
   const [ characteristics, setCharacteristics ] = useState({})
+  const [ filterList, setFilterList ] = useState([])
 
   const [showModal, setShowModal] = useState(false);
 
@@ -41,6 +42,17 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
   useEffect(() => {fetchData();}, [id]);
   useEffect(() => {sortData();}, [sort]);
 
+  useEffect(()=> {setReviews(filteredResults.filter((review)=> filterList.includes(review.rating)))}, [filterList])
+
+  useEffect(() => {
+    if (filterList.length === 0) {
+      setReviews(filteredResults.slice(0, 2))
+    } else {
+      setReviews(filteredResults.filter((review)=> filterList.includes(review.rating)));
+    }
+  }, [filteredResults])
+
+
   //API Calls
   const fetchData = () => {
     Promise.all([
@@ -51,7 +63,7 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
       // right now hard coding the limited response
       setTotalReviews(reviewResponse.data.results.length)
       setFilteredResults(reviewResponse.data.results)
-      setReviews(reviewResponse.data.results.slice(0, 2));
+      // setReviews(reviewResponse.data.results.slice(0, 2));
       // console.log(reviewResponse.data, '-- review Response');
       setReviewsMeta(metaResponse.data)
       setCharacteristics(metaResponse.data.characteristics)
@@ -66,17 +78,22 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
     });
   };
 
+  // const fetchMore = () => {
+  //   axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews?sort=${sort}&product_id=${id}&count=100`, options)
+  //   .then((reviewResponse)=> {setReviews(reviewResponse.data.results.slice(0, moreReviews))})
+  //   .then(()=>setMoreReviews(moreReviews + 2))
+  //   .catch((error)=>console.error('Error fetching data: ', error));
+  // }
+
   const fetchMore = () => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews?sort=${sort}&product_id=${id}&count=100`, options)
-    .then((reviewResponse)=> {setReviews(reviewResponse.data.results.slice(0, moreReviews))})
-    .then(()=>setMoreReviews(moreReviews + 2))
-    .catch((error)=>console.error('Error fetching data: ', error));
+    setReviews(filteredResults.slice(0, moreReviews))
+    setMoreReviews(moreReviews + 2)
   }
 
   const sortData = () => {
     axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews?sort=${sort}&product_id=${id}&count=100`, options)
     .then((reviewResponse) => {
-      setReviews(reviewResponse.data.results.slice(0, 2));
+      setFilteredResults(reviewResponse.data.results)
     })
     .then(()=>setMoreReviews(4))
     .catch((error) => {
@@ -86,13 +103,18 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
 
   const filterData = (rating) => {
     // console.log(filteredResults, 'filtered results')
-    const pizza = filteredResults.filter((review)=>review.rating === rating)
+    if (filterList.indexOf(rating) > -1) {
+      let newFilterList = filterList.slice(0, filterList.indexOf(rating)).concat(filterList.slice(filterList.indexOf(rating) + 1))
+      setFilterList(newFilterList)
+    } else {
+      let newFilterList = filterList.slice()
+      newFilterList.push(rating);
+      setFilterList(newFilterList)
+    }
+    // const pizza = filteredResults.filter((review)=> filterList.includes(review.rating))
     // console.log(pizza, 'pizza')
-    setReviews(pizza)
+    // setReviews(pizza)
   }
-
-
-  // console.log(reviews, '-- Reviews data from API call');
 
   //Handlers
   const addReviewClickHandler = () => {
@@ -116,12 +138,9 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
   }
 
   //RENDER
-
-
   return (
 
     <div>
-
 
       {showModal && createPortal(
         <div className="rr-modal-container">

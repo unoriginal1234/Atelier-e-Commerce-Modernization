@@ -90,6 +90,11 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
     setEmail(e.target.value)
   }
 
+  const [ photo, setPhoto ] = useState("")
+  const onPhotoChange = (e) => {
+    setPhoto(e.target.value)
+  }
+
   return (
     <div className="rr-modal-content">
 
@@ -318,6 +323,11 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
 
           <br></br>
 
+          <label>
+                Picture:
+                <input type="text" name="photo" value={photo} onChange={onPhotoChange}/>
+          </label>
+
           <input type="submit" value="Submit"
           onClick={()=>{
 
@@ -339,6 +349,10 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
             }
             else {
               var charEntry = {}
+              var photoEntry = []
+              if (photo.length > 0) {
+                photoEntry.push(photo)
+              }
               submitReview()
 
               if (size) {
@@ -375,7 +389,7 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
                   "recommend": rec,
                   "name": nickName.toString(),
                   "email": email.toString(),
-                  "photos": [],
+                  "photos": photoEntry,
                   "characteristics": charEntry
                 }
               })

@@ -11,7 +11,7 @@ const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
   const [ twoStars, setTwoStars ] = useState(0)
   const [ oneStar, setOneStar ] = useState(0)
   const [ totalDenominator, setTotalDenominator ] = useState(1)
-
+  const [ bolded, setBolded ] = useState([])
 
   useEffect(()=>{populateStars()}, [reviewsMeta.ratings])
   useEffect(()=>{getAverage()}, [oneStar])
@@ -44,6 +44,18 @@ const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
     }
   }
 
+  const addStyle = (num) => {
+    if (bolded.includes(num)) {
+      let newBoldList = bolded.slice(0, bolded.indexOf(num)).concat(bolded.slice(bolded.indexOf(num) + 1))
+      setBolded(newBoldList)
+    } else {
+      let newBoldList = bolded.slice()
+      newBoldList.push(num)
+      setBolded(newBoldList)
+    }
+
+  }
+
 
   const getAverage = () => {
     if (!reviewsMeta.ratings) {
@@ -74,15 +86,28 @@ const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
       </div>
       <p>{Math.round(parseInt(reviewsMeta.recommended.true) / (parseInt(reviewsMeta.recommended.true) + parseInt(reviewsMeta.recommended.false)) * 100)} % of reviews recommend this product</p>
       <div className="rr-star-meters">
-        <p onClick={()=>filterHandler(5)}>5 stars<meter value={fiveStars / totalDenominator }></meter></p>
+        <p style={bolded.includes(5) ? {fontWeight:"bold"} : {fontWeight:"normal"}} onClick={()=>
+          {filterHandler(5)
+            addStyle(5)
+          }}>5 stars<meter value={fiveStars / totalDenominator }></meter></p>
 
-        <p onClick={()=>filterHandler(4)}>4 stars<meter value={fourStars / totalDenominator }></meter></p>
+        <p style={bolded.includes(4) ? {fontWeight:"bold"} : {fontWeight:"normal"}} onClick={()=>
+          {filterHandler(4)
+            addStyle(4)
+          }}>4 stars<meter value={fourStars / totalDenominator }></meter></p>
 
-        <p onClick={()=>filterHandler(3)}>3 stars<meter value={threeStars / totalDenominator }></meter></p>
+        <p style={bolded.includes(3) ? {fontWeight:"bold"} : {fontWeight:"normal"}} onClick={()=>
+          {filterHandler(3)
+            addStyle(3)
+        }}>3 stars<meter value={threeStars / totalDenominator }></meter></p>
 
-        <p onClick={()=>filterHandler(2)}>2 stars<meter value={twoStars / totalDenominator }></meter></p>
+        <p style={bolded.includes(2) ? {fontWeight:"bold"} : {fontWeight:"normal"}}
+        onClick={()=>{filterHandler(2)
+        addStyle(2)}}>2 stars<meter value={twoStars / totalDenominator }></meter></p>
 
-        <p onClick={()=>filterHandler(1)}>1 star<meter value={oneStar / totalDenominator }></meter></p>
+        <p style={bolded.includes(1) ? {fontWeight:"bold"} : {fontWeight:"normal"}}
+        onClick={()=>{filterHandler(1)
+        addStyle(1)}}>1 star<meter value={oneStar / totalDenominator }></meter></p>
       </div>
 
       <ProductBreakdown reviewsMeta={reviewsMeta}/>

@@ -426,7 +426,7 @@ ul li span {
 
    .rr-photo {
     width:100px;
-    height:100px
+    height:100%
    }
 
    .rr-recommend {
@@ -435,6 +435,7 @@ ul li span {
 
    .rr-help-and-report {
     display: flex;
+    gap: 10%
    }
 
    .rr-report-button {

@@ -15,7 +15,6 @@ const AnswerImageItem = ({ photo, token, handleAnswersList }) => {
     </div>
 
   )
-
 }
 
 export default AnswerImageItem;
