@@ -39,41 +39,37 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
 /* ==========================================================================
    Style for Product Overview Module
    ========================================================================== */
-.product-overview {
+.product-overview-module {
   display: flex;
   /* flex-direction: column; */
   color:#333;
+  height:700px;
 }
-.product-overview, h4, h2 {
+.product-overview-module, h4, h2 {
   color:#333;
 }
-.p-o-left {
-  border: 1px solid #e9e9e9;
-  flex: 0 0 63%;
-  padding:0px;
-}
 
-.p-o-right {
+.product-details-container {
   border: 1px solid #e9e9e9;
   flex: 1;
   padding:16px;
   box-sizing: border-box;
 }
 
-.p-o-ratings-reviews {
+.p-o-rating-stars-and-link-to-reviews {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
 }
 
-.p-o-ratings-reviews a {
+.p-o-rating-stars-and-link-to-reviews a {
   font-size: 12px;
-  margin-left:8px;
-  color:gray;
+  margin-left: 8px;
+  color: gray;
 }
 
-.p-o-ratings-reviews a:hover{
-  color:rgb(69, 69, 69);
+.p-o-rating-stars-and-link-to-reviews a:hover {
+  color: rgb(69, 69, 69);
 }
 
 .p-o-title {
@@ -84,6 +80,21 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   margin-bottom: 25px;
 }
 
+.p-o-price {
+  color:#333;
+}
+
+.social-media-sharing {
+  color:#333;
+  display: flex;
+}
+.social-media-icons {
+  font-size:18px;
+  cursor: pointer;
+  margin-left:8px;
+}
+
+/* CSS for the styles in ProductInformation */
 .styles-container {
   display: flex;
   flex-wrap: wrap;
@@ -94,8 +105,8 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
 
 .style-thumbnail {
   position: relative;
-  width: 60px; /* Adjust as needed */
-  height: 60px; /* Adjust as needed */
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   overflow: auto;
   margin-bottom: 10px;
@@ -107,13 +118,13 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
 }
 
 .style-thumbnail.selected::after {
-  content: ''; /* Overlay for the checkmark */
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent white */
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -130,16 +141,166 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   font-size: 18px;
   z-index:2;
   font-weight: bold;
+  padding-top: 5px;
 }
 
+/* End of CSS for styles in ProductInformation*/
 
-.product.size-and-quantity {
+
+/* CSS for Image Gallery */
+
+.image-gallery-container {
+  border: 1px solid #e9e9e9;
+  flex: 0 0 63%;
+  padding:0px;
+}
+/* Temporary css to show a plceholder image for the image gallery */
+.temp-placeholder {
+  cursor: pointer;
+  background-color: #f8f8f8;
+  width: 63%;
+  background: white;
+  height: 100%;
+  /* background-image: url('https://placehold.co/650?text=KFC+IS COOKING&font=Oswald');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center; */
+  background:none;
   display: flex;
   justify-content: center;
-  gap: 20px; /* Adjust the space between selects */
+  align-items: center;
+  text-align:center;
+  font-size:30px;
+  font-weight:bold;
+  position: absolute;
+  z-index: 3;
 }
 
-.product.size-and-quantity select {
+.p-o-thumbnails-left-container{
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  width: auto;
+  /* border: 1px solid red; */
+  z-index: 5;
+  height: auto;
+  box-sizing: border-box;
+}
+
+.p-o-thumbnail-left {
+  width: 65px;
+  height: 65px;
+  margin: 0 0 6px 0;
+  cursor: pointer;
+  border: 2px solid gray;
+  background-position: center center;
+  background-size: cover;
+  display: block;
+  transition: all 0.5s ease;
+}
+
+.p-o-thumbnail-bottom-expanded-view {
+  border-radius: 50%;
+  width:20px;
+  height:20px;
+  margin:0px 2px 0px 2px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  background-position: center center;
+  background-size: cover;
+  display: block;
+  transition: all 0.5s ease;
+}
+
+.p-o-thumbnail-left > .selected {
+  border: 2px solid #333;
+}
+.p-o-thumbnail-left:hover {
+  border: 2px solid #4d4d4d;
+}
+
+.p-o-main-image{
+  background-color: white;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor:zoom-in;
+}
+
+.p-o-arrows-conteiner-default-image-view{
+  height: 100%;
+  padding-left: 96px;
+  padding-right: 20px;
+  width: 63%;
+  /* border: 1px solid green; */
+  display: flex;
+  z-index: 4;
+  font-size: 30px;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: all 0.5s ease;
+  color: #ffffffad;
+}
+
+.p-o-thumbnails-bottom-container {
+  position: absolute;
+  bottom: 12px;
+  width: 100%;
+  display: flex;
+  z-index: 5;
+  height: auto;
+  box-sizing: border-box;
+  justify-content: center;
+  transition: all 0.5s ease;
+}
+
+.p-o-arrows {
+  /* color:rgba(255, 255, 255, 0.6); */
+  color:rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+  border-radius:50%;
+  padding:0;
+  transition: all 0.5s ease;
+  background: #ffffff4d;
+}
+
+.p-o-arrows:hover {
+  /* color:rgba(255, 255, 255, 0.9); */
+  color:rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+}
+
+.p-o-arrows-expanded-view {
+  color:rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  border-radius:50%;
+  padding:0;
+  transition: all 0.5s ease;
+}
+.p-o-arrows-expanded-view:hover{
+  color:rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 5px rgba(245, 245, 245, 0.6);
+}
+/* CSS for select options - size and quantity*/
+.p-o-size-and-quantity {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.p-o-size-and-quantity select {
   padding: 13px;
   font-size: 16px;
   border: 2px solid #ccc;
@@ -149,36 +310,14 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   font-weight: bold;
 }
 
-/* .custom-dropdown {
-  cursor:pointer;
-  padding: 10px;
-  font-size: 16px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  background-color: #f8f8f8;
-  width: 50%;
-  -webkit-font-smoothing: auto
-} */
-.temp-placeholder {
-  cursor:pointer;
-  background-color: #f8f8f8;
-  width: 100%;
-  height: 100%;
-  background-image: url('https://placehold.co/650?text=KFC+IS COOKING&font=Oswald');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  display:block;
-}
+.size-select {width: 65%;}
+.quantity-select {width: 35%;}
 
 /* Style for the disabled dropdown */
 .product.size-and-quantity select:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
-.size-select {width: 65%;}
-.quantity-select {width: 35%;}
 
 .add-to-cart-and-like {
   margin-top:16px;
@@ -198,15 +337,37 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   font-weight: bold;
 }
 
-
-/* Style for the disabled dropdown */
+/* Style for the disabled button */
 .add-to-cart-and-like button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.add-to-cart-button {width: 75%;}
-.like-button {width: 25%;}
+.p-o-add-to-cart-button {width: 75%;}
+.p-o-like-button {width: 25%;}
+
+.cart-info-icon{
+  position: absolute;
+  background: #F4493C;
+  padding: 3px 4px 3px 5px;
+  top: 10px;
+  right: 17px;
+  color: white;
+  font-size: 12px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* .custom-dropdown {
+  cursor:pointer;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  width: 50%;
+  -webkit-font-smoothing: auto
+} */
 
 
 :root {
@@ -235,13 +396,6 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   -webkit-text-stroke-width: 1px;
 }
 
-.slogan-description-and-features{
-  display:flex;
-  width: 100%;
-  border: 1px solid #e9e9e9;
-  padding:0px;
-}
-
 .nav-bar {
   padding:8px 16px 8px 16px;
   margin:0;
@@ -264,6 +418,7 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   align-items: center;
   justify-content: space-between;
   width: 230px;
+  margin-right:50px;
 }
 
 .fake-search input {
@@ -273,8 +428,21 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   outline: none;
 }
 
-svg {
+.searchIcon {
   cursor: pointer;
+  font-size:20px;
+  color:#788087;
+  margin-bottom:2px;
+}
+
+.cartIcon{
+  cursor: pointer;
+  font-size:25px;
+  color:#788087;
+  margin-bottom:2px;
+  position:absolute;
+  top:8px;;
+  right:8px;
 }
 
 .nav-bar h1 {
@@ -286,27 +454,42 @@ svg {
 }
 
 .p-o {
-  padding-top:8px;
-  border:1px solid #e9e9e9;
+  padding:0px;
+  margin-top:8px;
+  /* border:1px solid #e9e9e9; */
 }
+
 .global-announsment{
+  cursor:pointer;
   color: #788087;
   display: flex;
   align-items: center;
   width: 100%;
-  border: 1px solid #e9e9e9;
+  /* border: 1px solid #e9e9e9; */
   font-size: 12px;
   justify-content: center;
-  margin-bottom:8px;
+  margin-top:8px;
   word-spacing: 2px;
 }
-
+.slogan-description-and-features{
+  display:flex;
+  width: 100%;
+  border: 1px solid #e9e9e9;
+  padding:0px;
+}
 .slogan-description {
   padding:16px;
   width: 80%;
   color: #788087;
 }
-
+.slogan-description p{
+  font-size:14px;
+  margin-top: 8px;
+}
+.slogan-description h4{
+  padding:0;
+  margin: 0;
+}
 .rounded-right-border {
   display: block;
   position: absolute;
@@ -317,15 +500,6 @@ svg {
   background-color: #788087; /* Border color */
   border-radius: 8px; /* Round the right border */
 }
-
-.slogan-description p{
-  font-size:14px;
-  margin-top: 8px;
-}
-.slogan-description h4{
-  padding:0;
-  margin: 0;
-}
 .p-o-features{
   color: #788087;
   width: 30%;
@@ -334,8 +508,6 @@ svg {
   font-size:14px;
   padding:16px;
 }
-
-
 ul {
   list-style: none; /* Remove default list style */
   margin: 0;
@@ -347,9 +519,6 @@ ul li span {
   margin-right: 5px; /* Adjust spacing between checkmark and text */
 }
 
-.p-o-price {
-  color:#333;
-}
 
 /* ==========================================================================
    End of Product Overview Module styles
