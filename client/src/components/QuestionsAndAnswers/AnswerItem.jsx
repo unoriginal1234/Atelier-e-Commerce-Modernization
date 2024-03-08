@@ -5,6 +5,7 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token, forImageID }) =
   const answer_id = answer.answer_id;
   const [answerHelpful, setAnswerHelpful] = useState(answer.helpfulness);
   const [reported, setReported] = useState(answer);
+  const [disabled, setDisabled] = useState(false);
   const date = {
     year: 'numeric',
     month: 'long',
@@ -17,6 +18,7 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token, forImageID }) =
   const handleYes = () => {
     axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/answers/${answer_id}/helpful`, null ,token)
       .then(() => {
+        setDisabled(true);
         handleAnswersList();
         console.log("Successfully updated helpfulness")
       })
@@ -56,11 +58,11 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token, forImageID }) =
         </div>
         <div>
           <small className="answer-small-container">
-            <div>by {answer.answerer_name=== "Seller"?<strong>{answer.answerer_name}</strong>:answer.answerer_name}, {finalDate}</div>
+            <div>by {answer.answerer_name.toLowerCase() === "seller"?<strong>{answer.answerer_name}</strong>:answer.answerer_name}, {finalDate}</div>
              |
              <div>Helpful?</div>
              <div>
-              <span onClick={handleYes} className="yes-answer-button report-button">Yes</span>
+              <button onClick={handleYes} disabled={disabled} className="yes-answer-button report-button">Yes</button>
                ({answerHelpful})
               </div>
                |

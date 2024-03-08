@@ -20,12 +20,11 @@ const QuestionsAndAnswers = ( { id, token, productData } ) => {
   }
   //function to handle axios get request for data
   const handleQuestionsList = () => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/?product_id=${id}`, token)
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/?product_id=${id}&count=100`, token)
       .then((results) => {
         //const question = results.data.results;
 
         setQuestionData(results.data.results);
-        console.log('question data:',questionData);
         setOldData(results.data.results);
         setFilterData(results.data.results);
       })
@@ -40,21 +39,21 @@ const QuestionsAndAnswers = ( { id, token, productData } ) => {
 
   if(!questionData) {
     return <div>Loading...</div>
-  } else {
-    return (
+  }
+  return (
 
+    <div>
+      QUESTIONS & ANSWERS
       <div>
-        QUESTIONS & ANSWERS
-        <div>
-          <SearchAnswers handleSearch={handleSearch}/>
-        </div>
-        <div>
-          <QuestionsList questionData={questionData} token={token} handleQuestionsList={handleQuestionsList} productData={productData} id={id}/>
-        </div>
+        <SearchAnswers handleSearch={handleSearch}/>
       </div>
+      <div>
+        <QuestionsList questionData={questionData} token={token} handleQuestionsList={handleQuestionsList} productData={productData} id={id}/>
+      </div>
+    </div>
 
     )
-  }
+
 }
 
 export default QuestionsAndAnswers;

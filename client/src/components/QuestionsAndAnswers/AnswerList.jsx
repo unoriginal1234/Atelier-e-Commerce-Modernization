@@ -12,7 +12,7 @@ const AnswerList = ({ question_id, token, forImageID, product_id}) => {
   const minAnswers = answers.slice(0, displayedAnswers);
   const handleAnswersList = () => {
 
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${question_id}/answers`, token)
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${question_id}/answers/?count=11`, token)
       .then((results) => {
         //console.log(results.data.results);
         const answersList = results.data.results;
@@ -31,7 +31,7 @@ const AnswerList = ({ question_id, token, forImageID, product_id}) => {
 
   return (
 
-    <div>
+    <div className="answer-list-container">
       {minAnswers.map(answer => {
         return <AnswerItem
         key={answer.answer_id}

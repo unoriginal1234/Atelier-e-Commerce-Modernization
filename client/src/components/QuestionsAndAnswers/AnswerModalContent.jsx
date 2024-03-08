@@ -8,6 +8,7 @@ const AnswerModalContent = ({question, productData, onClose, token, answerID, ha
   const [yourEmail, setYourEmail] = useState('');
   const [yourPhotos, setYourPhotos] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [invalid,setInvalid] = useState(false);
   const handleYourAnswer = (e) => {
     setYourAnswer(e.target.value);
   }
@@ -24,7 +25,7 @@ const AnswerModalContent = ({question, productData, onClose, token, answerID, ha
       "email":yourEmail,
       "photos":yourPhotos
     }
-    console.log(yourPhotos);
+    console.log(data);
     axios.post(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${question.question_id}/answers`,data, token)
       .then(()=> {
         handleQuestionsList();
@@ -34,20 +35,27 @@ const AnswerModalContent = ({question, productData, onClose, token, answerID, ha
       })
   }
   const handleUpload = (e) => {
-    let photos = [];
-    photos.push(URL.createObjectURL(e.target.files[0]));
-    console.log(photos);
-    setYourPhotos(photos);
+    const file = URL.createObjectURL(e.target.files[0]);
+    const photoArr = [];
+    photoArr.push(file);
+    setYourPhotos(photoArr);
 
   }
-  const handleSubmit = () => {
-    handlePostAnswers();
-    onClose();
+  const validateForm = (event) => {
+    event.preventDefault();
+    if(yourAnswer.length <= 0 || yourNickname.length <= 0 || yourEmail<= 0) {
+      setInvalid(true);
+    } else {
+      setInvalid(false);
+      handlePostAnswers();
+      onClose();
+    }
   }
+
 
   return (
 
-    <div className="answer-modal-content">
+    <form className="answer-modal-content">
       <h2>Submit Your Answer</h2>
       <h3>{productData.name} : {question.question_body}</h3>
       <label>
@@ -58,10 +66,18 @@ const AnswerModalContent = ({question, productData, onClose, token, answerID, ha
       (For privacy reasons, do not use your full name or email address)
       Your email: <input maxLength="60" value={yourEmail} onChange={handleYourEmail} placeholder="Example: jack@email.com"/>
       (For authentication reasons,  you will not be emailed)
-      <label>Upload photos</label>
       <input type="file" onChange={handleUpload} ></input>
-      <button onClick={handleSubmit}>Submit</button>
-    </div>
+      <button onClick={validateForm}>Submit</button>
+      {invalid && (
+        <div className="invalid-inputs">
+          <h3>You must enter the following:</h3>
+          <p>This error will occur if :</p>
+          <p>1. Any mandatory fields are blank</p>
+          <p>2. The email address provided is not in correct email format</p>
+          <p>3. The images selected are invalid or unable to be uploaded.</p>
+        </div>
+      )}
+    </form>
 
   )
 
