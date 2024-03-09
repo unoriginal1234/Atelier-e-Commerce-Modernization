@@ -531,13 +531,16 @@ ul li span {
 
    .rr-container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     flex-direction: row;
+    gap: 5%;
    }
 
    .rr-list {
     flex: 2;
     /* border: 1px solid #ccc; */
+    margin: 10px;
+    padding-right: 20px;
     margin: 2px;
     max-width: 750px;
    }
@@ -562,6 +565,9 @@ ul li span {
    .rr-breakdown {
     /* flex: 1; */
     /* border: 1px solid #ccc; */
+    margin: 10px;
+    padding-right: 20px;
+    border-right: 1px solid #E9E9E9;
     margin: 2px
    }
 
@@ -750,6 +756,17 @@ ul li span {
     font-size: smaller;
   }
 
+  .rr-sort-select {
+    font-family: inherit;
+    font-size: 16px;
+    margin: 8px;
+    border: none
+  }
+
+  .rr-form-exit {
+    cursor: pointer;
+  }
+
   .rr-form-stars input[type="radio"] {
     display: none;
   }
@@ -757,6 +774,24 @@ ul li span {
     cursor: pointer;
     font-size: 2rem;
     margin: 5px;
+  }
+
+  .rr-see-more-btn {
+    cursor: pointer;
+    padding: 12px 10px 10px 8px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f8f8;
+    color: #5e5e5e;
+    font-weight: bold;
+  }
+
+  .rr-form-pic-and-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
   }
 
   /* --------------------------------
