@@ -1051,10 +1051,20 @@ Related Items Card
 .r-i-sale {
   color: red;
   cursor: pointer;
+  margin-right: 2%;
 }
 
 .r-i-price {
   cursor: pointer;
+}
+
+.r-i-oldprice {
+  color: rgb(166, 176, 185);
+  text-decoration: line-through;
+}
+
+.r-i-pc {
+  block-size: auto;
 }
 
 
