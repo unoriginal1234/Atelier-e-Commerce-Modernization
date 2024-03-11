@@ -859,10 +859,12 @@ ul li span {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border: 1px solid #e9e9e9;
+  padding: 10px;
 
 }
 .qa-container {
-  border: 5px solid lightgrey;
+  border: 1px solid #e9e9e9;
   padding: 20px;
   margin-bottom: 10px;
 }
@@ -881,6 +883,9 @@ ul li span {
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
+  border: 1px solid #e9e9e9;
+  padding: 12px;
+
 }
 .answer-body-container {
   gap: 5px;
@@ -953,14 +958,20 @@ ul li span {
 
 }
  .answer-image-onClose {
-  position:fixed;
-  top: 10px;
-  right: 10px;
+  position: absolute;
+  top: -17px;
+  right: -15px;
   cursor: pointer;
+  z-index: 1;
+  font-weight: bold;
 }
 .answer-image-modal-settings {
   width: 100%;
   height: 100%;
+}
+.answer-image-modal-content {
+  max-width: 600px;
+  position: relative;
 }
 .bottom-buttons-container {
   display: flex;
