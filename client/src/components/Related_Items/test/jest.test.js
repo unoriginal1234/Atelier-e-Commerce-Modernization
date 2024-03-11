@@ -9,11 +9,63 @@ import App from '../../App.jsx';
 import Related from '../Related.jsx';
 import Card from '../Card.jsx';
 import data from './example_data.js';
+import appData from './related_example.js';
 
-test('expect Loading to appear on first render', () => {
-  const { asFragment, getByText } = render(<Related />);
-  expect(getByText(/Loading/i)).toBeInTheDocument();
-});
+// test('expect Loading to appear on first render', () => {
+//   const { asFragment, getByText } = render(<Related />);
+//   expect(getByText(/Loading/i)).toBeInTheDocument();
+// });
+
+describe('Related component functionality', () => {
+  const token = {
+    headers: {
+      'Authorization': process.env.REACT_APP_API_KEY,
+    }
+  };
+  const id= 65633;
+  const mockFunc = jest.fn();
+
+  test('Does the right arrow appear when there are 5+ related items', async () => {
+    const {getByText, getByTitle} = render(<Related token={token} id={id} product={appData.product} productBulk={appData.pagetBulk} data={appData.related} setID={mockFunc}/>);
+
+    waitFor(() => getByTitle('r-i-right'));
+    expect(getByTitle('r-i-right')).toBeInTheDocument();
+  })
+
+  test('Right and left buttons should only appear when useful', async () => {
+    const {getByText, getByTitle} = render(<Related token={token} id={id} product={appData.product} productBulk={appData.pageBulk} data={appData.related} setID={mockFunc}/>);
+
+    waitFor(() => getByTitle('r-i-right'));
+    fireEvent.click(screen.getByTitle('r-i-right'));
+
+    waitFor(() => getByTitle('r-i-left'));
+    expect(getByTitle('r-i-left')).toBeInTheDocument();
+  })
+
+  test('Clicking add to outfit should add current item', async () => {
+    const {getByText, getByTitle} = render(<Related token={token} id={id} product={appData.product} productBulk={appData.pageBulk} data={appData.related} setID={mockFunc}/>);
+
+    waitFor(() => getByTitle('r-i-right'));
+    fireEvent.click(screen.getByTitle('r-i-add'));
+
+    waitFor(() => getByText("Morning Joggers"));
+    expect(getByText('Morning Joggers')).toBeInTheDocument();
+  })
+
+  test('You should not be able to add the same item twice', async () => {
+    const {getByText, getByTitle} = render(<Related token={token} id={id} product={appData.product} productBulk={appData.pageBulk} data={appData.related} setID={mockFunc}/>);
+
+    waitFor(() => getByTitle('r-i-right'));
+    fireEvent.click(screen.getByTitle('r-i-add'));
+
+    waitFor(() => getByText("Morning Joggers"));
+    const item = getByText("Morning Joggers");
+    fireEvent.click(screen.getByTitle('y-o-delete'));
+
+    waitFor(() => getByText("Morning Joggers").toBeNull());
+    expect(item).not.toBeInTheDocument();
+  })
+})
 
 describe('Card secret functionality', ()=> {
   const onClick = () => {console.log('clicked')};

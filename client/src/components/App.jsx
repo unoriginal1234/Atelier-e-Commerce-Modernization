@@ -16,6 +16,7 @@ const App = () => {
   const [productData, setproductData] = useState({});
   const [cartData, setCartData] = useState([]);
   const [relatedIDs, setRelatedIDs] = useState([]);
+  const [pageItemBulk, setPageItemBulk] = useState({});
   const [relatedItems, setRelatedItems] = useState([]);
   const ratingsAndReviewsRef = useRef(null); // to scroll down to ratings and reviews from product overview
 
@@ -44,12 +45,17 @@ const App = () => {
     Promise.all([
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}`, token),
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp/cart?session_id=${productID}`, token),
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}/related`, token)
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}/related`, token),
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${productID}`,token),
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}/styles`, token)
     ])
-      .then(([productResponse, cartResponse, relatedResponse]) => {
+      .then(([productResponse, cartResponse, relatedResponse, metaResponse, stylesResponse]) => {
         setproductData(productResponse.data);
         setCartData(cartResponse.data);
         setRelatedIDs(relatedResponse.data);
+        let pageItem = {product: productResponse.data, meta: metaResponse.data, styles: stylesResponse.data}
+        setPageItemBulk(pageItem);
+        console.log(pageItem);
       })
       .catch((err) => {
       console.log('Error retrieving data', err);
@@ -108,7 +114,7 @@ const App = () => {
       </div>
 
       <div className="widget-container p-o"><ProductOverview setCartData={setCartData} authKey={token} id={productID} onClickReadAllReviews={scrollToRatingsAndReviews}/></div>
-      <div className="widget-container r-i-container"><Related id={productID} product={productData} data={relatedItems} setID={changeID}/></div>
+      <div className="widget-container r-i-container"><Related id={productID} product={productData} productBulk={pageItemBulk} data={relatedItems} setID={changeID}/></div>
       <div className="widget-container"><RatingsAndReviews id={productID} token={token} ref={ratingsAndReviewsRef}/></div>
       <div className="widget-container"><QuestionsAndAnswers id={productID} token={token} productData={productData}/></div>
     </div>

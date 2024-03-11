@@ -8,7 +8,7 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 
 const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitItem}) {
   //States
-  const [currentCard, setCurrentCard] = useState(item.product.id);
+  const [currentCard, setCurrentCard] = useState(item.product.id || 0);
   const [compare, setCompare] = useState(false);
   const [bothCategories, setBothCategories] = useState({fabric: {v1: 'cotton', v2: 'polyester'}});
   const [deleteHover, setDeleteHover] = useState(false);
@@ -113,7 +113,7 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
       {compare && <Comparison bothCategories={bothCategories}/>}
       {(type.type === 'related' && !compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaRegStar title="r-i-empty-star"/></div>}
       {(type.type === 'related' && compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaStar /></div>}
-      {type.type === 'outfit' && <div className="r-i-secret-btn" onMouseEnter={()=> setDeleteHover(true)} onMouseLeave={()=> setDeleteHover(false)} onClick={yoAction}>
+      {type.type === 'outfit' && <div className="r-i-secret-btn" title="y-o-delete"onMouseEnter={()=> setDeleteHover(true)} onMouseLeave={()=> setDeleteHover(false)} onClick={yoAction}>
         {deleteHover && <IoIosCloseCircle />}
         {!deleteHover && <IoIosCloseCircleOutline />}
       </div>}

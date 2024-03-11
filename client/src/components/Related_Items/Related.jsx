@@ -12,7 +12,6 @@ const Related = function (props) {
   const [lastOutfitIndex, setLastOutfitIndex] = useState(2);
   const [pageCategories, setPageCategories] = useState(null) //f1: {v1: val1, v2: val2}
 
-  console.log(props.data, props.product);
   //Type objects
   let outfit = {type: 'outfit'};
   let related = {type: 'related'};
@@ -64,28 +63,16 @@ const Related = function (props) {
 
   //Add to outfit function
   const addToOutfit = function () {
-    let item = {product: props.product};
     let oldOutfit = yourOutfit.slice();
     let notInside = true;
     for (var i = 0; i < yourOutfit.length; i ++) {
-      if (yourOutfit[i].product === props.product) {
+      if (yourOutfit[i].product === props.productBulk.product) {
         notInside = false;
       }
     }
     if (notInside) {
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${props.id}`, options)
-      .then((response) => {
-        item.meta = response.data;
-        return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${props.id}/styles`, options);
-      })
-      .then((response) => {
-        item.styles = response.data;
-        oldOutfit.push(item);
-        setYourOutfit(oldOutfit);
-      })
-      .catch((err) => {
-        console.error('Error adding to outfit', err);
-      })
+      oldOutfit.push(props.productBulk);
+      setYourOutfit(oldOutfit);
     }
   };
 
@@ -131,7 +118,7 @@ const Related = function (props) {
       <hr/>
       <div className="r-i-carousel">
         {props.data.length === 0 && <div className="r-i-missing">Loading...</div>}
-        {(currentItemsIndex > 0) && <div className="r-i-carousel-btn-left" onClick={onLeftClick}><FaArrowLeft /></div>}
+        {(currentItemsIndex > 0) && <div title="r-i-left" className="r-i-carousel-btn-left" onClick={onLeftClick}><FaArrowLeft /></div>}
         {/* {(currentItemsIndex = 0) && <button className="r-i-carousel-btn">Left</button>} */}
         <div className="r-i-carousel-card-holder r-i-carousel">
         {props.data.map((item, index) => {
@@ -140,11 +127,11 @@ const Related = function (props) {
           }
         })}
         </div>
-        {(lastItemIndex + 1 < props.data.length) && <div className="r-i-carousel-btn-right" onClick={onRightClick}><FaArrowRight /></div>}
+        {(lastItemIndex + 1 < props.data.length) && <div className="r-i-carousel-btn-right" title="r-i-right" onClick={onRightClick}><FaArrowRight /></div>}
       </div>
       <h2>Your Outfit</h2>
       <hr/>
-      <div className="y-o-carousel">
+      <div title="y-o-carousel" className="y-o-carousel">
         {(firstOutfitIndex > 0) && <div className="r-i-carousel-btn-left" onClick={onYOLeftClick}><FaArrowLeft /></div>}
         <div className="r-i-carousel-card-holder r-i-carousel">
         <div className='r-i-card' onClick={addToOutfit}>
@@ -154,7 +141,7 @@ const Related = function (props) {
         {(yourOutfit.length >= 1) && yourOutfit.map((item, index) => {
           let current = yourOutfit.indexOf(item);
           if (current >= firstOutfitIndex && current <= lastOutfitIndex) {
-            return <Card key={index} item={item} setID={props.setID} clearIndex={clearIndex} deleteOutfitItem={deleteOutfitItem} type={{type: 'outfit'}}/>
+            return <Card title="r-i-outfitCard" key={index} item={item} setID={props.setID} clearIndex={clearIndex} deleteOutfitItem={deleteOutfitItem} type={{type: 'outfit'}}/>
           }
         })}
         </div>
