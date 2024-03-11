@@ -1003,6 +1003,10 @@ Style for Related Items Module
 /*============================
 Related Items Card
 =========================== */
+.r-i-container {
+  border-width: 0px;
+}
+
 .r-i-card {
   background-color: #f8f8f8;
   height: 95%;
@@ -1082,14 +1086,29 @@ Related Items Card
 .r-i-sale {
   color: red;
   cursor: pointer;
+  margin-right: 2%;
+  font-weight: bold;
 }
 
 .r-i-price {
   cursor: pointer;
 }
 
+.r-i-oldprice {
+  color: rgb(166, 176, 185);
+  text-decoration: line-through;
+}
+
+.r-i-pc {
+  block-size: auto;
+  margin: 0px;
+}
+
+
+/*r-i-loading div*/
 .r-i-missing {
   font-size: x-large;
+  height: 333px;
 }
 
 /*============================

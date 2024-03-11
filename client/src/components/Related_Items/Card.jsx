@@ -13,23 +13,24 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
   const [compare, setCompare] = useState(false);
   const [bothCategories, setBothCategories] = useState({fabric: {v1: 'cotton', v2: 'polyester'}});
   const [deleteHover, setDeleteHover] = useState(false);
-  const [currentStylePic, setCurrentStylePic] = useState(item.styles.results[0].photos[0].thumbnail_url || `https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg`);
+  const [currentStyleIndex, setCurrentStyleIndex] = useState(0);
 
   //Style Carousel
-  const [styles, setStyles] = useState(item.styles.results.slice(1));
+  const [styles, setStyles] = useState(item.styles.results.slice());
   const [firstThumbnailIndex, setFirstThubmnailIndex] = useState(0);
   const [lastThumbnailIndex, setLastThumbnailIndex] = useState(3);
   const [styleCarousel, setStyleCarousel] = useState(false);
 
-  //Image in-line css
-  const image = {
-    backgroundImage: `url(${currentStylePic})`,
-  }
+  // //Image in-line css
 
   //Variable declaration to keep component dry
-  let img_url = item.styles.results[0].photos[0].thumbnail_url || `https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg`;
+  let img_url = item.styles.results[currentStyleIndex].photos[0].thumbnail_url || `https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg`;
   let preStarRatings = item.meta.ratings;
   let product = item.product;
+
+  const image = {
+    backgroundImage: `url(${img_url})`,
+  }
 
   //On click functionality
   const changeID = function () {
@@ -43,6 +44,9 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
   };
   const yoAction = function () {
     deleteOutfitItem(item);
+  };
+  const closeSecret = function () {
+    setCompare(false);
   }
 
   //Carousel click functions --------------------------
@@ -62,8 +66,8 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
   };
 
   //Clicking tumbnail carousel img
-  const thumbClick = function (url) {
-    setCurrentStylePic(url);
+  const thumbClick = function (index) {
+    setCurrentStyleIndex(index);
   }
 
   //Feature maker
@@ -106,7 +110,7 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
 
   //Component return
   return (
-    <div className="r-i-card">
+    <div onMouseLeave={closeSecret} className="r-i-card">
       {compare && <Comparison bothCategories={bothCategories}/>}
       {(type.type === 'related' && !compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaRegStar title="r-i-empty-star"/></div>}
       {(type.type === 'related' && compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaStar /></div>}
@@ -121,7 +125,7 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
             {styles.length !== 0 && <BsChevronCompactLeft onClick={onLeftClick} className="r-i-style-carousel-left"/>}
             {styles.map((style, index) => {
               if (styles.indexOf(style) >= firstThumbnailIndex && styles.indexOf(style) <= lastThumbnailIndex) {
-                return <StyleSlide key={index} change={thumbClick} style={style}/>
+                return <StyleSlide key={index} index={styles.indexOf(style)} change={thumbClick} style={style}/>
               }
             })}
             <BsChevronCompactRight onClick={onRightClick} className="r-i-style-carousel-right"/>
@@ -130,8 +134,8 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
       <div onClick={changeID}>
         <div className="r-i-cat" title="r-i-cat">{product.category}</div>
         <div className="r-i-name" title="r-i-name">{product.name}</div>
-        {item.styles.results[0].sale_price === null && <div className="r-i-price" title="r-i-price">{product.default_price}</div>}
-        {item.styles.results[0].sale_price !== null && <div><p className="r-i-sale">{item.styles.results[0].sale_price}</p><p><s>{product.default_price}</s></p></div>}
+        {item.styles.results[currentStyleIndex].sale_price === null && <div className="r-i-price" title="r-i-price">{item.styles.results[currentStyleIndex].original_price}</div>}
+        {item.styles.results[currentStyleIndex].sale_price !== null && <div className="r-i-price"><p className="r-i-pc"><span className="r-i-sale">{item.styles.results[currentStyleIndex].sale_price}</span><span className="r-i-oldprice">{product.default_price}</span></p></div>}
         <div className="r-i-stars" title="r-i-stars"><div  className="Stars" style={{ '--rating': star }}></div></div>
       </div>
     </div>
@@ -142,3 +146,6 @@ export default Card;
 
 //https://www.needpix.com/photo/1113016/
 //https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg
+
+{/* <div className="r-i-prices"><p className="r-i-sale">{item.styles.results[currentStyleIndex].sale_price}</p><p className="r-i-oldprice"><s>{product.default_price}</s></p></div> */}
+{/* <div className="r-i-prices"><p><span className="r-i-sale">{item.styles.results[currentStyleIndex].sale_price}</span><span className="r-i-oldprice">{product.default_price}</span></p></div> */}
