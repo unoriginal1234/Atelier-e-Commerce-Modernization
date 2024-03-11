@@ -96,6 +96,7 @@ const ReviewsCard = ({review}) => {
 
           </div>
         </div>
+        <hr></hr>
     </div>
   )
 }

@@ -100,7 +100,7 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
 
     <div className="rr-form-topper">
       <h3>Write Your Review</h3>
-      <h1 onClick={submitReview}> <RxCross1 /></h1>
+      <h1 className="rr-form-exit" onClick={submitReview}> <RxCross1 /></h1>
     </div>
 
 {/* Thanks to https://dev.to/kartikbudhraja/creating-a-dynamic-star-rating-system-in-react-2c8 */}
@@ -323,81 +323,84 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
 
           <br></br>
 
-          <label>
-                Picture:
-                <input type="text" name="photo" value={photo} onChange={onPhotoChange}/>
-          </label>
+          <div className="rr-form-pic-and-btn">
 
-          <input type="submit" value="Submit"
-          onClick={()=>{
+            <label>
+                  Picture:
+                  <input type="text" name="photo" value={photo} onChange={onPhotoChange}/>
+            </label>
 
-            if (reviewBody.length < 60) {
-              event.preventDefault();
-              alert("Please include a longer review. We'd love to hear your thoughts! At least 60 characters...")
-            } else if (isSize && !size || isWidth && !width || isComfort && !comfort || isQuality && !isQuality || isLength && !length || isFit && !fit) {
-              event.preventDefault();
-              alert("Please make let us know about the characteristics!")
-            } else if (!rating) {
-              event.preventDefault();
-              alert("What, no rating?!")
-            } else if (!email || email.indexOf('@') === -1) {
-              preventDefault();
-              alert("Please include your email (we won't share it, promise)")
-            } else if (!nickName) {
-              preventDefault();
-              alert("What should we call you?)")
-            }
-            else {
-              var charEntry = {}
-              var photoEntry = []
-              if (photo.length > 0) {
-                photoEntry.push(photo)
-              }
-              submitReview()
+            <input className="rr-see-more-btn" type="submit" value="Submit"
+            onClick={()=>{
 
-              if (size) {
-                charEntry[characteristics.Size.id] = parseInt(size)
+              if (reviewBody.length < 60) {
+                event.preventDefault();
+                alert("Please include a longer review. We'd love to hear your thoughts! At least 60 characters...")
+              } else if (isSize && !size || isWidth && !width || isComfort && !comfort || isQuality && !isQuality || isLength && !length || isFit && !fit) {
+                event.preventDefault();
+                alert("Please make let us know about the characteristics!")
+              } else if (!rating) {
+                event.preventDefault();
+                alert("What, no rating?!")
+              } else if (!email || email.indexOf('@') === -1) {
+                preventDefault();
+                alert("Please include your email (we won't share it, promise)")
+              } else if (!nickName) {
+                preventDefault();
+                alert("What should we call you?)")
               }
-              if (width) {
-                charEntry[characteristics.Width.id] = parseInt(width)
-              }
-              if (comfort) {
-                charEntry[characteristics.Comfort.id] = parseInt(comfort)
-              }
-              if (quality) {
-                charEntry[characteristics.Quality.id] = parseInt(quality)
-              }
-              if (length) {
-                charEntry[characteristics.Length.id] = parseInt(length)
-              }
-              if (fit) {
-                charEntry[characteristics.Fit.id] = parseInt(fit)
-              }
-              var rec = recommend === true;
-              console.log(rec)
-              axios({
-                method: 'post',
-                url: 'https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews',
-                headers: {
-                  'Authorization': process.env.REACT_APP_API_KEY,
-                },
-                data: {
-                  "product_id": id,
-                  "rating": parseInt(rating),
-                  "summary": reviewSummary.toString(),
-                  "body": reviewBody.toString(),
-                  "recommend": rec,
-                  "name": nickName.toString(),
-                  "email": email.toString(),
-                  "photos": photoEntry,
-                  "characteristics": charEntry
+              else {
+                var charEntry = {}
+                var photoEntry = []
+                if (photo.length > 0) {
+                  photoEntry.push(photo)
                 }
-              })
-              .catch((error)=> console.log(error));
-            }
+                submitReview()
+
+                if (size) {
+                  charEntry[characteristics.Size.id] = parseInt(size)
+                }
+                if (width) {
+                  charEntry[characteristics.Width.id] = parseInt(width)
+                }
+                if (comfort) {
+                  charEntry[characteristics.Comfort.id] = parseInt(comfort)
+                }
+                if (quality) {
+                  charEntry[characteristics.Quality.id] = parseInt(quality)
+                }
+                if (length) {
+                  charEntry[characteristics.Length.id] = parseInt(length)
+                }
+                if (fit) {
+                  charEntry[characteristics.Fit.id] = parseInt(fit)
+                }
+                var rec = recommend === true;
+                console.log(rec)
+                axios({
+                  method: 'post',
+                  url: 'https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews',
+                  headers: {
+                    'Authorization': process.env.REACT_APP_API_KEY,
+                  },
+                  data: {
+                    "product_id": id,
+                    "rating": parseInt(rating),
+                    "summary": reviewSummary.toString(),
+                    "body": reviewBody.toString(),
+                    "recommend": rec,
+                    "name": nickName.toString(),
+                    "email": email.toString(),
+                    "photos": photoEntry,
+                    "characteristics": charEntry
+                  }
+                })
+                .catch((error)=> console.log(error));
+              }
 
 
-          }}/>
+            }}/>
+          </div>
 
         </form>
       </div>
