@@ -158,7 +158,7 @@ describe('QuestionsAndAnswers', () => {
       expect(screen.getByTitle('question-modal-content')).toBeInTheDocument();
       expect(screen.getByLabelText("Ask Your Question")).toBeInTheDocument();
       expect(screen.getByLabelText("About the ")).toBeInTheDocument();
-      expect(screen.getByLabelText("YourQuestion:")).toBeInTheDocument();
+      expect(screen.getByLabelText("Your Question:")).toBeInTheDocument();
       expect(screen.getByLabelText("What is your nickname: ")).toBeInTheDocument();
       expect(screen.getByPlaceholderText("Example: jackson11!")).toBeInTheDocument();
       expect(screen.getByLabelText("(For privacy reasons, do not use your full name or email address)")).toBeInTheDocument();
@@ -166,6 +166,33 @@ describe('QuestionsAndAnswers', () => {
       expect(screen.getByPlaceholderText("Why did you like the product or not?")).toBeInTheDocument();
       expect(screen.getByLabelText("(For authentication reasons,  you will not be emailed)")).toBeInTheDocument();
       expect(screen.getByLabelText("Submit")).toBeInTheDocument();
+
+    })
+  });
+  test('renders class names, labels, and properly passes props into components within AnswerModalContent component', () => {
+    // Mock props
+    const question = "mock question";
+    const productData = "mock productData";
+    const onClose = "mock onClose function";
+    const token = "mock token";
+    const answerID = "mock answerID";
+    const handleQuestionsList = "mock handleQuestionsList";
+
+    render(
+      <AnswerModalContent question={question} productData={productData} onClose={onClose} token={token} answerID={answerID} handleQuestionsList={handleQuestionsList}/>
+    );
+    waitFor(()=> {
+      expect(screen.getByTitle('answer-modal-content')).toBeInTheDocument();
+      expect(screen.getByLabelText("Submit Your Answer")).toBeInTheDocument();
+      expect(screen.getByLabelText(":")).toBeInTheDocument();
+      expect(screen.getByLabelText("Your Answer:")).toBeInTheDocument();
+      expect(screen.getByLabelText("What is your nickname: ")).toBeInTheDocument();
+      expect(screen.getByPlaceholderText("Example: jack543!")).toBeInTheDocument();
+      expect(screen.getByLabelText("(For privacy reasons, do not use your full name or email address)")).toBeInTheDocument();
+      expect(screen.getByLabelText("Your email:")).toBeInTheDocument();
+      expect(screen.getByLabelText("(For authentication reasons,  you will not be emailed)")).toBeInTheDocument();
+      expect(screen.getByLabelText("Submit")).toBeInTheDocument();
+
     })
   });
 });
