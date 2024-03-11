@@ -72,7 +72,7 @@ const App = () => {
       </div>
 
       <div className="widget-container p-o"><ProductOverview setCartData={setCartData} authKey={token} id={productID} onClickReadAllReviews={scrollToRatingsAndReviews}/></div>
-      <div className="widget-container"><Related id={productID} meta={metaData} setID={changeID}/></div>
+      <div className="widget-container r-i-container"><Related id={productID} meta={metaData} setID={changeID}/></div>
       <div className="widget-container"><RatingsAndReviews id={productID} token={token} ref={ratingsAndReviewsRef}/></div>
       <div className="widget-container"><QuestionsAndAnswers id={productID} token={token} productData={metaData}/></div>
     </div>

@@ -5,7 +5,7 @@ const StyleSlide = function (props) {
 
   const url = props.style.photos[0].thumbnail_url || `https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg`;
   const changePreviewImage = function () {
-    props.change(url);
+    props.change(props.index);
   }
   const img = {
     backgroundImage: `url(${url})`
