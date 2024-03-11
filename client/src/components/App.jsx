@@ -49,15 +49,24 @@ const App = () => {
        })
        .catch((err) => {
         console.log('Error retrieving data', err);
+        // Fallback
+        alert('We couldn\'t find what you are looking for... Let\'s try getting the Camo Onesie Jacket product id: 65631 ^_^')
+        setProductID(65631);
        })
   }, [productID]);
+
+  const handleSearch = (e) => {
+    const inputValue = document.getElementById('searchInput').value || 65631;
+    setProductID(parseInt(inputValue));
+  }
 
   return (
     <div className="main-container">
       {/* Logo and search input, fake stuff to make it look more real */}
       <div className="widget-container nav-bar"><h1>KFC Logo</h1>
-      <i><span className="fake-search"> <input placeholder="Search" />
-      <IoSearch className="searchIcon"/></span><PiBagBold className="cartIcon" /></i> {cartData.length > 0 && (<span className="cart-info-icon">{cartData.length}</span>)}</div>
+      <i><span className="fake-search"> <input id="searchInput" placeholder="Search" />
+      <IoSearch className="searchIcon" onClick={handleSearch} /></span>
+      <PiBagBold className="cartIcon" /></i> {cartData.length > 0 && (<span className="cart-info-icon">{cartData.length}</span>)}</div>
       <div className="global-announsment">
           <i>SITE-WIDE ANNOUSNMENT MESSAGE &mdash;  SALE /&nbsp;</i> DISCOUNT <b>&nbsp;OFFER &nbsp;</b> &mdash;  <u>&nbsp;NEW PRODUCT HIGHLIGHT</u>
       </div>

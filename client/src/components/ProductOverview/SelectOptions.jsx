@@ -10,22 +10,34 @@ const SelectOptions = ({
     setErrorMessages([]);
   };
 
+ // Determine available sizes based on stock information
+ const availableSizes = currentSKUs.filter((sku) => sku[1].quantity > 0);
+
   return (
     <div className="p-o-size-and-quantity">
       {/* Size Select */}
-      <select className="size-select"
-       id="selectSize" size={isDropdownOpen ? document.getElementById("selectSize").options.length : 1}
-      onChange={handleSizeSelection}
-      value={selectedSize}
-      ref={selectSizeRef}
-      >
-        <option value="selectSize">SELECT SIZE</option>
-        {currentSKUs.map((sku) => (
-          <option key={sku[0]} sku={sku[0]}  value={sku[1].size}>
-            {sku[1].size}
-          </option>
-        ))}
-      </select>
+    {availableSizes.length > 0 ? (
+        <select
+          className="size-select"
+          id="selectSize"
+          size={isDropdownOpen ? document.getElementById("selectSize").options.length : 1}
+          // multiple={isDropdownOpen ? "multiple" : ""}
+          onChange={handleSizeSelection}
+          value={selectedSize}
+          ref={selectSizeRef}
+        >
+          <option value="selectSize">SELECT SIZE</option>
+          {availableSizes.map((sku) => (
+            <option key={sku[0]} sku={sku[0]} value={sku[1].size}>
+              {sku[1].size}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <select className="size-select" disabled>
+          <option value="outOfStock">OUT OF STOCK</option>
+        </select>
+      )}
 
       {/* Quantity Select */}
       <select className="quantity-select"

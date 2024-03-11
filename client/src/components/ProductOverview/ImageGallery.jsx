@@ -1,7 +1,11 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { FaCircleArrowRight, FaCircleArrowLeft } from "react-icons/fa6";
-import ReactImageZoom from 'react-image-zoom'; // more info about react-image-zoom -> https://www.npmjs.com/package/react-image-zoom
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { isValidURL } from './Utils';
+
+// import ReactImageZoom from 'react-image-zoom'; // more info about react-image-zoom -> https://www.npmjs.com/package/react-image-zoom
 // react-image-zoom demo: https://malaman.github.io/react-image-zoom/example/index.html
 
 const ImageGallery = ({ selectedStyle, currentStyleId }) => {
@@ -9,9 +13,51 @@ const ImageGallery = ({ selectedStyle, currentStyleId }) => {
   // Image Gallery staff
   const [isGalleryExpanded, setIsGalleryExpanded] = useState(false);
   const [backgroundPositionY, setBackgroundPositionY] = useState('center');
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isImageExpanded, setIsImageExpanded] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
+  if (currentImageIndex > (selectedStyle.photos.length - 1)) {
+    setCurrentImageIndex(selectedStyle.photos.length - 1);
+  }
+  const noImageAvailable = 'https://tse4.mm.bing.net/th/id/OIG4.d5j1eGp1XNI8NlPNgqbR?pid=ImgGn';
+  // if(!selectedStyle.photos[currentImageIndex].url){
+  //   const recFuncToSetPicIfNoPicAtCurrInx = () => {
+  //     if (!selectedStyle.photos[currentImageIndex].url) {
+  //       if (!selectedStyle.photos[0].url){
+  //         selectedStyle.photos[0].url = 'https://tse4.mm.bing.net/th/id/OIG4.d5j1eGp1XNI8NlPNgqbR?pid=ImgGn';
+  //       } else {
+  //         setCurrentImageIndex(currentImageIndex -= 1);
+  //         return recFuncToSetPicIfNoPicAtCurrInx();
+  //       }
+  //     }
+  //   }
+  //   recFuncToSetPicIfNoPicAtCurrInx();
+  // }
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      const keyActions = {
+        ArrowLeft: () => setCurrentImageIndex((prevIndex) => Math.max(prevIndex - 1, 0)),
+        ArrowUp: () => {/* Handle up arrow key press */},
+        ArrowRight: () => setCurrentImageIndex((prevIndex) => Math.min(prevIndex + 1, selectedStyle.photos.length - 1)),
+        ArrowDown: () => {/* Handle down arrow key press */},
+      };
+
+      const action = keyActions[event.key];
+      if (action) action();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedStyle.photos]);
+
+  useEffect(() => {
+    setScrollPosition(0);
+    // console.log('Use F ing Effectctct')
+  }, [selectedStyle]);
 
   const toggleGallery = () => {
     setIsGalleryExpanded(prevState => !prevState);
@@ -26,20 +72,23 @@ const ImageGallery = ({ selectedStyle, currentStyleId }) => {
     setCurrentImageIndex((prevIndex) =>
       direction === 'prev' ? (prevIndex + length - 1) % length : (prevIndex + 1) % length
     );
+    if (currentImageIndex > 5 && scrollPosition < (selectedStyle.photos.length - 7)*71){
+      setScrollPosition(scrollPosition + 71);
+    }
   };
 
   const handleImageClick = () => {
-    if (isExpanded) {
+    if (isImageExpanded) {
       setIsGalleryExpanded(false); // Toggle gallery expansion
-      setIsExpanded(false); // Toggle image expansion
+      setIsImageExpanded(false); // Toggle image expansion
     } else {
-      setIsExpanded(true); // Expand the image
-      console.log('is expanded true')
+      setIsImageExpanded(true); // Expand the image
+      // console.log('is expanded true')
     }
   };
 
   const handleMouseMove = (e) => {
-    if (isGalleryExpanded) {
+    if (isGalleryExpanded && isImageExpanded) {
       const imageContainer = document.querySelector('.p-o-main-image');
       const rect = imageContainer.getBoundingClientRect();
       const mouseY = e.clientY - rect.top;
@@ -48,6 +97,16 @@ const ImageGallery = ({ selectedStyle, currentStyleId }) => {
       setBackgroundPositionY(`${percentageY}%`);
     }
   };
+  // const handleWheel = (e) => {
+  //   if (isGalleryExpanded && isImageExpanded) {
+  //     const imageContainer = document.querySelector('.p-o-main-image');
+  //     const rect = imageContainer.getBoundingClientRect();
+  //     const deltaY = e.deltaY;
+  //     const newPosPercentage = (deltaY / rect.height) * 100;
+  //     setBackgroundPositionY(`${newPosPercentage}%`)
+  //   }
+  // };
+  // window.addEventListener('wheel', handleWheel);
 
   const handleClick = () => {
     if (isGalleryExpanded) {
@@ -58,6 +117,22 @@ const ImageGallery = ({ selectedStyle, currentStyleId }) => {
   };
 
 
+  const handleArrowUpClick = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1)
+    setScrollPosition(scrollPosition - 71);
+    }
+  };
+
+  const handleArrowDownClick = () => {
+    if (currentImageIndex < selectedStyle.photos.length - 1) {
+    setCurrentImageIndex(currentImageIndex + 1)
+    if (scrollPosition < (selectedStyle.photos.length - 7)*71){
+      setScrollPosition(scrollPosition + 71);
+    }
+    }
+  };
+// console.log('selectedStyle.photos.length: ', selectedStyle.photos.length)
   return (
     <>
       {/* Main Image */}
@@ -65,21 +140,31 @@ const ImageGallery = ({ selectedStyle, currentStyleId }) => {
       className="p-o-main-image"
         alt={selectedStyle.name}
         style={{
-          backgroundImage: `url(${selectedStyle.photos[currentImageIndex]?.url || noImageAvailable})`,
+          backgroundImage: `url(${
+            selectedStyle.photos[currentImageIndex]?.url
+              ? isValidURL(selectedStyle.photos[currentImageIndex]?.url)
+                ? selectedStyle.photos[currentImageIndex]?.url
+                : noImageAvailable
+                : noImageAvailable
+              // : 'https://placehold.co/600x400/EEE/31343C?font=oswald&text=NO+IMAGE+AVAILABLE'
+          })`,
+          // backgroundImage: `url(${selectedStyle.photos[currentImageIndex]?.url || noImageAvailable})`,
           width: isGalleryExpanded ? '100%' : '63%',
           // cursor: isGalleryExpanded ? 'zoom-in' : 'pointer',
           // backgroundSize: isGalleryExpanded ? 'contain' : 'cover',
-          backgroundSize: isGalleryExpanded ? 'cover' : (isExpanded ? 'cover' : 'cover'),
+          backgroundSize: isGalleryExpanded ? 'cover' : (isImageExpanded ? 'cover' : 'contain'),
+          backgroundSize: isImageExpanded ? 'cover' : isGalleryExpanded ? 'contain' : 'cover',
           backgroundPositionY: backgroundPositionY,
-          transition: 'all 0.5s ease',
+          transition: 'all 0.4s ease',
         }}
       ></span>
        {/* Arrow Buttons */}
-       <span className="p-o-arrows-conteiner-default-image-view"
+       <span className="p-o-img-gallery-left-and-right-arrows-container"
                style={{
                 width: isGalleryExpanded ? '100%' : '63%',
-                paddingLeft: isGalleryExpanded ? '20px' : '96px',
-                cursor: isGalleryExpanded ? 'move' : 'zoom-in',
+                // paddingLeft: isGalleryExpanded || selectedStyle.photos.length < 4 ? '20px' : '96px',
+                cursor: isGalleryExpanded ? 'zoom-in' : 'zoom-in',
+                cursor: isImageExpanded ? 'zoom-out' : 'zoom-in',
                 transition: 'all 0.5s ease',
               }}
               onClick={handleClick}
@@ -87,23 +172,41 @@ const ImageGallery = ({ selectedStyle, currentStyleId }) => {
        >
       <FaCircleArrowLeft
       style={{cursor:'pointer',
-      opacity: currentImageIndex === 0 ? '0' : '1',
+      display: currentImageIndex === 0 ? 'none' : 'block',
+      left: isGalleryExpanded ? '20px' : selectedStyle.photos.length < 4 ? '20px' : '96px',
       }}
-      className={isGalleryExpanded ? 'p-o-arrows-expanded-view' : 'p-o-arrows'}
+      className={isGalleryExpanded ? 'p-o-img-gallery-left-and-right-arrows-expanded-view' : 'p-o-img-gallery-left-and-right-arrows'}
       onClick={(e) => { e.stopPropagation(); handleImageNavigation('prev'); }}/>
-
       <FaCircleArrowRight style={{cursor:'pointer',
-      opacity: currentImageIndex === selectedStyle.photos.length - 1 ? '0' : '1',
+      display: currentImageIndex === selectedStyle.photos.length - 1 ? 'none' : 'block',
+      right: '20px',
     }}
-      className={isGalleryExpanded ? 'p-o-arrows-expanded-view' : 'p-o-arrows'}
+      className={isGalleryExpanded ? 'p-o-img-gallery-left-and-right-arrows-expanded-view' : 'p-o-img-gallery-left-and-right-arrows'}
       onClick={(e) => { e.stopPropagation(); handleImageNavigation('next'); }} />
      </span>
-                 {/* Thumbnail navigation Images */}
-            <span className={isGalleryExpanded ? 'p-o-thumbnails-bottom-container' : 'p-o-thumbnails-left-container'}>
-              {selectedStyle.photos.map((photo, index) => (
+                 {/* Thumbnail navigation images */}
+            <span className={isGalleryExpanded ? 'p-o-thumbnails-bottom-container' : 'p-o-thumbnails-left-container'}
+            >
+            {/* show arrow up if thumbnails are more than 7 and use cliked arrow down and view is not expanded */}
+            <IoIosArrowUp style={{
+                display: isGalleryExpanded ? 'none' : 'block',
+                opacity: currentImageIndex === 0 ? '0' : '1'
+                // opacity:selectedStyle.photos.length > 4 ? '1' : '0',
+                // opacity: isGalleryExpanded ? '0' : '1',
+              }} className="p-o-arrow-up" onClick={handleArrowUpClick} />
+            <span className={isGalleryExpanded ? 'p-o-thumbnails-container' : 'p-o-thumbnails-container'}
+            style={{
+            transform: isGalleryExpanded ? 'none' : `translateY(-${scrollPosition}px)`,
+            display: isGalleryExpanded ? 'flex' : 'block',
+          }}
+            >
+                {selectedStyle.photos.map((photo, index) => (
+                // {selectedStyle.photos.slice(0, 7).map((photo, index) => (
+
+
                 <span
                   className={isGalleryExpanded ? 'p-o-thumbnail-bottom-expanded-view' : 'p-o-thumbnail-left'}
-                  style={{ backgroundImage: `url(${photo.thumbnail_url})`,
+                  style={{ backgroundImage: `url(${photo?.thumbnail_url ? isValidURL(photo.thumbnail_url) ? photo.thumbnail_url : 'https://placehold.co/600x400/EEE/31343C?font=oswald&text=NO' : 'https://placehold.co/600x400/EEE/31343C?font=oswald&text=NO'})`,
                   border: currentImageIndex === index ? '2px solid #579dff' : ''}}
                   onClick={() => handleThumbnailClick(index)}
                   alt={`Thumbnail ${index}`}
@@ -111,6 +214,15 @@ const ImageGallery = ({ selectedStyle, currentStyleId }) => {
                 >
                 </span>
               ))}
+              </span>
+            {/* show arrow down if thumbnails are more than 7 and view is not expanded */}
+              <IoIosArrowDown style={{
+                opacity: selectedStyle.photos.length > 7 ? '1' : '0',
+                opacity: currentImageIndex === selectedStyle.photos.length - 1 ? '0' : '1',
+                display: isGalleryExpanded || selectedStyle.photos.length - 1 < 6 ? 'none' : 'block',
+                // opacity: isGalleryExpanded ? '0' : '1',
+              }} className="p-o-arrow-down" onClick={handleArrowDownClick} />
+
             </span>
     <div className="image-gallery-container"
     style={{

@@ -1,5 +1,6 @@
 // import React from 'react';
-// It's not necessary to import React in the styles.jsx file if you're not explicitly using any React features like JSX. Since the file only contains a functional component and JavaScript code, removing the import statement won't affect its functionality. JSX gets transpiled to regular JavaScript code during the build process, so as long as your build setup supports it, you can omit the import statement for React in files that don't directly use JSX. This can help reduce unnecessary imports and keep your code cleaner.
+// It's not necessary to import React in the styles.jsx file if we're not explicitly using any React features like JSX. Since the file only contains a functional component and JavaScript code, removing the import statement won't affect its functionality. JSX gets transpiled to regular JavaScript code during the build process, so as long as your build setup supports it, you can omit the import statement for React in files that don't directly use JSX. This can help reduce unnecessary imports and keep your code cleaner.
+import { isValidURL } from './Utils';
 import { FaCheck } from "react-icons/fa6";
 
 const Styles = ({ styles, currentStyleId, handleStyleChange }) => {
@@ -21,7 +22,8 @@ const Styles = ({ styles, currentStyleId, handleStyleChange }) => {
           /* add CSS overlay class to the current selected style */
           className={`style-thumbnail ${style.style_id === currentStyleId ? 'selected' : ''}`}
           onClick={() => handleStyleClick(style.style_id)}
-          style={{ backgroundImage: `url(${style.photos[0].thumbnail_url})` }}
+          style={{  backgroundImage: `url(${isValidURL(style.photos[0].thumbnail_url) ? style.photos[0].thumbnail_url : 'https://placehold.co/600x400/EEE/31343C?font=oswald&text=NO+IMAGE'})` }}
+          data-testid={`style-thumbnail-${style.style_id}`}
         >
           {/*  add checkmark to the current selected style */}
           {style.style_id === currentStyleId && (
