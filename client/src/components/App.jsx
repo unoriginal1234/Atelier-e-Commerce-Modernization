@@ -55,7 +55,6 @@ const App = () => {
         setRelatedIDs(relatedResponse.data);
         let pageItem = {product: productResponse.data, meta: metaResponse.data, styles: stylesResponse.data}
         setPageItemBulk(pageItem);
-        console.log(pageItem);
       })
       .catch((err) => {
       console.log('Error retrieving data', err);
@@ -68,7 +67,6 @@ const App = () => {
   useEffect(() => {
     setRelatedItems([]);
     if (relatedIDs.length !== 0) {
-      console.log('hit once');
       let currentCallIndex = 0;
       let result = [];
       const callback = function () {
