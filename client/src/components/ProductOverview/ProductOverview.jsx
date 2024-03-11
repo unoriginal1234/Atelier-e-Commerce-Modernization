@@ -1,19 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import Loading from './Loading.js';
+import fetchData from './fetchData.js';
 import ProductInformation from './ProductInformation.jsx';
 import Styles from './Styles.jsx';
 import SelectOptions from './SelectOptions.jsx';
 import SloganDescFeat from './SloganDescFeat.jsx';
-import ImageGallery from './ImageGallery.jsx';
-import ImageGalleryV1 from './ImageGalleryV1.jsx';
 import Modal from './Modal.jsx';
-import fetchData from './fetchData.js';
 import axios from 'axios';
+const ImageGallery = lazy(() => import('./ImageGallery.jsx'));
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaFacebookSquare, FaPinterestSquare, FaCheck, FaHeart } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
+import PropTypes from 'prop-types'; // PropTypes to validate... Prop Types
 
 // ProductOverview Component
 const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllReviews }) => {
-
+  ProductOverview.propTypes = {
+    authKey: PropTypes.shape({
+      headers: PropTypes.objectOf(PropTypes.string),
+    }).isRequired,
+    // Add more PropTypes validations for other props if needed
+  };
   // State variables for product, styles, reviews, selected style, and current style id
   const [productData, setProductData] = useState(null);
   const [stylesData, setStylesData] = useState(null);
@@ -21,13 +28,17 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
 
   const [selectedStyle, setSelectedStyle] = useState(null);
   const [currentStyleId, setCurrentStyleId] = useState(null);
-
   // State variables for available sizes and quantity
   // const [availableSizes, setAvailableSizes] = useState([]);
   const [availableQuantities, setavailableQuantities] = useState([]);
 
   // State variable for error messages - separate this eventually
   const [errorMessages, setErrorMessages] = useState([]);
+
+  // for API error messages
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
 
   // State variable to track the selected quantity, default is "-"
   const [selectedQuantity, setSelectedQuantity] = useState('-');
@@ -39,7 +50,7 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
   // State of California LA... SKU and cart stuff
   const [currentSKUs, setCurrentSKUs] = useState([]);
   const [SKU, setSKU] = useState('');
-  const [cartDataUpdated, setCartDataUpdated] = useState(false);
+  // const [cartDataUpdated, setCartDataUpdated] = useState(false);
 
   // ref for select size option (trying to make it to open in add to cart button click and no size is selected)
   const selectSizeRef = useRef(null);
@@ -47,9 +58,17 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
   // to many state variables, wonder if I can combine them
   const [showModalCartItem, setShowModalCartItem] = useState(false);
 
+  // state variable to show loading icon in add to cart button
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+
+  // Like Product stuff
+  const [isLiked, setIsLiked] = useState(false);
+  const handleLikeClick = () => {
+    setIsLiked((prevState) => !prevState);
+  };
+
   // Fetching data from API on component mount
   useEffect(() => {
-    if (!cartDataUpdated) {
       // Call fetchData function
       fetchData(
         id,
@@ -60,10 +79,17 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
         setCurrentStyleId,
         setSelectedStyle,
         setavailableQuantities,
-        setCurrentSKUs
-      );
-    }
-  }, [id, authKey, cartDataUpdated]);
+        setCurrentSKUs,
+        setErrorMessage,
+        setError
+      ).catch(error => {
+        // Handle errors gracefully
+        console.error('Error fetching data:', error);
+        setError(true);
+        setErrorMessage('An error occurred while fetching data. Please try again later.');
+      });
+  }, [id, authKey]);
+
 
   // Function to handle style change from the Styles component
   const handleStyleChange = (styleId) => {
@@ -79,7 +105,6 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
       const quantities = Object.values(selectedStyle.skus).map(sku => sku.quantity);
       const totalQuantity = quantities.length > 0 ? Math.min(...quantities) : 0;
       setavailableQuantities(totalQuantity);
-      // console.log(selectedSize)
     }
   };
 
@@ -111,16 +136,19 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
   };
 
   const handleAddToCart = () => {
+    setIsAddingToCart(true);
     const { value: selectedSize } = selectSizeRef.current;
     // Validate selected size and quantity
     if (selectedSize === "selectSize" || selectedSize.trim() === "") {
       setErrorMessages(["Please select size"]);
       selectSizeRef.current.focus();
       setIsDropdownOpen(true)
+      setIsAddingToCart(false);
       return;
     }
     if (isNaN(selectedQuantity) || selectedQuantity <= 0) {
       setErrorMessages(["Please select a valid quantity"]);
+      setIsAddingToCart(false);
       return;
     }
 
@@ -137,7 +165,7 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
     axios
       .post("https://app-hrsei-api.herokuapp.com/api/fec2/rfp/cart", newCartItem, authKey)
       .then((response) => {
-        setCartDataUpdated(true);
+        // setCartDataUpdated(true);
 
         // Update cart data
         setCartData((prevCartData) => {
@@ -164,23 +192,25 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
           }
         });
         console.log(
-          `${selectedQuantity} of size ${selectedSize} SKU ${currentStyleId} added to the cart`,
+          `${selectedQuantity} of size ${selectedSize} SKU ${currentStyleId} added to the cart. API RESPONSE: `,
           response.data
         );
       })
       .catch((error) => {
         // Handle errors
         console.error("Error adding item to cart:", error);
+      }).finally(() => {
+        setIsAddingToCart(false); // Reset the state once the cart addition process is complete
       });
   };
 
 
   // Rendering loading message if data is not available
   if (!productData || !stylesData || !reviewsData || !selectedStyle) {
-    return <div>Loading...</div>;
+    return <div className="loading-container"><AiOutlineLoading3Quarters className="rotate" /> Loading...</div>;
   }
 
-  // Props for the select option elements
+  // Props for select option elements
   const selectOptionsProps = {
     // availableSizes,
     availableQuantities,
@@ -194,9 +224,12 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
     isDropdownOpen,
   };
 
-  // Rendering ProductOverview component
+  // Rendering ProductOverview Module
   return (
     <>
+    {/* Conditionally render error messages */}
+    {error && <div className="error-message">{errorMessage}</div>}
+    {/* Molda component */}
     {showModalCartItem && (
       <Modal
         size="small"
@@ -212,16 +245,17 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
       />)}
         {/* Main container for product overview module */}
       <div className="product-overview-module">
-          {/* Placeholder text */}
-      <span className="temp-placeholder">KFC IS COOKING! WE ARE LOADING YOUR IMAGE...</span>
+          {/* Loading Placeholder text */}
+      <span className="temp-placeholder"><AiOutlineLoading3Quarters className="rotate" /> Loading... <br></br>Finger-licking good content coming your way! 🍗</span>
 
-          {/* Gallery Images */}
+          {/* Gallery Images component*/}
+          <Suspense fallback={<Loading />}>
         <ImageGallery selectedStyle={selectedStyle} currentStyleId={currentStyleId} />
-        {/* <ImageGalleryV1 selectedStyle={selectedStyle} currentStyleId={currentStyleId} /> */}
+          </Suspense>
 
            {/* Product Details */}
         <div className="product-details-container">
-          {/* Product Information */}
+          {/* Product Information component*/}
           <ProductInformation
             productData={productData}
             reviewsData={reviewsData}
@@ -235,25 +269,36 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
           <FaSquareXTwitter onClick={() => handleShareClick('Twitter')} />
           <FaPinterestSquare onClick={() => handleShareClick('Pinterest')} />
           </span></div>
-          {/* Style Selector - Thumbnails for each style */}
+          {/* Style Selector component- Thumbnails for each style */}
           <Styles
             styles={stylesData.results}
             currentStyleId={currentStyleId}
             handleStyleChange={handleStyleChange}
           />
-          {/* Size, Quantity Selector and error messages */}
+          {/* Size, Quantity Selector component and error messages */}
           {errorMessages.length > 0 && <ErrorMessages messages={errorMessages} />}
           <SelectOptions {...selectOptionsProps} />
           {/* Add to Cart and like buttons */}
           <div className="add-to-cart-and-like">
-            <button className="p-o-add-to-cart-button" onClick={handleAddToCart}>
-              ADD TO CART
+            <button className="p-o-add-to-cart-button"
+            onClick={handleAddToCart}
+            disabled={isAddingToCart || availableQuantities <= 0}>
+              {isAddingToCart ? (
+                <AiOutlineLoading3Quarters className="rotate" />
+              ) : (
+                "ADD TO CART"
+              )}
             </button>
-            <button className="p-o-like-button"><FaHeart style={{fontSize:'20px'}}/></button>
+            <button
+              className="p-o-like-button"
+              onClick={handleLikeClick}
+              style={{ color: isLiked ? '#F4493C' : 'inherit' }}>
+              <FaHeart style={{ fontSize: '20px' }} />
+            </button>
           </div>
         </div>
       </div>
-      {/* Product Slogan, Description and Features */}
+      {/* Product Slogan, Description and Features component*/}
       <SloganDescFeat productData={productData} />
     </>
   );
