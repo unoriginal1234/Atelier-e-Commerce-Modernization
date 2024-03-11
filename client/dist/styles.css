@@ -1052,6 +1052,7 @@ Related Items Card
   color: red;
   cursor: pointer;
   margin-right: 2%;
+  font-weight: bold;
 }
 
 .r-i-price {
@@ -1065,6 +1066,7 @@ Related Items Card
 
 .r-i-pc {
   block-size: auto;
+  margin: 0px;
 }
 
 
