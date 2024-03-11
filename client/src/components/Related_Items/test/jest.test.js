@@ -40,6 +40,10 @@ describe('Related component functionality', () => {
 
     waitFor(() => getByTitle('r-i-left'));
     expect(getByTitle('r-i-left')).toBeInTheDocument();
+    fireEvent.click(screen.getByTitle('r-i-left'));
+
+    waitFor(() => getByTitle('r-i-right'));
+    expect(getByTitle('r-i-right')).toBeInTheDocument();
   })
 
   test('Clicking add to outfit should add current item', async () => {
@@ -52,7 +56,7 @@ describe('Related component functionality', () => {
     expect(getByText('Morning Joggers')).toBeInTheDocument();
   })
 
-  test('You should not be able to add the same item twice', async () => {
+  test('You should be able to delete an item from your outfit', async () => {
     const {getByText, getByTitle} = render(<Related token={token} id={id} product={appData.product} productBulk={appData.pageBulk} data={appData.related} setID={mockFunc}/>);
 
     waitFor(() => getByTitle('r-i-right'));
@@ -65,6 +69,32 @@ describe('Related component functionality', () => {
     waitFor(() => getByText("Morning Joggers").toBeNull());
     expect(item).not.toBeInTheDocument();
   })
+
+  test('You should not be able to add the same product twice', async () => {
+    const {getByText, getByTitle, getAllByText} = render(<Related token={token} id={id} product={appData.product} productBulk={appData.pageBulk} data={appData.related} setID={mockFunc}/>);
+
+    waitFor(() => getByTitle('r-i-right'));
+    fireEvent.click(screen.getByTitle('r-i-add'));
+
+    waitFor(() => getByText("Morning Joggers"));
+    fireEvent.click(screen.getByTitle('r-i-add'));
+
+    expect(getAllByText('Morning Joggers').length).toBe(1);
+  })
+
+  test('Does comparison disappear when the mouse leaves the card', async () => {
+    const {getByText, getByTitle, getAllByTitle} = render(<Related token={token} id={id} product={appData.product} productBulk={appData.pageBulk} data={appData.related} setID={mockFunc}/>);
+
+    waitFor(() => getByTitle('action'));
+    fireEvent.click(screen.getAllByTitle('action')[0]);
+
+    waitFor(() => getByText("Compare"));
+    let compare = getByText('Compare');
+
+    fireEvent.mouseLeave(getAllByTitle('r-i-card')[0]);
+    expect(compare).not.toBeInTheDocument();
+  })
+
 })
 
 describe('Card secret functionality', ()=> {

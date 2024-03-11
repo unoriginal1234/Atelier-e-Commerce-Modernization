@@ -109,7 +109,7 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
 
   //Component return
   return (
-    <div onMouseLeave={closeSecret} className="r-i-card">
+    <div onMouseLeave={closeSecret} title="r-i-card" className="r-i-card">
       {compare && <Comparison bothCategories={bothCategories}/>}
       {(type.type === 'related' && !compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaRegStar title="r-i-empty-star"/></div>}
       {(type.type === 'related' && compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaStar /></div>}
