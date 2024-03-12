@@ -42,7 +42,10 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
   useEffect(() => {fetchData();}, [id]);
   useEffect(() => {sortData();}, [sort]);
 
-  useEffect(()=> {setReviews(filteredResults.filter((review)=> filterList.includes(review.rating)))}, [filterList])
+  useEffect(()=> {
+    filterList.length === 0 ? setReviews(filteredResults.slice(0, 2)) :
+    setReviews(filteredResults.filter((review)=> filterList.includes(review.rating)))
+  }, [filterList])
 
   useEffect(() => {
     if (filterList.length === 0) {
@@ -90,6 +93,7 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
     // console.log(filteredResults, 'filtered results')
     if (filterList.indexOf(rating) > -1) {
       let newFilterList = filterList.slice(0, filterList.indexOf(rating)).concat(filterList.slice(filterList.indexOf(rating) + 1))
+      //TO DO: check if
       setFilterList(newFilterList)
     } else {
       let newFilterList = filterList.slice()
