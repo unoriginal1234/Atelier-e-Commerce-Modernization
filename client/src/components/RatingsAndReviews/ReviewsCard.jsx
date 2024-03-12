@@ -91,7 +91,7 @@ const ReviewsCard = ({review}) => {
               : <div><span className="yes-answer-button report-button">Yes</span> ({reviewHelpful + 1})</div>}
 
               {!hasReported ?
-              <div> <div className="rr-report-button" onClick={handleReport}>Report?</div></div>
+              <div> <span className="rr-report-button" onClick={handleReport}>Report?</span></div>
               : <span className="rr-report-button" style={{"textDecoration": "none", "color": "red"}}>Reported</span>}
 
           </div>
