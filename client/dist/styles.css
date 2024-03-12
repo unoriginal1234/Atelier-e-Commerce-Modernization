@@ -560,9 +560,9 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   top: 0;
   bottom: 0;
   right: 0;
-  width: 2px; /* Adjust the width as needed */
-  background-color: #788087; /* Border color */
-  border-radius: 8px; /* Round the right border */
+  width: 2px;
+  background-color: #788087;
+  border-radius: 8px;
 }
 .p-o-features{
   color: #788087;
@@ -582,6 +582,17 @@ ul li span {
   color:#333;
   margin-right: 5px; /* Adjust spacing between checkmark and text */
 }
+/*
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+} */
 
 /* Base styles for all screen sizes */
 /* Future Enhancement */
@@ -612,7 +623,6 @@ ul li span {
 .image-gallery-container,.product-details-container{
   display: block;
   width: 100% !important;
-
 }
 }
 

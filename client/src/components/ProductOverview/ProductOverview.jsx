@@ -6,6 +6,7 @@ import Styles from './Styles.jsx';
 import SelectOptions from './SelectOptions.jsx';
 import SloganDescFeat from './SloganDescFeat.jsx';
 import Modal from './Modal.jsx';
+import { ErrorMessages } from './Utils';
 import axios from 'axios';
 const ImageGallery = lazy(() => import('./ImageGallery.jsx'));
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -14,13 +15,13 @@ import { FaSquareXTwitter } from "react-icons/fa6";
 import PropTypes from 'prop-types'; // PropTypes to validate... Prop Types
 
 // ProductOverview Component
-const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllReviews }) => {
-  ProductOverview.propTypes = {
-    authKey: PropTypes.shape({
-      headers: PropTypes.objectOf(PropTypes.string),
-    }).isRequired,
-    // Add more PropTypes validations for other props if needed
-  };
+const ProductOverview = ({ setCartData, id, authKey, onClickReadAllReviews }) => {
+  // ProductOverview.propTypes = {
+  //   id: PropTypes.number.isRequired, // Assuming id is a number, adjust as needed
+  //   setCartData: PropTypes.func.isRequired,
+  //   // Add more PropTypes validations for other props if needed
+  // };
+
   // State variables for product, styles, reviews, selected style, and current style id
   const [productData, setProductData] = useState(null);
   const [stylesData, setStylesData] = useState(null);
@@ -88,8 +89,8 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
         setError(true);
         setErrorMessage('An error occurred while fetching data. Please try again later.');
       });
-  }, [id, authKey]);
-
+      // console.log('Rendering...');
+  }, [id]);
 
   // Function to handle style change from the Styles component
   const handleStyleChange = (styleId) => {
@@ -123,13 +124,7 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
     setIsDropdownOpen(false)
   };
 
-  const ErrorMessages = ({ messages }) => (
-    <div>
-      {messages.map((message, index) => (
-        <p key={index} style={{ color: '#F4493C' }}>{message}</p>
-      ))}
-    </div>
-  );
+
 
   const handleShareClick = (platform) => {
     alert(`Sharing product SKU ${currentStyleId} on ${platform}`);
@@ -191,13 +186,15 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
             return [...prevCartData, newCartItem];
           }
         });
-        console.log(
-          `${selectedQuantity} of size ${selectedSize} SKU ${currentStyleId} added to the cart. API RESPONSE: `,
-          response.data
-        );
+        return { success: true, response: response.data };
+        // console.log(
+        //   `${selectedQuantity} of size ${selectedSize} SKU ${currentStyleId} added to the cart. API RESPONSE: `,
+        //   response.data
+        // );
       })
       .catch((error) => {
         // Handle errors
+        return { success: false, error: error.message };
         console.error("Error adding item to cart:", error);
       }).finally(() => {
         setIsAddingToCart(false); // Reset the state once the cart addition process is complete
@@ -207,7 +204,7 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
 
   // Rendering loading message if data is not available
   if (!productData || !stylesData || !reviewsData || !selectedStyle) {
-    return <div className="loading-container"><AiOutlineLoading3Quarters className="rotate" /> Loading...</div>;
+    return <div data-testid="loading-container" className="loading-container"><AiOutlineLoading3Quarters className="rotate" /> Loading...</div>;
   }
 
   // Props for select option elements
@@ -265,9 +262,9 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
           {/* Social media sharing - Facebook, x, Pinterest*/}
           <div className="social-media-sharing">
           Share <span className="social-media-icons">
-          <FaFacebookSquare onClick={() => handleShareClick('Facebook')} />
-          <FaSquareXTwitter onClick={() => handleShareClick('Twitter')} />
-          <FaPinterestSquare onClick={() => handleShareClick('Pinterest')} />
+          <FaFacebookSquare data-testid="facebook-icon" onClick={() => handleShareClick('Facebook')} />
+          <FaSquareXTwitter data-testid="twitter-icon" onClick={() => handleShareClick('Twitter')} />
+          <FaPinterestSquare data-testid="pinterest-icon" onClick={() => handleShareClick('Pinterest')} />
           </span></div>
           {/* Style Selector component- Thumbnails for each style */}
           <Styles
@@ -290,6 +287,7 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
               )}
             </button>
             <button
+              data-testid="like-button"
               className="p-o-like-button"
               onClick={handleLikeClick}
               style={{ color: isLiked ? '#F4493C' : 'inherit' }}>
@@ -302,6 +300,6 @@ const ProductOverview = React.memo(({ setCartData, id, authKey, onClickReadAllRe
       <SloganDescFeat productData={productData} />
     </>
   );
-});
+};
 
 export default ProductOverview;

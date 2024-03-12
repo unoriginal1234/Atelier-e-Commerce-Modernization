@@ -12,4 +12,12 @@ const isValidURL = (url) => {
   return !!pattern.test(url);
 };
 
-export { isValidURL };
+const ErrorMessages = ({ messages }) => (
+  <div>
+    {messages.map((message, index) => (
+      <p key={index} style={{ color: '#F4493C' }}>{message}</p>
+    ))}
+  </div>
+);
+
+export { isValidURL, ErrorMessages };

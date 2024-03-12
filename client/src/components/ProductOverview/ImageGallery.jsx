@@ -138,7 +138,9 @@ const ImageGallery = ({ selectedStyle, currentStyleId }) => {
       {/* Main Image */}
       <span
       className="p-o-main-image"
-        alt={selectedStyle.name}
+        // alt={selectedStyle.name}
+        alt="main-image"
+        data-testid="main-image"
         style={{
           backgroundImage: `url(${
             selectedStyle.photos[currentImageIndex]?.url
@@ -170,7 +172,7 @@ const ImageGallery = ({ selectedStyle, currentStyleId }) => {
               onClick={handleClick}
         onMouseMove={handleMouseMove}
        >
-      <FaCircleArrowLeft
+      <FaCircleArrowLeft data-testid="left-arrow"
       style={{cursor:'pointer',
       display: currentImageIndex === 0 ? 'none' : 'block',
       left: isGalleryExpanded ? '20px' : selectedStyle.photos.length < 4 ? '20px' : '96px',
