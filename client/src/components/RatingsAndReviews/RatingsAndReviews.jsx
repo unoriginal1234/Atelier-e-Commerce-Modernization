@@ -60,30 +60,15 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${id}`, options)
     ])
     .then(([reviewResponse, metaResponse]) => {
-      // right now hard coding the limited response
       setTotalReviews(reviewResponse.data.results.length)
       setFilteredResults(reviewResponse.data.results)
-      // setReviews(reviewResponse.data.results.slice(0, 2));
-      // console.log(reviewResponse.data, '-- review Response');
       setReviewsMeta(metaResponse.data)
       setCharacteristics(metaResponse.data.characteristics)
-      // console.log(metaResponse.data, '--meta Response');
     })
     .catch(error => {
       console.error('Error fetching data:', error);
-  // fake data
-      // setData(product[0]);
-      // setStylesData(styles);
-      // setReviewsData(reviews);
     });
   };
-
-  // const fetchMore = () => {
-  //   axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews?sort=${sort}&product_id=${id}&count=100`, options)
-  //   .then((reviewResponse)=> {setReviews(reviewResponse.data.results.slice(0, moreReviews))})
-  //   .then(()=>setMoreReviews(moreReviews + 2))
-  //   .catch((error)=>console.error('Error fetching data: ', error));
-  // }
 
   const fetchMore = () => {
     setReviews(filteredResults.slice(0, moreReviews))
@@ -111,22 +96,16 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
       newFilterList.push(rating);
       setFilterList(newFilterList)
     }
-    // const pizza = filteredResults.filter((review)=> filterList.includes(review.rating))
-    // console.log(pizza, 'pizza')
-    // setReviews(pizza)
   }
 
   //Handlers
   const addReviewClickHandler = () => {
-    // console.log('click');
     setShowModal(true)
-    //setIsReviewing(true);
   }
 
   const submitReview = () => {
     event.preventDefault();
     setShowModal(false)
-    //setIsReviewing(false);
   }
 
   const sortHandler = (value) => {

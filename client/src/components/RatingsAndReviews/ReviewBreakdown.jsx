@@ -53,7 +53,6 @@ const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
       newBoldList.push(num)
       setBolded(newBoldList)
     }
-
   }
 
 
@@ -79,14 +78,15 @@ const ReviewBreakdown = ({reviewsMeta, filterHandler}) => {
   }
 
   return (
+
     <div className="rr-breakdown">
       <div className="rr-star-and-breakdown-container">
         <div className="rr-rating-breakdown">{average}</div>
         <div className="Stars" style={{ '--rating': average }}></div>
       </div>
-      <p>{Math.round(parseInt(reviewsMeta.recommended.true) / (parseInt(reviewsMeta.recommended.true) + parseInt(reviewsMeta.recommended.false)) * 100)} % of reviews recommend this product</p>
+      <p>{Math.round(parseInt(reviewsMeta.recommended.true) / ((parseInt(reviewsMeta.recommended.true) || 0 )+ (parseInt(reviewsMeta.recommended.false) || 0)) * 100)} % of reviews recommend this product</p>
       <div className="rr-star-meters">
-        <p style={bolded.includes(5) ? {fontWeight:"bold"} : {fontWeight:"normal"}} onClick={()=>
+        <p id="rr-5-star-meter" style={bolded.includes(5) ? {fontWeight:"bold"} : {fontWeight:"normal"}} onClick={()=>
           {filterHandler(5)
             addStyle(5)
           }}>5 stars<meter value={fiveStars / totalDenominator }></meter></p>
