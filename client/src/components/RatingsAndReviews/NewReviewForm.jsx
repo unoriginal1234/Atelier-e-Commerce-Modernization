@@ -113,8 +113,9 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
               const currentRating = index + 1;
 
               return (
-                <label key={index}>
+                <label key={'star' + index}>
                   <input
+                    id={'star' + index}
                     type="radio"
                     name="rating"
                     value={currentRating}
@@ -143,20 +144,19 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
             <div className="rr-form-person">
               <label>
                 What is your nickname:
-                <input type="text" name="nickname" value={nickName} onChange={onNickNameChange}/>
+                <input type="text" name="nickname" id="nickname" value={nickName} onChange={onNickNameChange}/>
               </label>
 
               <label>
                 Email:
-                <input type="text" name="email" value={email} onChange={onEmailChange}/>
+                <input type="text" name="email" id="email" value={email} onChange={onEmailChange}/>
               </label>
             </div>
 
 
           <div className="rr-form-characteristics">
-
             {isSize ?
-              <div>
+              <div key="size-exists">
                 <br></br>
                 <p>SIZE:</p>
                 {sizeText.map((currentSize, index)=>{
@@ -164,9 +164,10 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
                     <>
                       <input
                         type="radio"
-                        name="size"
+                        name={'size' + (index + 1)}
+                        role="size"
                         value={(index + 1).toString()}
-                        key={index}
+                        key={'S' + currentSize}
                         checked={size === (index + 1).toString()}
                         onChange={onSizeChange}
                       />
@@ -189,7 +190,7 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
                       type="radio"
                       name="width"
                       value={(index + 1).toString()}
-                      key={index}
+                      key={'W' + index}
                       checked={width === (index + 1).toString()}
                       onChange={onWidthChange}
                     />
@@ -212,7 +213,7 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
                       type="radio"
                       name="comfort"
                       value={(index + 1).toString()}
-                      key={index}
+                      key={'C' + index}
                       checked={comfort === (index + 1).toString()}
                       onChange={onComfortChange}
                     />
@@ -235,7 +236,7 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
                       type="radio"
                       name="quality"
                       value={(index + 1).toString()}
-                      key={index}
+                      key={'Q' + index}
                       checked={quality === (index + 1).toString()}
                       onChange={onQualityChange}
                     />
@@ -258,7 +259,7 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
                       type="radio"
                       name="length"
                       value={(index + 1).toString()}
-                      key={index}
+                      key={'L' + index}
                       checked={length === (index + 1).toString()}
                       onChange={onLengthChange}
                     />
@@ -281,7 +282,7 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
                       type="radio"
                       name="fit"
                       value={(index + 1).toString()}
-                      key={index}
+                      key={'F' + index}
                       checked={fit === (index + 1).toString()}
                       onChange={onFitChange}
                     />
@@ -312,14 +313,14 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
             Summary:
           </label>
             <br></br>
-            <textarea className="rr-summary-review-body" type="text" rows="3" name="summary" value={reviewSummary} onChange={onReviewSummaryChange} placeholder="A short summary of your thoughts..."/>
+            <textarea id="rr-summary-review-body" className="rr-summary-review-body" type="text" rows="3" name="summary" value={reviewSummary} onChange={onReviewSummaryChange} placeholder="A short summary of your thoughts..."/>
 
           <br></br>
           <label>
             Review:
           </label>
             <br></br>
-            <textarea className="rr-form-review-body" type="text" name="review" value={reviewBody} onChange={onReviewBodyChange} rows="6" placeholder="Must be at least 60 characters. Tell us what you really think..."/>
+            <textarea id="rr-form-review-body" className="rr-form-review-body" type="text" name="review" value={reviewBody} onChange={onReviewBodyChange} rows="6" placeholder="Must be at least 60 characters. Tell us what you really think..."/>
 
           <br></br>
 
@@ -327,10 +328,10 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
 
             <label>
                   Picture:
-                  <input type="text" name="photo" value={photo} onChange={onPhotoChange}/>
+                  <input type="text" name="photo" id="photo" value={photo} onChange={onPhotoChange}/>
             </label>
 
-            <input className="rr-see-more-btn" type="submit" value="Submit"
+            <input className="rr-see-more-btn" type="submit" id="form-submit" value="Submit"
             onClick={()=>{
 
               if (reviewBody.length < 60) {
@@ -338,7 +339,7 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
                 alert("Please include a longer review. We'd love to hear your thoughts! At least 60 characters...")
               } else if (isSize && !size || isWidth && !width || isComfort && !comfort || isQuality && !isQuality || isLength && !length || isFit && !fit) {
                 event.preventDefault();
-                alert("Please make let us know about the characteristics!")
+                alert("Please let us know about the characteristics!")
               } else if (!rating) {
                 event.preventDefault();
                 alert("What, no rating?!")

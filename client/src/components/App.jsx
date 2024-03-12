@@ -13,8 +13,11 @@ const App = () => {
   // Shared App states and variables
   //-------------------------------------------------------
   const [productID, setProductID] = useState(65631);
-  const [metaData, setMetaData] = useState({});
+  const [productData, setproductData] = useState({});
   const [cartData, setCartData] = useState([]);
+  const [relatedIDs, setRelatedIDs] = useState([]);
+  const [pageItemBulk, setPageItemBulk] = useState({});
+  const [relatedItems, setRelatedItems] = useState([]);
   const ratingsAndReviewsRef = useRef(null); // to scroll down to ratings and reviews from product overview
 
   //-------------------------------------------------------
@@ -36,24 +39,61 @@ const App = () => {
       'Authorization': process.env.REACT_APP_API_KEY,
     }
   };
-    // Meta and Cart UseEffect
-    useEffect(() => {
-      // Fetching data using Promise.all
-      Promise.all([
-        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}`, token),
-        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp/cart?session_id=${productID}`, token)
-      ])
-        .then(([metaResponse, cartResponse]) => {
-          setMetaData(metaResponse.data);
-          setCartData(cartResponse.data);
-       })
-       .catch((err) => {
-        console.log('Error retrieving data', err);
-        // Fallback
-        alert('We couldn\'t find what you are looking for... Let\'s try getting the Camo Onesie Jacket product id: 65631 ^_^')
-        setProductID(65631);
-       })
+    // Product and Cart UseEffect
+  useEffect(() => {
+    // Fetching data using Promise.all
+    Promise.all([
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}`, token),
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp/cart?session_id=${productID}`, token),
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}/related`, token),
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${productID}`,token),
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}/styles`, token)
+    ])
+      .then(([productResponse, cartResponse, relatedResponse, metaResponse, stylesResponse]) => {
+        setproductData(productResponse.data);
+        setCartData(cartResponse.data);
+        setRelatedIDs(relatedResponse.data);
+        let pageItem = {product: productResponse.data, meta: metaResponse.data, styles: stylesResponse.data}
+        setPageItemBulk(pageItem);
+      })
+      .catch((err) => {
+      console.log('Error retrieving data', err);
+      // Fallback
+      alert('We couldn\'t find what you are looking for... Let\'s try getting the Camo Onesie Jacket product id: 65631 ^_^')
+      setProductID(65631);
+      })
   }, [productID]);
+
+  useEffect(() => {
+    setRelatedItems([]);
+    if (relatedIDs.length !== 0) {
+      let currentCallIndex = 0;
+      let result = [];
+      const callback = function () {
+        let item = {};
+        Promise.all([
+          axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${relatedIDs[currentCallIndex]}`, token),
+          axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${relatedIDs[currentCallIndex]}`, token),
+          axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${relatedIDs[currentCallIndex]}/styles`, token)
+        ])
+          .then(([product, meta, styles]) => {
+            item.product = product.data;
+            item.meta = meta.data;
+            item.styles = styles.data;
+            result.push(item);
+            currentCallIndex ++;
+          })
+          .then(() => {
+            if (currentCallIndex === relatedIDs.length) {
+              setRelatedItems(result)
+            } else {
+              callback();
+            }
+          })
+      }
+      callback();
+    }
+  }, [relatedIDs])
 
   const handleSearch = (e) => {
     const inputValue = document.getElementById('searchInput').value || 65631;
@@ -72,9 +112,9 @@ const App = () => {
       </div>
 
       <div className="widget-container p-o"><ProductOverview setCartData={setCartData} authKey={token} id={productID} onClickReadAllReviews={scrollToRatingsAndReviews}/></div>
-      <div className="widget-container r-i-container"><Related id={productID} meta={metaData} setID={changeID}/></div>
+      <div className="widget-container r-i-container"><Related id={productID} product={productData} productBulk={pageItemBulk} data={relatedItems} setID={changeID}/></div>
       <div className="widget-container"><RatingsAndReviews id={productID} token={token} ref={ratingsAndReviewsRef}/></div>
-      <div className="widget-container"><QuestionsAndAnswers id={productID} token={token} productData={metaData}/></div>
+      <div className="widget-container"><QuestionsAndAnswers id={productID} token={token} productData={productData}/></div>
     </div>
   );
 };
