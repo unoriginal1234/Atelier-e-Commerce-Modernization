@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AnswerImageItem from './AnswerImageItem.jsx';
+import { FcApproval } from "react-icons/fc";
 const AnswerItem = ({ answers, answer, handleAnswersList, token, forImageID }) => {
   const answer_id = answer.answer_id;
   const [answerHelpful, setAnswerHelpful] = useState(answer.helpfulness);
@@ -53,16 +54,20 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token, forImageID }) =
         </p>
         <div className="answer-images-container">
           {answer.photos.map(photo => {
-            return <AnswerImageItem key={photo.id} answer={answer} photo={photo} token={token} handleAnswersList={handleAnswersList}/>
+            return <AnswerImageItem  photo={photo} token={token} />
           })}
         </div>
         <div>
           <small className="answer-small-container">
-            <div>by {answer.answerer_name.toLowerCase() === "seller"?<strong>{answer.answerer_name}</strong>:answer.answerer_name}, {finalDate}</div>
+
+            <div>by {answer.answerer_name?.toLowerCase() === "seller" ? <strong>{answer.answerer_name}</strong> : answer.answerer_name}, {finalDate}</div>
              |
              <div>Helpful?</div>
-             <div>
-              <button onClick={handleYes} disabled={disabled} className="yes-answer-button report-button">Yes</button>
+             <div style={{display: "flex",flexDirection: "row",alignItems: "center"}}>
+              {disabled ?
+              <FcApproval className="yes-answer-button report-button"/>
+              :
+              <FcApproval onClick={handleYes} className="yes-answer-button report-button"/>}
                ({answerHelpful})
               </div>
                |

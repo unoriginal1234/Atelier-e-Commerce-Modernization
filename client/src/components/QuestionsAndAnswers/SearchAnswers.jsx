@@ -5,8 +5,9 @@ const SearchAnswers = ({ handleSearch }) => {
   const [search, setSearch] = useState('');
 
   const handleSearchInput = (e) => {
-    setSearch(e.target.value);
-    handleSearch(search);
+    const searchText = e.target.value;
+    setSearch(searchText);
+    handleSearch(searchText);
   }
 
   return (

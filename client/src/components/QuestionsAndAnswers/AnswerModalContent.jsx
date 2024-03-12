@@ -58,14 +58,18 @@ const AnswerModalContent = ({question, productData, onClose, token, answerID, ha
     <form className="answer-modal-content">
       <h2>Submit Your Answer</h2>
       <h3>{productData.name} : {question.question_body}</h3>
-      <label>
-        Your Answer:
-      </label>
-      <textarea maxLength="1000" value={yourAnswer} onChange={handleYourAnswer}/>
-      What is your nickname: <input maxLength="60" value={yourNickname} onChange={handleYourNickname} placeholder="Example: jack543!"/>
+
+      <label htmlFor="answer">Your Answer:</label>
+      <textarea id="answer" maxLength="1000" value={yourAnswer} onChange={handleYourAnswer} />
+
+      <label htmlFor="nickname">What is your nickname:</label>
+      <input id="nickname" maxLength="60" value={yourNickname} onChange={handleYourNickname} placeholder="Example: jack543!" />
       (For privacy reasons, do not use your full name or email address)
-      Your email: <input maxLength="60" value={yourEmail} onChange={handleYourEmail} placeholder="Example: jack@email.com"/>
+
+      <label htmlFor="email">Your email:</label>
+      <input id="email" maxLength="60" value={yourEmail} onChange={handleYourEmail} placeholder="Why did you like the product or not?" />
       (For authentication reasons,  you will not be emailed)
+
       <input type="file" onChange={handleUpload} ></input>
       <button onClick={validateForm}>Submit</button>
       {invalid && (

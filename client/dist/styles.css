@@ -969,6 +969,9 @@ ul li span {
   cursor: pointer;
   text-decoration: underline;
 }
+.yes-answer-button, .yes-button {
+  font-size: 20px;
+}
 .answer-container {
   display: flex;
   flex-direction: row;
@@ -980,7 +983,6 @@ ul li span {
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
-  border: 1px solid #e9e9e9;
   padding: 12px;
 
 }

@@ -49,16 +49,25 @@ const QuestionModalContent = ({onClose, token, handleQuestionsList, productData}
 
     <div className="question-modal-content">
       <h2>Ask Your Question</h2>
+
       <h3>About the {productData.name}</h3>
-      <label>
-        Your Question:
-      </label>
-      <textarea maxLength="1000" value={yourQuestion} onChange={handleYourQuestion}/>
-      What is your nickname: <input maxLength="60" value={yourNickname} onChange={handleYourNickname} placeholder="Example: jackson11!"/>
+
+      <label htmlFor="question">Your Question:</label>
+      <textarea id="question" maxLength="1000" value={yourQuestion} onChange={handleYourQuestion} />
+
+      <label htmlFor="nickname">What is your nickname:</label>
+
+      <input id="nickname" maxLength="60" value={yourNickname} onChange={handleYourNickname} placeholder="Example: jackson11!" />
+
       (For privacy reasons, do not use your full name or email address)
-      Your email: <input maxLength="60" value={yourEmail} onChange={handleYourEmail} placeholder="Why did you like the product or not?"/>
+
+      <label htmlFor="email">Your email:</label>
+
+      <input id="email" maxLength="60" value={yourEmail} onChange={handleYourEmail} placeholder="Why did you like the product or not?" />
+
       (For authentication reasons,  you will not be emailed)
       <button onClick={handleSubmit}>Submit</button>
+
       {invalid && (
         <div className="invalid-inputs">
           <h3>You must enter the following:</h3>
