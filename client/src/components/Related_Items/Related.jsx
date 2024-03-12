@@ -5,24 +5,16 @@ import Card from './Card.jsx';
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const Related = function (props) {
-  const [relatedIDs, setRelatedIDs] = useState([]);
-  const [relatedItems, setRelatedItems] = useState(null);
   const [yourOutfit, setYourOutfit] = useState([]);
   const [currentItemsIndex, setCurrentItemsIndex] = useState(0);
   const [lastItemIndex, setLastItemIndex] = useState(3);
   const [firstOutfitIndex, setFirstOutfitIndex] = useState(0);
   const [lastOutfitIndex, setLastOutfitIndex] = useState(2);
-  const [pageData, setPageData] = useState({});
   const [pageCategories, setPageCategories] = useState(null) //f1: {v1: val1, v2: val2}
 
   //Type objects
   let outfit = {type: 'outfit'};
   let related = {type: 'related'};
-
-  //Testing function onClick
-  const onClick = function () {
-    console.log('related items obj =', relatedItems, 'related items array =', relatedIDs);
-  }
 
   //Clearing index function
   const clearIndex = function () {
@@ -38,7 +30,7 @@ const Related = function (props) {
     }
   };
   const onRightClick = function () {
-    if (relatedItems.length - 1 > lastItemIndex) {
+    if (props.data.length - 1 > lastItemIndex) {
       setCurrentItemsIndex(currentItemsIndex + 1);
       setLastItemIndex(lastItemIndex + 1);
     }
@@ -71,28 +63,16 @@ const Related = function (props) {
 
   //Add to outfit function
   const addToOutfit = function () {
-    let item = {product: pageData};
     let oldOutfit = yourOutfit.slice();
     let notInside = true;
     for (var i = 0; i < yourOutfit.length; i ++) {
-      if (yourOutfit[i].product === pageData) {
+      if (yourOutfit[i].product === props.productBulk.product) {
         notInside = false;
       }
     }
     if (notInside) {
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${props.id}`, options)
-      .then((response) => {
-        item.meta = response.data;
-        return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${props.id}/styles`, options);
-      })
-      .then((response) => {
-        item.styles = response.data;
-        oldOutfit.push(item);
-        setYourOutfit(oldOutfit);
-      })
-      .catch((err) => {
-        console.error('Error adding to outfit', err);
-      })
+      oldOutfit.push(props.productBulk);
+      setYourOutfit(oldOutfit);
     }
   };
 
@@ -116,69 +96,19 @@ const Related = function (props) {
     }
   };
 
-  //on id change useEffect
-  useEffect(() => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${props.id}/related`, options)
-      .then((response) => {
-        setRelatedIDs(response.data);
-        return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${props.id}`, options);
-      })
-      .then((response) => {
-        setPageData(response.data)
-      })
-  }, [props.id]);
-
   //Use effect for page categories
   useEffect (() => {
-    if (Object.keys(pageData).length !== 0) {
-      let features = pageData.features;
-      let pageCategoriesObj = {'Product Name': {v1: pageData.name}};
+    if (Object.keys(props.product).length !== 0) {
+      let features = props.product.features;
+      let pageCategoriesObj = {'Product Name': {v1: props.product.name}};
       for (var i = 0; i < features.length; i++) {
         pageCategoriesObj[features[i].feature] = {v1: features[i].value || 'N/A'};
       }
       setPageCategories(pageCategoriesObj);
     }
-  }, [pageData]);
+  }, [props.product]);
 
-
-  //get all related items to state
-  useEffect(() => {
-    setRelatedItems([]);
-    if (relatedIDs.length !== 0) {
-      let currentCallIndex = 0;
-      let result = [];
-      const callback = function () {
-        let item = {};
-        axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${relatedIDs[currentCallIndex]}`, options)
-          .then((response) => {
-            item.product = response.data;
-            return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${relatedIDs[currentCallIndex]}`, options);
-          })
-          .then((response) => {
-            item.meta = response.data;
-            return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${relatedIDs[currentCallIndex]}/styles`, options);
-          })
-          .then((response) => {
-            item.styles = response.data;
-            result.push(item);
-            currentCallIndex++;
-          })
-          .then(() => {
-            if (currentCallIndex === relatedIDs.length) {
-              setRelatedItems(result);
-            } else {
-              callback();
-            }
-          })
-          .catch((err) => {
-            console.error('Error setting related items', err);
-          })
-      }
-      callback();
-    }
-  }, [relatedIDs]);
-
-  if (!pageCategories || !relatedItems) {
+  if (!pageCategories || !props.data) {
     return <div>Loading...</div>
   }
 
@@ -187,21 +117,21 @@ const Related = function (props) {
       <h2>Related Items</h2>
       <hr/>
       <div className="r-i-carousel">
-        {relatedItems.length === 0 && <div className="r-i-missing">Loading...</div>}
-        {(currentItemsIndex > 0) && <div className="r-i-carousel-btn-left" onClick={onLeftClick}><FaArrowLeft /></div>}
+        {props.data.length === 0 && <div className="r-i-missing">Loading...</div>}
+        {(currentItemsIndex > 0) && <div title="r-i-left" className="r-i-carousel-btn-left" onClick={onLeftClick}><FaArrowLeft /></div>}
         {/* {(currentItemsIndex = 0) && <button className="r-i-carousel-btn">Left</button>} */}
         <div className="r-i-carousel-card-holder r-i-carousel">
-        {relatedItems.map((item, index) => {
-          if (relatedItems.indexOf(item) >= currentItemsIndex && relatedItems.indexOf(item) <= lastItemIndex) {
-            return <Card key={index} item={item} setID={props.setID} clearIndex={clearIndex} pageData={pageCategories} related={relatedItems} type={{type: 'related'}}/>
+        {props.data.map((item, index) => {
+          if (props.data.indexOf(item) >= currentItemsIndex && props.data.indexOf(item) <= lastItemIndex) {
+            return <Card key={index} item={item} setID={props.setID} clearIndex={clearIndex} pageData={pageCategories} type={{type: 'related'}}/>
           }
         })}
         </div>
-        {(lastItemIndex + 1 < relatedItems.length) && <div className="r-i-carousel-btn-right" onClick={onRightClick}><FaArrowRight /></div>}
+        {(lastItemIndex + 1 < props.data.length) && <div className="r-i-carousel-btn-right" title="r-i-right" onClick={onRightClick}><FaArrowRight /></div>}
       </div>
       <h2>Your Outfit</h2>
       <hr/>
-      <div className="y-o-carousel">
+      <div title="y-o-carousel" className="y-o-carousel">
         {(firstOutfitIndex > 0) && <div className="r-i-carousel-btn-left" onClick={onYOLeftClick}><FaArrowLeft /></div>}
         <div className="r-i-carousel-card-holder r-i-carousel">
         <div className='r-i-card' onClick={addToOutfit}>
@@ -211,7 +141,7 @@ const Related = function (props) {
         {(yourOutfit.length >= 1) && yourOutfit.map((item, index) => {
           let current = yourOutfit.indexOf(item);
           if (current >= firstOutfitIndex && current <= lastOutfitIndex) {
-            return <Card key={index} item={item} setID={props.setID} clearIndex={clearIndex} deleteOutfitItem={deleteOutfitItem} type={{type: 'outfit'}}/>
+            return <Card title="r-i-outfitCard" key={index} item={item} setID={props.setID} clearIndex={clearIndex} deleteOutfitItem={deleteOutfitItem} type={{type: 'outfit'}}/>
           }
         })}
         </div>
