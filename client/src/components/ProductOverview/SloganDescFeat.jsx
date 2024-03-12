@@ -10,7 +10,7 @@ const SloganDescFeat = ({ productData }) => {
       </div>
       <div className="product p-o-features">
         <ul>
-          {productData.features.map((product, i) => (
+          {productData.features && productData.features.map((product, i) => (
             <li key={`feature-${i}`}>
               <span><b>&#10003;</b></span>
               {product.feature} {product.value}

@@ -20,6 +20,7 @@ const SelectOptions = ({
         <select
           className="size-select"
           id="selectSize"
+          data-testid="selectSize"
           size={isDropdownOpen ? document.getElementById("selectSize").options.length : 1}
           // multiple={isDropdownOpen ? "multiple" : ""}
           onChange={handleSizeSelection}
@@ -41,6 +42,8 @@ const SelectOptions = ({
 
       {/* Quantity Select */}
       <select className="quantity-select"
+      id="selectQuantity"
+      data-testid="selectQuantity"
       value={selectedQuantity}
       onChange={handleQuantityChange}
       disabled={selectedSize.trim() === '' || selectedSize === 'selectSize'}

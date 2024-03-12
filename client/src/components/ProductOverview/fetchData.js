@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const fetchData = (id, authKey, setProductData, setStylesData, setReviewsData, setCurrentStyleId, setSelectedStyle, setavailableQuantities, setCurrentSKUs, setError) => {
+const fetchData = (id, authKey, setProductData, setStylesData, setReviewsData, setCurrentStyleId, setSelectedStyle, setavailableQuantities, setCurrentSKUs, setErrorMessage, setError) => {
   // Fetching all data using Promise.all
   return Promise.all([
     axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${id}`, authKey),
@@ -36,7 +36,7 @@ const fetchData = (id, authKey, setProductData, setStylesData, setReviewsData, s
     .catch(error => {
       // Handle errors gracefully
       console.error('Error fetching data:', error);
-      // You can set a state variable to indicate an error occurred, and display an error message in your UI
+      //set a state variable to indicate an error occurred, and display an error message
       setError(true);
       setErrorMessage('An error occurred while fetching data. Please try again later.');
     });
