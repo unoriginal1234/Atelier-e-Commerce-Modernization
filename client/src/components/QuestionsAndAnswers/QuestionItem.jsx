@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import AnswerList from './AnswerList.jsx';
 import axios from 'axios';
 import AnswerModalContent from './AnswerModalContent.jsx';
+import { FcCheckmark } from "react-icons/fc";
 const QuestionItem = ({ questionData, question, token, handleQuestionsList, productData, product_id }) => {
 
   const question_id = question.question_id;
@@ -36,8 +37,12 @@ const QuestionItem = ({ questionData, question, token, handleQuestionsList, prod
         </big>
         <div className="eachQ-rightSide-container">
           Helpful?
-          <div>
-            <button type="text" onClick={handleYes} disabled={disabled} className="yes-button answer-button">Yes</button> ({questionHelpful})
+          <div style={{display: "flex",flexDirection: "row",alignItems: "center"}} >
+            {disabled ?
+            <FcCheckmark type="text" className="yes-button answer-button"/>
+            :
+            <FcCheckmark type="text" onClick={handleYes} className="yes-button answer-button"/>}
+             ({questionHelpful})
           </div>
           |
           <u onClick={() => setShowModal(true)}className="answer-button">Add Answer</u>
