@@ -22,10 +22,8 @@ const AnswerList = ({ question_id, token, forImageID, product_id}) => {
         console.error("Error getting answers list:", err);
       })
   }
-  useEffect(() => {
-    handleAnswersList();
-  }, [])
   useEffect(()=> {
+    handleAnswersList();
     setDisplayedAnswers(2);
   }, [product_id])
 
