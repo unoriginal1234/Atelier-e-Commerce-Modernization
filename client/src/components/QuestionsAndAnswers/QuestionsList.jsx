@@ -23,6 +23,7 @@ const QuestionsList = ({ questionData, token, handleQuestionsList, productData, 
       handleQuestionsList={handleQuestionsList}
       productData={productData}
       product_id={id}
+      id={id}
       />
       })}
       <div className="bottom-buttons-container">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AnswerItem from './AnswerItem.jsx';
-const AnswerList = ({ question_id, token, forImageID, product_id}) => {
+const AnswerList = ({ question_id, token, forImageID, product_id, id}) => {
 
   //console.log(token);
   const [answers, setAnswers] = useState([]);
@@ -22,10 +22,11 @@ const AnswerList = ({ question_id, token, forImageID, product_id}) => {
         console.error("Error getting answers list:", err);
       })
   }
+
   useEffect(()=> {
     handleAnswersList();
     setDisplayedAnswers(2);
-  }, [product_id])
+  }, [question_id, id])
 
   return (
 
