@@ -32,7 +32,7 @@ const QuestionItem = ({ questionData, question, token, handleQuestionsList, prod
 
     <div className="qa-container">
       <div className="eachQ-container">
-        <big>
+        <big className="Q-item">
           Q: {question.question_body}
         </big>
         <div className="eachQ-rightSide-container">
