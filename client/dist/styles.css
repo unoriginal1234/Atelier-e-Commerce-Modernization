@@ -641,7 +641,7 @@ ul li span {
     justify-content: flex-start;
     flex-direction: row;
     gap: 5%;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
    }
 
    .rr-list {
