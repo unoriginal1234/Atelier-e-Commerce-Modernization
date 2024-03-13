@@ -22,7 +22,7 @@ body {
 
 /* Style individual module containers */
 .widget-container {
-  border: 1px solid #ccc; /* Add border to identify each module */
+  border: 1px solid #e9e9e9; /* Add border to identify each module */
   padding: 16px;
   margin-bottom: 20px; /* Add margin between modules */
 }
@@ -50,11 +50,13 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
 }
 
 .product-details-container {
-  border: 1px solid #e9e9e9;
+  border: 0px solid #e9e9e9;
   flex: 1;
   padding:16px;
   box-sizing: border-box;
 }
+
+
 
 .p-o-rating-stars-and-link-to-reviews {
   display: flex;
@@ -150,7 +152,7 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
 /* CSS for Image Gallery */
 
 .image-gallery-container {
-  border: 1px solid #e9e9e9;
+  border: 0px solid #e9e9e9;
   flex: 0 0 63%;
   padding: 0;
 }
@@ -512,15 +514,18 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
 .nav-bar h1 {
   padding:0;
   margin:0;
-  font-size:24px;
+  /* font-size:24px; */
   text-decoration: underline;
   font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 32px;
 }
 
 .p-o {
   padding:0px;
   margin-top:8px;
-  border:1px solid #e9e9e9;
 }
 
 .global-announsment{
@@ -538,11 +543,14 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
 .slogan-description-and-features{
   display:flex;
   width: 100%;
-  border: 1px solid #e9e9e9;
+  border-top: 1px solid #e9e9e9;
   padding:0px;
+  padding-top:16px;
+  margin-top: 16px;
 }
 .slogan-description {
   padding:16px;
+  padding-top:0px;
   width: 80%;
   color: #788087;
 }
@@ -582,6 +590,28 @@ ul li span {
   color:#333;
   margin-right: 5px; /* Adjust spacing between checkmark and text */
 }
+
+.dark-mode-icon {
+  position: absolute;
+  left: -32px;
+  font-size: 23px;
+  top: 9px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+/* Dark mode CSS */
+.dark-mode {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+/* Light mode CSS */
+.light-mode {
+  /* background-color: green; */
+  color: black;
+}
+.dark-mode-text{
+  color:white;
+}
 /*
 .visually-hidden {
   position: absolute;
@@ -611,6 +641,9 @@ ul li span {
 
 /* Media query for phone screens */
 @media only screen and (max-width: 767px) {
+  .logo-text {
+    display:none;
+  }
   /* Phone-specific styles */
   /* Adjustments for smaller screens can go here */
 .product-overview-module {
