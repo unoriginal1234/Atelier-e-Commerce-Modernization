@@ -87,8 +87,8 @@ const ReviewsCard = ({review}) => {
           <p>{finalDate}</p>
           <div className="rr-help-and-report">
             {!hasSetHelpfulness ?
-              <div> <div>Helpful?</div><span onClick={handleYes} className="yes-answer-button report-button">Yes</span> ({reviewHelpful})</div>
-              : <div><span className="yes-answer-button report-button">Yes</span> ({reviewHelpful + 1})</div>}
+              <div> <div>Helpful?</div><span onClick={handleYes} className="rr-answer-button">Yes</span> ({reviewHelpful})</div>
+              : <div><span className="rr-answer-button">Yes</span> ({reviewHelpful + 1})</div>}
 
               {!hasReported ?
               <div> <span className="rr-report-button" onClick={handleReport}>Report?</span></div>
