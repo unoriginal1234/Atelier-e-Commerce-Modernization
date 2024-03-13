@@ -8,7 +8,7 @@ import { isValidURL } from './Utils';
 // import ReactImageZoom from 'react-image-zoom'; // more info about react-image-zoom -> https://www.npmjs.com/package/react-image-zoom
 // react-image-zoom demo: https://malaman.github.io/react-image-zoom/example/index.html
 
-const ImageGallery = ({ selectedStyle, currentStyleId }) => {
+const ImageGallery = ({ isDarkMode, selectedStyle, currentStyleId }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   // Image Gallery staff
   const [isGalleryExpanded, setIsGalleryExpanded] = useState(false);
@@ -150,7 +150,7 @@ const ImageGallery = ({ selectedStyle, currentStyleId }) => {
                 : noImageAvailable
               // : 'https://placehold.co/600x400/EEE/31343C?font=oswald&text=NO+IMAGE+AVAILABLE'
           })`,
-          // backgroundImage: `url(${selectedStyle.photos[currentImageIndex]?.url || noImageAvailable})`,
+          backgroundColor:isDarkMode ? '#202020' : 'white',
           width: isGalleryExpanded ? '100%' : '63%',
           // cursor: isGalleryExpanded ? 'zoom-in' : 'pointer',
           // backgroundSize: isGalleryExpanded ? 'contain' : 'cover',

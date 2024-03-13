@@ -1,7 +1,7 @@
 // ProductInformation.jsx
 import { useState } from 'react';
 
-const ProductInformation = ({ productData, reviewsData, onClickReadAllReviews, selectedStyle }) => {
+const ProductInformation = ({ isDarkMode, productData, reviewsData, onClickReadAllReviews, selectedStyle }) => {
 
 // Function click on 'Read all reviews' link
 const handleClickReadAllReviews = (e) => {
@@ -35,7 +35,7 @@ const RatingStarsAndReviewsLink = (ratingsObj) => {
 };
 
 return (
-    <div className="product-information">
+    <div className={`product-information ${isDarkMode ? 'dark-mode-text' : ''}`}>
       {/* Star Rating - Read all reviews link*/}
       <div className="p-o-rating-stars-and-link-to-reviews">
         {RatingStarsAndReviewsLink(reviewsData.ratings)}
@@ -43,12 +43,12 @@ return (
       {/* Product Category */}
       <p>{productData.category}</p>
       {/* Product Title */}
-      <h2 className="p-o-title">{productData.name}</h2>
+      <h2 className={`p-o-title ${isDarkMode ? 'dark-mode-text' : ''}`}>{productData.name}</h2>
       <div className="selected-style-name">
         Style > <b>{selectedStyle.name}</b>
       </div>
       {/* Price */}
-      <div className="p-o-price">
+      <div className={`p-o-price ${isDarkMode ? 'dark-mode-text' : ''}`}>
         {selectedStyle.sale_price ? (
           <p>
             <span style={{ color: "#e35d6a" }}>

@@ -13,9 +13,18 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaFacebookSquare, FaPinterestSquare, FaCheck, FaHeart } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import PropTypes from 'prop-types'; // PropTypes to validate... Prop Types
+import { useDarkMode } from '../../DarkModeContext';
 
+  // const { isDarkMode, setIsDarkMode } = useDarkMode();
+
+  // const toggleDarkMode = () => {
+  //   setIsDarkMode(prevMode => !prevMode);
+  // };
 // ProductOverview Component
 const ProductOverview = ({ setCartData, id, authKey, onClickReadAllReviews }) => {
+  const { isDarkMode } = useDarkMode();
+  // console.log('isDarkMode', isDarkMode)
+  // console.log('authKey', authKey)
   // ProductOverview.propTypes = {
   //   id: PropTypes.number.isRequired, // Assuming id is a number, adjust as needed
   //   setCartData: PropTypes.func.isRequired,
@@ -247,20 +256,21 @@ const ProductOverview = ({ setCartData, id, authKey, onClickReadAllReviews }) =>
 
           {/* Gallery Images component*/}
           <Suspense fallback={<Loading />}>
-        <ImageGallery selectedStyle={selectedStyle} currentStyleId={currentStyleId} />
+        <ImageGallery isDarkMode={isDarkMode} selectedStyle={selectedStyle} currentStyleId={currentStyleId} />
           </Suspense>
 
            {/* Product Details */}
         <div className="product-details-container">
           {/* Product Information component*/}
           <ProductInformation
+           isDarkMode={isDarkMode}
             productData={productData}
             reviewsData={reviewsData}
             onClickReadAllReviews={onClickReadAllReviews}
             selectedStyle={selectedStyle}
           />
           {/* Social media sharing - Facebook, x, Pinterest*/}
-          <div className="social-media-sharing">
+          <div className={`social-media-sharing ${isDarkMode ? 'dark-mode-text' : ''}`}>
           Share <span className="social-media-icons">
           <FaFacebookSquare data-testid="facebook-icon" onClick={() => handleShareClick('Facebook')} />
           <FaSquareXTwitter data-testid="twitter-icon" onClick={() => handleShareClick('Twitter')} />
@@ -297,7 +307,7 @@ const ProductOverview = ({ setCartData, id, authKey, onClickReadAllReviews }) =>
         </div>
       </div>
       {/* Product Slogan, Description and Features component*/}
-      <SloganDescFeat productData={productData} />
+      <SloganDescFeat isDarkMode={isDarkMode} productData={productData} />
     </>
   );
 };

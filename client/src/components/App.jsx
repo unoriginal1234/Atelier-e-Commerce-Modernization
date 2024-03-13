@@ -7,7 +7,10 @@ import ProductOverview from './ProductOverview/ProductOverview.jsx';
 import Related from './Related_Items/Related.jsx';
 import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
 import QuestionsAndAnswers from './QuestionsAndAnswers/QuestionsAndAnswers.jsx';
-
+import { HiOutlineBuildingStorefront } from "react-icons/hi2";
+import { MdDarkMode } from "react-icons/md";
+import { LuSun } from "react-icons/lu";
+import { useDarkMode } from '../DarkModeContext';
 const App = () => {
   //-------------------------------------------------------
   // Shared App states and variables
@@ -19,7 +22,36 @@ const App = () => {
   const [pageItemBulk, setPageItemBulk] = useState({});
   const [relatedItems, setRelatedItems] = useState([]);
   const ratingsAndReviewsRef = useRef(null); // to scroll down to ratings and reviews from product overview
+    // State to track the current mode (true for dark mode, false for light mode)
+   const { isDarkMode, setIsDarkMode } = useDarkMode();
 
+  // Function to toggle between dark and light mode
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+    updateMainCss(isDarkMode);
+  };
+
+  // Function and variables to update CSS properties based on dark or light mode
+  const modeClass = isDarkMode ? 'dark-mode' : 'light-mode';
+
+  const containerStyle = {
+    border: '1px solid ' + (isDarkMode ? 'rgb(255 255 255 / 30%)' : '#ccc'),
+    padding: '16px',
+    marginBottom: '20px',
+    backgroundColor: isDarkMode ? 'rgb(51 51 51 / 23%)' : '#fff',
+    color: isDarkMode ? '#fff' : '#333',
+  };
+
+  const updateMainCss = (isDarkMode) => {
+    const body = document.querySelector('body');
+
+    if (!isDarkMode) {
+      body.style.backgroundColor = '#1a1a1a';
+      body.style.color = 'white !important';
+    } else {
+      body.style.backgroundColor = 'white';
+    }
+  };
   //-------------------------------------------------------
   // Functions
   //-------------------------------------------------------
@@ -44,7 +76,7 @@ const App = () => {
     // Fetching data using Promise.all
     Promise.all([
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}`, token),
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp/cart?session_id=${productID}`, token),
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/cart?session_id=${productID}`, token),
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}/related`, token),
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${productID}`,token),
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}/styles`, token)
@@ -103,18 +135,20 @@ const App = () => {
   return (
     <div className="main-container">
       {/* Logo and search input, fake stuff to make it look more real */}
-      <div className="widget-container nav-bar"><h1>KFC Logo</h1>
-      <i><span className="fake-search"> <input id="searchInput" placeholder="Search" />
+      <div className={`widget-container nav-bar ${modeClass}`}><h1 className="logo-container"><HiOutlineBuildingStorefront /> <b className="logo-text">KFC Logo</b></h1>
+      <i><i className={`dark-mode-toggle ${modeClass}`} onClick={toggleDarkMode}>
+      {isDarkMode ? <LuSun className="dark-mode-icon" /> : <MdDarkMode className="dark-mode-icon" />}
+    </i><span className="fake-search"> <input id="searchInput" placeholder="Search" />
       <IoSearch className="searchIcon" onClick={handleSearch} /></span>
       <PiBagBold className="cartIcon" /></i> {cartData.length > 0 && (<span className="cart-info-icon">{cartData.length}</span>)}</div>
       <div className="global-announsment">
           <i>SITE-WIDE ANNOUSNMENT MESSAGE &mdash;  SALE /&nbsp;</i> DISCOUNT <b>&nbsp;OFFER &nbsp;</b> &mdash;  <u>&nbsp;NEW PRODUCT HIGHLIGHT</u>
       </div>
 
-      <div className="widget-container p-o"><ProductOverview setCartData={setCartData} authKey={token} id={productID} onClickReadAllReviews={scrollToRatingsAndReviews}/></div>
-      <div className="widget-container r-i-container"><Related id={productID} product={productData} productBulk={pageItemBulk} data={relatedItems} setID={changeID}/></div>
-      <div className="widget-container"><RatingsAndReviews id={productID} token={token} ref={ratingsAndReviewsRef}/></div>
-      <div className="widget-container"><QuestionsAndAnswers id={productID} token={token} productData={productData}/></div>
+      <div className="widget-container p-o" style={containerStyle}><ProductOverview setCartData={setCartData} modeClass={modeClass} pDataBulk={pageItemBulk} authKey={token} id={productID} onClickReadAllReviews={scrollToRatingsAndReviews}/></div>
+      <div className="widget-container r-i-container" style={containerStyle}><Related id={productID} product={productData} productBulk={pageItemBulk} data={relatedItems} setID={changeID}/></div>
+      <div className="widget-container" style={containerStyle}><RatingsAndReviews id={productID} token={token} ref={ratingsAndReviewsRef}/></div>
+      <div className="widget-container" style={containerStyle}><QuestionsAndAnswers id={productID} token={token} productData={productData}/></div>
     </div>
   );
 };
