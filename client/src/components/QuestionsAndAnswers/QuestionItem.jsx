@@ -4,7 +4,7 @@ import AnswerList from './AnswerList.jsx';
 import axios from 'axios';
 import AnswerModalContent from './AnswerModalContent.jsx';
 import { FcCheckmark } from "react-icons/fc";
-const QuestionItem = ({ questionData, question, token, handleQuestionsList, productData, product_id }) => {
+const QuestionItem = ({ questionData, question, token, handleQuestionsList, productData, product_id, id }) => {
 
 
   const [questionHelpful , setQuestionHelpful] = useState(question.question_helpfulness);
@@ -55,7 +55,7 @@ const QuestionItem = ({ questionData, question, token, handleQuestionsList, prod
           , document.body)}
         </div>
       </div>
-      <AnswerList question_id={question.question_id} token={token} forImageID={forImageID} product_id={product_id}/>
+      <AnswerList question_id={question.question_id} token={token} forImageID={forImageID} product_id={product_id} id={id}/>
     </div>
 
   )
