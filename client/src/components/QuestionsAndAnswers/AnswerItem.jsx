@@ -53,8 +53,8 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token, forImageID }) =
           {answer.body}
         </p>
         <div className="answer-images-container">
-          {answer.photos.map(photo => {
-            return <AnswerImageItem  photo={photo} token={token} />
+          {answer.photos.map((photo, index) => {
+            return <AnswerImageItem key={index}  photo={photo} token={token} />
           })}
         </div>
         <div>
