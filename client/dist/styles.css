@@ -641,6 +641,7 @@ ul li span {
     justify-content: flex-start;
     flex-direction: row;
     gap: 5%;
+    flex-wrap: wrap;
    }
 
    .rr-list {
@@ -899,6 +900,11 @@ ul li span {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+  }
+
+  .rr-answer-button {
+    cursor: pointer;
+    text-decoration: underline;
   }
 
   /* --------------------------------
