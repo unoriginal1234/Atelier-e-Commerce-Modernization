@@ -716,7 +716,9 @@ ul li span {
     margin: 5px
    }
 
-
+   .rr-card-end {
+    width: 100%
+   }
 
    .rr-rating-breakdown {
     font-size: 50px;
