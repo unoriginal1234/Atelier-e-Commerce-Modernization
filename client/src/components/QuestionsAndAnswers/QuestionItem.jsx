@@ -6,13 +6,13 @@ import AnswerModalContent from './AnswerModalContent.jsx';
 import { FcCheckmark } from "react-icons/fc";
 const QuestionItem = ({ questionData, question, token, handleQuestionsList, productData, product_id }) => {
 
-  const question_id = question.question_id;
+
   const [questionHelpful , setQuestionHelpful] = useState(question.question_helpfulness);
   const [showModal, setShowModal] = useState(false);
   const [answerID, setAnswerID] = useState('');
   const [disabled, setDisabled] = useState(false);
   const handleYes = () => {
-    axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${question_id}/helpful`, null ,token)
+    axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${question.question_id}/helpful`, null ,token)
       .then(() => {
         setDisabled(true);
         handleQuestionsList();
@@ -55,7 +55,7 @@ const QuestionItem = ({ questionData, question, token, handleQuestionsList, prod
           , document.body)}
         </div>
       </div>
-      <AnswerList question_id={question_id} token={token} forImageID={forImageID} product_id={product_id}/>
+      <AnswerList question_id={question.question_id} token={token} forImageID={forImageID} product_id={product_id}/>
     </div>
 
   )
