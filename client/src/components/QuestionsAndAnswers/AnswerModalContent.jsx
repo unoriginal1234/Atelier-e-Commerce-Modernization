@@ -55,6 +55,7 @@ const AnswerModalContent = ({question, productData, onClose, token, answerID, ha
   return (
 
     <form className="answer-modal-content">
+      <div className="answer-modal-onClose" onClick={onClose}>X</div>
       <h2>Submit Your Answer</h2>
       <h3>{productData.name} : {question.question_body}</h3>
 

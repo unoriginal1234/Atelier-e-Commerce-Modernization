@@ -48,6 +48,7 @@ const QuestionModalContent = ({onClose, token, handleQuestionsList, productData}
   return (
 
     <div className="question-modal-content">
+      <div className="question-modal-onClose" onClick={onClose}>X</div>
       <h2>Ask Your Question</h2>
 
       <h3>About the {productData.name}</h3>
