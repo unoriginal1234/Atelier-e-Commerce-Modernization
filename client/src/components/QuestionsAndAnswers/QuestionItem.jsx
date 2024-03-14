@@ -48,8 +48,7 @@ const QuestionItem = ({ questionData, question, token, handleQuestionsList, prod
           |
           <SiAnswer  onClick={() => setShowModal(true)}className="answer-button"/>
           {showModal && createPortal(
-          <div onClick={()=> setShowModal(false)}className="answer-modal-container">
-
+          <div className="answer-modal-container">
               <AnswerModalContent question={question} productData={productData} onClose={()=> setShowModal(false)} token={token} answerID={answerID} handleQuestionsList={handleQuestionsList}/>
 
           </div>

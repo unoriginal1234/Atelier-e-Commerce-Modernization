@@ -34,7 +34,7 @@ const QuestionsList = ({ questionData, token, handleQuestionsList, productData, 
         <div>
           <button onClick={() => setShowModal(true)}>Add a Question</button>
           {showModal && createPortal(
-            <div onClick={()=> setShowModal(false)} className="question-modal-container">
+            <div  className="question-modal-container">
 
                 <QuestionModalContent
                 onClose={()=> setShowModal(false)}
