@@ -6,7 +6,7 @@ import { FaRegStar, FaStar } from "react-icons/fa";
 import { IoIosCloseCircleOutline, IoIosCloseCircle } from "react-icons/io";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 
-const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitItem}) {
+const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitItem, darkMode}) {
   //States
   const [currentCard, setCurrentCard] = useState(item.product.id || 0);
   const [compare, setCompare] = useState(false);
@@ -107,9 +107,15 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
 
   let star = setRating()
 
+  //Dark mode styling
+  const cardColor = {
+    backgroundColor: darkMode ?  'rgb(51 51 51 / 23%)' : '#fff',
+    borderColor: darkMode ? '#000000' : '#e9e9e9'
+  }
+
   //Component return
   return (
-    <div onMouseLeave={closeSecret} title="r-i-card" className="r-i-card">
+    <div style={cardColor} onMouseLeave={closeSecret} title="r-i-card" className="r-i-card">
       {compare && <Comparison bothCategories={bothCategories}/>}
       {(type.type === 'related' && !compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaRegStar title="r-i-empty-star"/></div>}
       {(type.type === 'related' && compare)&& <div title="action" className="r-i-secret-btn" onClick={riAction}><FaStar /></div>}
@@ -118,13 +124,12 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
         {!deleteHover && <IoIosCloseCircleOutline />}
       </div>}
         <div onMouseEnter={() => setStyleCarousel(true)} onMouseLeave={() => setStyleCarousel(false)}>
-          {/* <div className="r-i-img-holder"><img onMouseEnter={() => setStyleCarousel(true)} className="r-i-img" onClick={changeID} src={currentStylePic}></img></div> */}
-          <div className="r-i-img-size"><div onClick={changeID} className="r-i-img" title="r-i-image" style={image}></div></div>
+          <div className="r-i-img-size"><div onClick={changeID} style={cardColor} className="r-i-img" title="r-i-image" style={image}></div></div>
           {styleCarousel && <div title="r-i-style-carousel" className="r-i-style-thumbs">
             {styles.length !== 0 && <BsChevronCompactLeft onClick={onLeftClick} className="r-i-style-carousel-left"/>}
             {styles.map((style, index) => {
               if (styles.indexOf(style) >= firstThumbnailIndex && styles.indexOf(style) <= lastThumbnailIndex) {
-                return <StyleSlide key={index} index={styles.indexOf(style)} change={thumbClick} style={style}/>
+                return <StyleSlide style={cardColor} key={index} index={styles.indexOf(style)} change={thumbClick} style={style}/>
               }
             })}
             <BsChevronCompactRight onClick={onRightClick} className="r-i-style-carousel-right"/>

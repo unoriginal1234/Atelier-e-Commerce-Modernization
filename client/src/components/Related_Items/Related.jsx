@@ -123,7 +123,7 @@ const Related = function (props) {
         <div className="r-i-carousel-card-holder r-i-carousel">
         {props.data.map((item, index) => {
           if (props.data.indexOf(item) >= currentItemsIndex && props.data.indexOf(item) <= lastItemIndex) {
-            return <Card key={index} item={item} setID={props.setID} clearIndex={clearIndex} pageData={pageCategories} type={{type: 'related'}}/>
+            return <Card darkMode={props.darkMode} key={index} item={item} setID={props.setID} clearIndex={clearIndex} pageData={pageCategories} type={{type: 'related'}}/>
           }
         })}
         </div>
@@ -141,7 +141,7 @@ const Related = function (props) {
         {(yourOutfit.length >= 1) && yourOutfit.map((item, index) => {
           let current = yourOutfit.indexOf(item);
           if (current >= firstOutfitIndex && current <= lastOutfitIndex) {
-            return <Card title="r-i-outfitCard" key={index} item={item} setID={props.setID} clearIndex={clearIndex} deleteOutfitItem={deleteOutfitItem} type={{type: 'outfit'}}/>
+            return <Card darkMode={props.darkMode} title="r-i-outfitCard" key={index} item={item} setID={props.setID} clearIndex={clearIndex} deleteOutfitItem={deleteOutfitItem} type={{type: 'outfit'}}/>
           }
         })}
         </div>

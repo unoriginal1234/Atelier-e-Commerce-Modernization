@@ -146,7 +146,7 @@ const App = () => {
       </div>
 
       <div className="widget-container p-o" style={containerStyle}><ProductOverview setCartData={setCartData} modeClass={modeClass} pDataBulk={pageItemBulk} authKey={token} id={productID} onClickReadAllReviews={scrollToRatingsAndReviews}/></div>
-      <div className="widget-container r-i-container" style={containerStyle}><Related id={productID} product={productData} productBulk={pageItemBulk} data={relatedItems} setID={changeID}/></div>
+      <div className="widget-container r-i-container" style={containerStyle}><Related darkMode={isDarkMode} id={productID} product={productData} productBulk={pageItemBulk} data={relatedItems} setID={changeID}/></div>
       <div className="widget-container" style={containerStyle}><RatingsAndReviews id={productID} token={token} ref={ratingsAndReviewsRef}/></div>
       <div className="widget-container" style={containerStyle}><QuestionsAndAnswers id={productID} token={token} productData={productData}/></div>
     </div>
