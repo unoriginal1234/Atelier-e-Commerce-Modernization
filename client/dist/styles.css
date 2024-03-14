@@ -392,7 +392,7 @@ What Does Normalize.css Do? All browsers assign default values to specific CSS p
   z-index: 2;
 }
 
-.add-to-cart-and-like button {
+.add-to-cart-and-like button, button {
   cursor:pointer;
   padding: 12px 10px 10px 8px;
   font-size: 16px;
@@ -1067,6 +1067,7 @@ ul li span {
 
 /* Styles for modal content */
 .answer-modal-content, .question-modal-content {
+  position: relative;
   background-color: #f8f8f8;
   padding: 20px;
   border-radius: 20px;
@@ -1115,9 +1116,9 @@ ul li span {
   font-weight: bold;
 }
 .answer-modal-onClose, .question-modal-onClose {
-  position: relative;
-  top: -px;
-  right: -450px;
+  position: absolute;
+  top: 15px;
+  right: 10px;
   cursor: pointer;
   z-index: 9999;
   font-weight: bold;
