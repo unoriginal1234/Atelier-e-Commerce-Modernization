@@ -1047,6 +1047,7 @@ ul li span {
 .answer-small-container , .eachQ-rightSide-container {
   column-gap: 10px;
   display: flex;
+  align-items: center;
 }
 .answer-modal-container, .answer-modal-upload, .question-modal-container {
   position: fixed;

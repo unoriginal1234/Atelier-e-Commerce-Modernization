@@ -6,7 +6,7 @@ const QuestionsList = ({ questionData, token, handleQuestionsList, productData, 
   const [displayedQuestions, setDisplayedQuestions] = useState(2);
   const [showModal, setShowModal] = useState(false);
   const handleSeeMore = () => {
-    setDisplayedQuestions(prevDisplayedQuestions=> prevDisplayedQuestions + 2);
+    setDisplayedQuestions(prevDisplayedQuestions=> prevDisplayedQuestions + 50);
   }
   useEffect(()=> {
     setDisplayedQuestions(2);
@@ -24,6 +24,7 @@ const QuestionsList = ({ questionData, token, handleQuestionsList, productData, 
       productData={productData}
       product_id={id}
       id={id}
+
       />
       })}
       <div className="bottom-buttons-container">
@@ -33,7 +34,7 @@ const QuestionsList = ({ questionData, token, handleQuestionsList, productData, 
         <div>
           <button onClick={() => setShowModal(true)}>Add a Question</button>
           {showModal && createPortal(
-            <div className="question-modal-container">
+            <div onClick={()=> setShowModal(false)} className="question-modal-container">
 
                 <QuestionModalContent
                 onClose={()=> setShowModal(false)}
