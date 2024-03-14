@@ -5,6 +5,8 @@ import StyleSlide from './StyleSlide.jsx';
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { IoIosCloseCircleOutline, IoIosCloseCircle } from "react-icons/io";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
+import setRating from "./utils/setRating.js";
+import featureMaker from "./utils/featureMaker.js";
 
 const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitItem, darkMode}) {
   //States
@@ -69,43 +71,14 @@ const Card = function ({item, setID, type, clearIndex, pageData, deleteOutfitIte
     setCurrentStyleIndex(index);
   }
 
-  //Feature maker
-  const featureMaker = function () {
-
-    if (pageData !== undefined && pageData !== null) {
-      if (Object.keys(pageData).length !== 0) {
-        let pageCategoriesObj = JSON.parse(JSON.stringify(pageData));
-        let newFeatures = item.product.features;
-        pageCategoriesObj['Product Name'].v2 = item.product.name;
-        for (var i = 0; i < newFeatures.length; i ++) {
-          if (pageCategoriesObj[newFeatures[i].feature] !== undefined) {
-            pageCategoriesObj[newFeatures[i].feature].v2 = newFeatures[i].value;
-          } else {
-            pageCategoriesObj[newFeatures[i].feature] = {v2: newFeatures[i].value || 'N/A'}
-          }
-        }
-        setBothCategories(pageCategoriesObj);
-      }
-    }
-  }
-
   useEffect (() => {
-    featureMaker();
+    var categories = featureMaker(pageData, item);
+    setBothCategories(categories)
   }, [pageData])
 
 
   //Rating maker
-  const setRating = function() {
-    let reviewNumber = 0;
-    let reviewWeight = 0;
-    for (var key in preStarRatings) {
-      reviewNumber += Number(preStarRatings[key]);
-      reviewWeight += (preStarRatings[key] * key);
-    }
-    return reviewWeight / reviewNumber;
-  }
-
-  let star = setRating()
+  let star = setRating(preStarRatings);
 
   //Dark mode styling
   const cardColor = {
