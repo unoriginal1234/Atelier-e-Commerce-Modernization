@@ -135,7 +135,7 @@ const App = () => {
   return (
     <div className="main-container">
       {/* Logo and search input, fake stuff to make it look more real */}
-      <div className={`widget-container nav-bar ${modeClass}`}><h1 className="logo-container"><HiOutlineBuildingStorefront /> <b className="logo-text">KFC Logo</b></h1>
+      <div className={`widget-container nav-bar ${modeClass}`}><h1 className="logo-container"><HiOutlineBuildingStorefront /> <b className="logo-text">KFC</b></h1>
       <i><i className={`dark-mode-toggle ${modeClass}`} onClick={toggleDarkMode}>
       {isDarkMode ? <LuSun className="dark-mode-icon" /> : <MdDarkMode className="dark-mode-icon" />}
     </i><span className="fake-search"> <input id="searchInput" placeholder="Search" />
