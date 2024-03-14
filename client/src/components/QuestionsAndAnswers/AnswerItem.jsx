@@ -27,7 +27,6 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token, forImageID }) =
         console.error("Error adding helpfulness count", err);
       })
   }
-
   const handleReport = () => {
     axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/answers/${answer_id}/report`, null ,token)
       .then(() => {
@@ -44,17 +43,16 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token, forImageID }) =
   useEffect(()=> {
     setAnswerHelpful(answer.helpfulness)
   }, [answers])
-
   return (
     <div className="answer-container">
-      <h4>A:</h4>
+      <h3>A:</h3>
       <div className="answer-body-container">
         <p className="answer-body-text">
           {answer.body}
         </p>
         <div className="answer-images-container">
-          {answer.photos.map((photo, index) => {
-            return <AnswerImageItem key={index}  photo={photo} token={token} />
+          {answer.photos.map((photo) => {
+            return <AnswerImageItem key={photo.id}  photo={photo} token={token} />
           })}
         </div>
         <div>

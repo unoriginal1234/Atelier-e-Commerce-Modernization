@@ -4,6 +4,7 @@ import AnswerList from './AnswerList.jsx';
 import axios from 'axios';
 import AnswerModalContent from './AnswerModalContent.jsx';
 import { FcCheckmark } from "react-icons/fc";
+import { SiAnswer } from "react-icons/si";
 const QuestionItem = ({ questionData, question, token, handleQuestionsList, productData, product_id, id }) => {
 
 
@@ -45,9 +46,9 @@ const QuestionItem = ({ questionData, question, token, handleQuestionsList, prod
              ({questionHelpful})
           </div>
           |
-          <u onClick={() => setShowModal(true)}className="answer-button">Add Answer</u>
+          <SiAnswer  onClick={() => setShowModal(true)}className="answer-button"/>
           {showModal && createPortal(
-          <div className="answer-modal-container">
+          <div onClick={()=> setShowModal(false)}className="answer-modal-container">
 
               <AnswerModalContent question={question} productData={productData} onClose={()=> setShowModal(false)} token={token} answerID={answerID} handleQuestionsList={handleQuestionsList}/>
 

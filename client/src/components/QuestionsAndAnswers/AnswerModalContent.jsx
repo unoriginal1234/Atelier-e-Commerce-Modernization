@@ -25,7 +25,6 @@ const AnswerModalContent = ({question, productData, onClose, token, answerID, ha
       "email":yourEmail,
       "photos":yourPhotos
     }
-    console.log(data);
     axios.post(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${question.question_id}/answers`,data, token)
       .then(()=> {
         handleQuestionsList();
