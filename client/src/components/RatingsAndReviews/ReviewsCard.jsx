@@ -96,7 +96,7 @@ const ReviewsCard = ({review}) => {
 
           </div>
         </div>
-        <hr></hr>
+        <hr className="rr-card-end"></hr>
     </div>
   )
 }
