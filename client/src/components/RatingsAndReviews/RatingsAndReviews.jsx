@@ -60,7 +60,7 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
   const fetchData = () => {
     Promise.all([
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/?product_id=${id}&count=100`, options),
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${id}`, options)
+      axios.get(`/meta:${id}`)
     ])
     .then(([reviewResponse, metaResponse]) => {
       setTotalReviews(reviewResponse.data.results.length)
