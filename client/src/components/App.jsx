@@ -71,15 +71,33 @@ const App = () => {
       'Authorization': process.env.REACT_APP_API_KEY,
     }
   };
+
+  useEffect(() => {
+    axios.get(`/product:${productID}`)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .then (() => {
+        return axios.get(`/related:${productID}`);
+      })
+      .then((response) => {
+        console.log(response);
+      })
+  }, []);
+
+
     // Product and Cart UseEffect
   useEffect(() => {
     // Fetching data using Promise.all
     Promise.all([
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}`, token),
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/cart?session_id=${productID}`, token),
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}/related`, token),
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${productID}`,token),
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}/styles`, token)
+      axios.get(`/product:${productID}`),
+      axios.get(`/cart:${productID}`),
+      axios.get(`/related:${productID}`),
+      axios.get(`/meta:${productID}`),
+      axios.get(`/styles:${productID}`)
     ])
       .then(([productResponse, cartResponse, relatedResponse, metaResponse, stylesResponse]) => {
         setproductData(productResponse.data);
@@ -104,9 +122,9 @@ const App = () => {
       const callback = function () {
         let item = {};
         Promise.all([
-          axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${relatedIDs[currentCallIndex]}`, token),
-          axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${relatedIDs[currentCallIndex]}`, token),
-          axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${relatedIDs[currentCallIndex]}/styles`, token)
+          axios.get(`/product:${relatedIDs[currentCallIndex]}`),
+          axios.get(`/meta:${relatedIDs[currentCallIndex]}`),
+          axios.get(`/styles:${relatedIDs[currentCallIndex]}`)
         ])
           .then(([product, meta, styles]) => {
             item.product = product.data;
