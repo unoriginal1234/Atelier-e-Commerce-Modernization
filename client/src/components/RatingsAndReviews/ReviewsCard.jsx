@@ -4,10 +4,6 @@ import axios from 'axios';
 import { FaCheckCircle } from "react-icons/fa";
 import AnswerImageItem from '../QuestionsAndAnswers/AnswerImageItem.jsx'
 
-
-//TODO: review.photos
-// Recommend checkmark
-
 const ReviewsCard = ({review}) => {
 
   const options = {
@@ -22,8 +18,6 @@ const ReviewsCard = ({review}) => {
   const [ hasSetHelpfulness, setHasSetHelpfulness ] = useState(false)
   const [ hasReported, setHasReported ] = useState(false)
 
-  // console.log(review, 'review')
-
   const [reviewHelpful, setReviewHelpful] = useState(review.helpfulness);
 
   const date = {
@@ -36,7 +30,7 @@ const ReviewsCard = ({review}) => {
   const finalDate = formatDate.format(dateItem);
 
   const handleYes = () => {
-    axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/${review.review_id}/helpful`, null , options)
+    axios.put(`/reviews:${review.review_id}/helpful`)
       .then(() => {
         console.log("Successfully updated helpfulness")
       })
@@ -47,7 +41,7 @@ const ReviewsCard = ({review}) => {
   }
 
   const handleReport = () => {
-    axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/${review.review_id}/report`, null , options)
+    axios.put(`/reviews:${review.review_id}/report`)
       .then(() => {
         console.log("Successfully reported")
       })

@@ -10,17 +10,15 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(express.json());
 
 var PORT = process.env.PORT || 3000;
-// var PORT = 3001;
-
 
 const token = {
   headers: {
-    'Authorization': process.env.API_KEY,
+    'Authorization': process.env.REACT_APP_API_KEY,
   }
 };
 //product
 app.get('/product:id', function (req, res) {
-  console.log(req.params.id.slice(1));
+  //console.log(req.params.id.slice(1));
   axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${req.params.id.slice(1)}`, token)
     .then((response) => {
       res.send(response.data);
@@ -61,7 +59,7 @@ app.get('/styles:id', function (req, res) {
 });
 //meta
 app.get('/meta:id', function (req, res) {
-  axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${req.params.id.slice(1)}`,token)
+  axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/meta/?product_id=${req.params.id.slice(1)}`, token)
     .then((response) => {
       res.send(response.data);
     })
@@ -69,6 +67,56 @@ app.get('/meta:id', function (req, res) {
       res.status(401).send()
     });
 });
+//reviews
+app.get('/reviews:id', function (req, res) {
+  axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/?product_id=${req.params.id.slice(1)}&count=100`, token)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch(() => {
+      res.status(401).send()
+    });
+});
+//sort
+app.get('/reviews:id/sort:sort', function (req, res) {
+  axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews?sort=${req.params.sort.slice(1)}&product_id=${req.params.id.slice(1)}&count=100`, token)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch(() => {
+      res.status(401).send()
+    });
+});
+//helpful review
+app.put('/reviews:id/helpful', function (req, res) {
+  axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/${req.params.id.slice(1)}/helpful`, null , token)
+    .then(() => {
+      res.status(200).send()
+    })
+    .catch(() => {
+      res.status(401).send()
+    });
+});
+//reported review
+app.put('/reviews:id/report', function(req, res) {
+  axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/${req.params.id.slice(1)}/report`, null , token)
+    .then(() => {
+      res.status(200).send();
+    })
+    .catch(() => {
+      res.status(401).send();
+    })
+})
+//review post
+app.post('/reviews', function(req, res) {
+  axios.post(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews`, req.body, token)
+    .then(() => {
+      res.status(201).send();
+    })
+    .catch(() => {
+      res.status(401).send();
+    })
+})
 
 
 app.listen(PORT, ()=>{
