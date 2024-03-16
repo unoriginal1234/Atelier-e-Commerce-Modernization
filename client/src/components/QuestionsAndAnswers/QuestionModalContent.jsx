@@ -25,7 +25,7 @@ const QuestionModalContent = ({onClose, token, handleQuestionsList, productData}
       "email":yourEmail,
       "product_id": productData.id
     }
-    axios.post(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/?product_id=${productData.id}`,data, token)
+    axios.post(`/questions:${productData.id}`, data)
       .then(()=> {
         handleQuestionsList();
       })

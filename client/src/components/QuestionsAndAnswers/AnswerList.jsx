@@ -10,7 +10,7 @@ const AnswerList = ({ question_id, token, forImageID, product_id, id}) => {
   const minAnswers = answers.slice(0, displayedAnswers);
   const handleAnswersList = () => {
 
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${question_id}/answers/?count=11`, token)
+    axios.get(`/answers_list:${question_id}`)
       .then((results) => {
         const answersList = results.data.results;
         setAnswers(answersList);

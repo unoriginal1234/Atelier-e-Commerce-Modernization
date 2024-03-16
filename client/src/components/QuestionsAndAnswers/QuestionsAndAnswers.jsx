@@ -20,7 +20,7 @@ const QuestionsAndAnswers = ( { id, token, productData } ) => {
   }
   //function to handle axios get request for data
   const handleQuestionsList = () => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/?product_id=${id}&count=100`, token)
+    axios.get(`/questions:${id}`)
       .then((results) => {
         //const question = results.data.results;
 

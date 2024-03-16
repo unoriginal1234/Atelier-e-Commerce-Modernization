@@ -17,7 +17,7 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token, forImageID }) =
   const finalDate = formatDate.format(dateItem);
 
   const handleYes = () => {
-    axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/answers/${answer_id}/helpful`, null ,token)
+    axios.put(`/answers:${answer_id}/helpful`)
       .then(() => {
         setDisabled(true);
         handleAnswersList();
@@ -28,7 +28,7 @@ const AnswerItem = ({ answers, answer, handleAnswersList, token, forImageID }) =
       })
   }
   const handleReport = () => {
-    axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/answers/${answer_id}/report`, null ,token)
+    axios.put(`/answers:${answer_id}/report`)
       .then(() => {
         handleAnswersList();
         console.log("Successfully reported answer")
