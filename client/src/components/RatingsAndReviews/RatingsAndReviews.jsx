@@ -59,7 +59,7 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
   //API Calls
   const fetchData = () => {
     Promise.all([
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/?product_id=${id}&count=100`, options),
+      axios.get(`/reviews:${id}`),
       axios.get(`/meta:${id}`)
     ])
     .then(([reviewResponse, metaResponse]) => {
@@ -79,7 +79,7 @@ const RatingsAndReviews = forwardRef(({ id }, ref) => {
   }
 
   const sortData = () => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews?sort=${sort}&product_id=${id}&count=100`, options)
+    axios.get(`/reviews:${id}/sort:${sort}`)
     .then((reviewResponse) => {
       setFilteredResults(reviewResponse.data.results)
     })
