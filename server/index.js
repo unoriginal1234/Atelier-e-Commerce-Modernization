@@ -18,7 +18,7 @@ const token = {
 };
 //product
 app.get('/product:id', function (req, res) {
-  console.log(req.params.id.slice(1));
+  //console.log(req.params.id.slice(1));
   axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${req.params.id.slice(1)}`, token)
     .then((response) => {
       res.send(response.data);
@@ -87,7 +87,7 @@ app.get('/reviews:id/sort:sort', function (req, res) {
       res.status(401).send()
     });
 });
-
+//helpful review
 app.put('/reviews:id/helpful', function (req, res) {
   axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/${req.params.id.slice(1)}/helpful`, null , token)
     .then(() => {
@@ -97,7 +97,7 @@ app.put('/reviews:id/helpful', function (req, res) {
       res.status(401).send()
     });
 });
-
+//reported review
 app.put('/reviews:id/report', function(req, res) {
   axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/${req.params.id.slice(1)}/report`, null , token)
     .then(() => {
@@ -107,7 +107,16 @@ app.put('/reviews:id/report', function(req, res) {
       res.status(401).send();
     })
 })
-
+//review post
+app.post('/reviews', function(req, res) {
+  axios.post(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews`, req.body, token)
+    .then(() => {
+      res.status(201).send();
+    })
+    .catch(() => {
+      res.status(401).send();
+    })
+})
 
 
 app.listen(PORT, ()=>{

@@ -4,10 +4,6 @@ import axios from 'axios';
 import { FaCheckCircle } from "react-icons/fa";
 import AnswerImageItem from '../QuestionsAndAnswers/AnswerImageItem.jsx'
 
-
-//TODO: review.photos
-// Recommend checkmark
-
 const ReviewsCard = ({review}) => {
 
   const options = {
@@ -21,8 +17,6 @@ const ReviewsCard = ({review}) => {
 
   const [ hasSetHelpfulness, setHasSetHelpfulness ] = useState(false)
   const [ hasReported, setHasReported ] = useState(false)
-
-  // console.log(review, 'review')
 
   const [reviewHelpful, setReviewHelpful] = useState(review.helpfulness);
 

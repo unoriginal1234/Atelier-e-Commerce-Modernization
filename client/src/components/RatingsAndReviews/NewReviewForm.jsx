@@ -377,13 +377,9 @@ const NewReviewForm = ({submitReview, characteristics, id}) => {
                   charEntry[characteristics.Fit.id] = parseInt(fit)
                 }
                 var rec = recommend === true;
-                console.log(rec)
                 axios({
                   method: 'post',
-                  url: 'https://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews',
-                  headers: {
-                    'Authorization': process.env.REACT_APP_API_KEY,
-                  },
+                  url: '/reviews',
                   data: {
                     "product_id": id,
                     "rating": parseInt(rating),
