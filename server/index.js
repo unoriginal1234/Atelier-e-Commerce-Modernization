@@ -117,8 +117,76 @@ app.post('/reviews', function(req, res) {
       res.status(401).send();
     })
 })
-
-
+//questions list
+app.get('/questions:id', function (req, res) {
+  axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/?product_id=${req.params.id.slice(1)}&count=100`, token)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch(() => {
+      res.status(401).send()
+    });
+});
+// Questions helpful review
+app.put('/questions:id/helpful', function (req, res) {
+  axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${req.params.id.slice(1)}/helpful`, null , token)
+    .then(() => {
+      res.status(200).send()
+    })
+    .catch(() => {
+      res.status(401).send()
+    });
+});
+//Add answer
+app.post('/answers:id', function(req, res) {
+  axios.post(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${req.params.id.slice(1)}/answers`, req.body, token)
+    .then(() => {
+      res.status(201).send();
+    })
+    .catch(() => {
+      res.status(401).send();
+    })
+})
+//Answers List
+app.get('/answers_list:id', function (req, res) {
+  axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${req.params.id.slice(1)}/answers/?count=11`, token)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch(() => {
+      res.status(401).send()
+    });
+});
+// Answers helpful review
+app.put('/answers:id/helpful', function (req, res) {
+  axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/answers/${req.params.id.slice(1)}/helpful`, null , token)
+    .then(() => {
+      res.status(200).send()
+    })
+    .catch(() => {
+      res.status(401).send()
+    });
+});
+// Answers report
+app.put('/answers:id/report', function (req, res) {
+  axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/answers/${req.params.id.slice(1)}/report`, null , token)
+    .then(() => {
+      res.status(200).send()
+    })
+    .catch(() => {
+      res.status(401).send()
+    });
+});
+//Add a question
+app.post('/questions:id', function(req, res) {
+  axios.post(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/?product_id=${req.params.id.slice(1)}`, req.body, token)
+    .then(() => {
+      res.status(201).send();
+    })
+    .catch(() => {
+      res.status(401).send();
+    })
+})
 app.listen(PORT, ()=>{
   console.log(`Listening at localhost port ${PORT}`);
 });

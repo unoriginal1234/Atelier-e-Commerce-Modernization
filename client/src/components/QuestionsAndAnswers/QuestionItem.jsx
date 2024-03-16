@@ -13,7 +13,7 @@ const QuestionItem = ({ questionData, question, token, handleQuestionsList, prod
   const [answerID, setAnswerID] = useState('');
   const [disabled, setDisabled] = useState(false);
   const handleYes = () => {
-    axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions/${question.question_id}/helpful`, null ,token)
+    axios.put(`/questions:${question.question_id}/helpful`)
       .then(() => {
         setDisabled(true);
         handleQuestionsList();
