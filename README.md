@@ -1,3 +1,8 @@
+<div align="center">
+  <h3>Ratings and Reviews</h3>
+  <img src="public/Recording 2024-04-16 at 07.53.52.gif" alt="ratings and reviews gif" width="600px" />
+</div>
+
 This project has been created using **webpack-cli**
 
 # Kentuckyfried Callback - Front End Capstone
